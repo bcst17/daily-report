@@ -9,10 +9,15 @@
   <style>
     :root {
       --primary: #f4a300;
-      --border: #dddddd;
-      --bg: #fafafa;
+      --primary-soft: #ffe8b3;
+      --border: #e0e0e0;
+      --bg: #f4f4f6;
+      --text-main: #222;
+      --text-sub: #666;
     }
-    * { box-sizing: border-box; }
+    * {
+      box-sizing: border-box;
+    }
     body {
       font-family: system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
       margin: 0;
@@ -20,6 +25,7 @@
       background-color: var(--bg);
       display: flex;
       justify-content: center;
+      color: var(--text-main);
     }
     .container {
       width: 100%;
@@ -27,26 +33,27 @@
     }
     h1 {
       font-size: 20px;
-      margin: 8px 0 4px;
+      margin: 10px 0 4px;
       text-align: center;
     }
     .subtitle {
       text-align: center;
       font-size: 12px;
-      color: #666;
-      margin-bottom: 8px;
+      color: var(--text-sub);
+      margin-bottom: 10px;
     }
     .section {
-      border: 1px solid var(--border);
-      border-radius: 10px;
-      padding: 10px 12px;
-      margin-bottom: 8px;
+      border-radius: 14px;
+      padding: 10px 12px 12px;
+      margin-bottom: 10px;
       background-color: #fff;
-      box-shadow: 0 1px 2px rgba(0,0,0,0.02);
+      box-shadow: 0 2px 6px rgba(0,0,0,0.04);
+      border: 1px solid var(--border);
     }
     .section h2 {
       font-size: 15px;
       margin: 0 0 6px;
+      font-weight: 600;
     }
     label {
       display: block;
@@ -58,27 +65,41 @@
     input[type="date"],
     select {
       width: 100%;
-      padding: 6px 8px;
+      padding: 8px 10px;
       font-size: 14px;
-      border-radius: 6px;
+      border-radius: 8px;
       border: 1px solid var(--border);
       background-color: #fff;
+      outline: none;
+      transition: border-color 0.15s, box-shadow 0.15s, background-color 0.15s;
+    }
+    input[type="number"]:focus,
+    input[type="text"]:focus,
+    input[type="date"]:focus,
+    select:focus {
+      border-color: var(--primary);
+      box-shadow: 0 0 0 2px var(--primary-soft);
     }
     input.readonly {
-      background-color: #f3f3f3;
+      background-color: #f5f5f7;
     }
     textarea {
       width: 100%;
       height: 200px;
       font-size: 14px;
       padding: 8px;
-      border-radius: 8px;
+      border-radius: 10px;
       border: 1px solid var(--border);
       resize: vertical;
+      outline: none;
+    }
+    textarea:focus {
+      border-color: var(--primary);
+      box-shadow: 0 0 0 2px var(--primary-soft);
     }
     .small-note {
       font-size: 12px;
-      color: #666;
+      color: var(--text-sub);
       margin-top: 4px;
     }
     .hint {
@@ -92,11 +113,12 @@
       right: 0;
       bottom: 0;
       padding: 8px;
-      background-color: rgba(250,250,250,0.96);
+      background-color: rgba(250,250,252,0.97);
       border-top: 1px solid var(--border);
       display: flex;
       gap: 8px;
       justify-content: center;
+      backdrop-filter: blur(8px);
     }
     button {
       flex: 1;
@@ -105,7 +127,12 @@
       border-radius: 24px;
       border: 1px solid var(--primary);
       cursor: pointer;
-      font-weight: 500;
+      font-weight: 600;
+      transition: transform 0.05s ease, box-shadow 0.1s ease, background-color 0.1s ease;
+    }
+    button:active {
+      transform: scale(0.97);
+      box-shadow: 0 1px 3px rgba(0,0,0,0.18) inset;
     }
     .btn-primary {
       background-color: var(--primary);
@@ -129,7 +156,7 @@
         <input type="date" id="date">
       </label>
       <label>店名：
-        <input type="text" id="store" placeholder="例：台北忠孝門市">
+        <input type="text" id="store" placeholder="例：站前">
       </label>
       <label>姓名：
         <select id="name" onchange="fillKpi()">
@@ -143,13 +170,13 @@
     <div class="section">
       <h2>1. 今日外撥</h2>
       <label>總外撥通數：
-        <input type="number" id="todayCallTotal" class="readonly" value="0" readonly>
+        <input type="number" id="todayCallTotal" class="readonly" readonly>
       </label>
       <label>潛客通數：
-        <input type="number" id="todayCallPotential" value="0" oninput="recalcTotals()">
+        <input type="number" id="todayCallPotential" oninput="recalcTotals()">
       </label>
       <label>3年以上舊客通數：
-        <input type="number" id="todayCallOld3Y" value="0" oninput="recalcTotals()">
+        <input type="number" id="todayCallOld3Y" oninput="recalcTotals()">
       </label>
     </div>
 
@@ -157,46 +184,46 @@
     <div class="section">
       <h2>2. 今日預約（只計新客 + 潛客 + 3年以上舊客）</h2>
       <label>今日預約總數：
-        <input type="number" id="todayBookingTotal" class="readonly" value="0" readonly>
+        <input type="number" id="todayBookingTotal" class="readonly" readonly>
       </label>
       <label>新客預約：
-        <input type="number" id="todayBookingNew" value="0" oninput="recalcTotals()">
+        <input type="number" id="todayBookingNew" oninput="recalcTotals()">
       </label>
       <label>潛客預約：
-        <input type="number" id="todayBookingPotential" value="0" oninput="recalcTotals()">
+        <input type="number" id="todayBookingPotential" oninput="recalcTotals()">
       </label>
       <label>3年以上舊客預約：
-        <input type="number" id="todayBookingOld3Y" value="0" oninput="recalcTotals()">
+        <input type="number" id="todayBookingOld3Y" oninput="recalcTotals()">
       </label>
     </div>
 
     <!-- 今日到店 -->
     <div class="section">
-      <h2>3. 今日到店 & 試用 / 成交</h2>
+      <h2>3. 今日到店（只計新客 + 潛客 + 3年以上舊客） & 試用 / 成交</h2>
       <label>今日到店總數：
-        <input type="number" id="todayVisitTotal" class="readonly" value="0" readonly>
+        <input type="number" id="todayVisitTotal" class="readonly" readonly>
       </label>
       <label>新客到店：
-        <input type="number" id="todayVisitNew" value="0" oninput="recalcTotals()">
+        <input type="number" id="todayVisitNew" oninput="recalcTotals()">
       </label>
       <label>潛客到店：
-        <input type="number" id="todayVisitPotential" value="0" oninput="recalcTotals()">
+        <input type="number" id="todayVisitPotential" oninput="recalcTotals()">
       </label>
       <label>3年以上舊客到店：
-        <input type="number" id="todayVisitOld3Y" value="0" oninput="recalcTotals()">
+        <input type="number" id="todayVisitOld3Y" oninput="recalcTotals()">
       </label>
-      <p class="small-note">（只計新客 + 潛客 + 3年以上舊客）</p>
+
       <label>試用 HA：
-        <input type="number" id="trialHA" value="0">
+        <input type="number" id="trialHA">
       </label>
       <label>試用 APAP：
-        <input type="number" id="trialAPAP" value="0">
+        <input type="number" id="trialAPAP">
       </label>
       <label>成交 HA：
-        <input type="number" id="dealHA" value="0">
+        <input type="number" id="dealHA">
       </label>
       <label>成交 APAP：
-        <input type="number" id="dealAPAP" value="0">
+        <input type="number" id="dealAPAP">
       </label>
     </div>
 
@@ -204,16 +231,16 @@
     <div class="section">
       <h2>4. 明日預約（只計新客 + 潛客 + 3年以上舊客）</h2>
       <label>明日預約總數：
-        <input type="number" id="tomorrowBookingTotal" class="readonly" value="0" readonly>
+        <input type="number" id="tomorrowBookingTotal" class="readonly" readonly>
       </label>
       <label>新客預約：
-        <input type="number" id="tomorrowBookingNew" value="0" oninput="recalcTotals()">
+        <input type="number" id="tomorrowBookingNew" oninput="recalcTotals()">
       </label>
       <label>潛客預約：
-        <input type="number" id="tomorrowBookingPotential" value="0" oninput="recalcTotals()">
+        <input type="number" id="tomorrowBookingPotential" oninput="recalcTotals()">
       </label>
       <label>3年以上舊客預約：
-        <input type="number" id="tomorrowBookingOld3Y" value="0" oninput="recalcTotals()">
+        <input type="number" id="tomorrowBookingOld3Y" oninput="recalcTotals()">
       </label>
     </div>
 
@@ -221,16 +248,16 @@
     <div class="section">
       <h2>5. 明日 KPI</h2>
       <label>明日外撥KPI（總通數）：
-        <input type="number" id="tomorrowKpiCallTotal" class="readonly" value="0" readonly>
+        <input type="number" id="tomorrowKpiCallTotal" class="readonly" readonly>
       </label>
       <label>潛客外撥：
-        <input type="number" id="tomorrowKpiCallPotential" value="0" oninput="recalcTotals()">
+        <input type="number" id="tomorrowKpiCallPotential" oninput="recalcTotals()">
       </label>
       <label>3年以上舊客外撥：
-        <input type="number" id="tomorrowKpiCallOld3Y" value="0" oninput="recalcTotals()">
+        <input type="number" id="tomorrowKpiCallOld3Y" oninput="recalcTotals()">
       </label>
       <label>預約試用目標人數：
-        <input type="number" id="tomorrowKpiTrial" value="0">
+        <input type="number" id="tomorrowKpiTrial">
       </label>
     </div>
 
@@ -240,8 +267,8 @@
   </div>
 
   <div class="actions">
-    <button class="btn-secondary" onclick="copyMessage()">複製文字</button>
     <button class="btn-primary" onclick="generateMessage()">產生訊息</button>
+    <button class="btn-secondary" onclick="copyMessage()">複製文字</button>
   </div>
 
   <script>
@@ -264,7 +291,9 @@
     };
 
     function getNum(id) {
-      const v = parseInt(document.getElementById(id).value, 10);
+      const el = document.getElementById(id);
+      if (!el) return 0;
+      const v = parseInt(el.value, 10);
       return isNaN(v) ? 0 : v;
     }
 
@@ -284,8 +313,6 @@
       const dd = String(today.getDate()).padStart(2, "0");
       document.getElementById("date").value = `${yyyy}-${mm}-${dd}`;
 
-      recalcTotals();
-
       if ("serviceWorker" in navigator) {
         navigator.serviceWorker.register("service-worker.js").catch(console.error);
       }
@@ -294,7 +321,8 @@
     function fillKpi() {
       const name = document.getElementById("name").value;
       const target = kpiTargets[name] || 0;
-      document.getElementById("tomorrowKpiCallTotal").value = target;
+      const kpiInput = document.getElementById("tomorrowKpiCallTotal");
+      kpiInput.value = target ? String(target) : "";
       document.getElementById("kpiHint").textContent = target
         ? `已自動帶入外撥目標：${target} 通`
         : "";
@@ -302,33 +330,42 @@
 
     function recalcTotals() {
       // 今日外撥總通數
-      document.getElementById("todayCallTotal").value =
+      const todayCallTotal =
         getNum("todayCallPotential") + getNum("todayCallOld3Y");
+      document.getElementById("todayCallTotal").value =
+        todayCallTotal ? String(todayCallTotal) : "";
 
       // 今日預約總數
-      document.getElementById("todayBookingTotal").value =
+      const todayBookingTotal =
         getNum("todayBookingNew") +
         getNum("todayBookingPotential") +
         getNum("todayBookingOld3Y");
+      document.getElementById("todayBookingTotal").value =
+        todayBookingTotal ? String(todayBookingTotal) : "";
 
       // 今日到店總數
-      document.getElementById("todayVisitTotal").value =
+      const todayVisitTotal =
         getNum("todayVisitNew") +
         getNum("todayVisitPotential") +
         getNum("todayVisitOld3Y");
+      document.getElementById("todayVisitTotal").value =
+        todayVisitTotal ? String(todayVisitTotal) : "";
 
       // 明日預約總數
-      document.getElementById("tomorrowBookingTotal").value =
+      const tomorrowBookingTotal =
         getNum("tomorrowBookingNew") +
         getNum("tomorrowBookingPotential") +
         getNum("tomorrowBookingOld3Y");
+      document.getElementById("tomorrowBookingTotal").value =
+        tomorrowBookingTotal ? String(tomorrowBookingTotal) : "";
 
       // 明日 KPI 總通數（若有填潛客或舊客則覆蓋）
       const kpiPotential = getNum("tomorrowKpiCallPotential");
       const kpiOld3Y = getNum("tomorrowKpiCallOld3Y");
       if (kpiPotential > 0 || kpiOld3Y > 0) {
+        const sum = kpiPotential + kpiOld3Y;
         document.getElementById("tomorrowKpiCallTotal").value =
-          kpiPotential + kpiOld3Y;
+          sum ? String(sum) : "";
       }
     }
 
@@ -362,3 +399,5 @@
   </script>
 </body>
 </html>
+
+

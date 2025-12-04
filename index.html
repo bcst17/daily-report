@@ -39,6 +39,12 @@
       background:#fff;
     }
 
+    /* 🔧 特別指定 date 欄位也用 border-box，避免 iOS 撐出邊線 */
+    input[type="date"]{
+      box-sizing:border-box;
+      max-width:100%;
+    }
+
     textarea{
       width:100%;height:200px;padding:12px;font-size:15px;
       border-radius:10px;border:1px solid var(--border);resize:vertical;
@@ -175,12 +181,10 @@
   </div>
 
   <script>
-    // 進入頁面自動填入今天日期（DOM 完成就執行）
+    // 進入頁面自動填入今天日期
     document.addEventListener("DOMContentLoaded", function () {
       const dateInput = document.getElementById("date");
       if (!dateInput) return;
-
-      // 若已經有值就不覆蓋
       if (dateInput.value) return;
 
       const today   = new Date();

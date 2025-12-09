@@ -22,7 +22,12 @@
   --primary:#f4a300;
   --border:#e0e0e0;
   --bg:#f6f6f8;
+
+  /* 新增兩個按鈕專用顏色 */
+  --btn-generate:#e53935; /* 紅色：產生訊息 */
+  --btn-copy:#2e7d32;     /* 綠色：複製文字 */
 }
+
 
 *,*::before,*::after{ box-sizing:border-box; }
 
@@ -81,11 +86,28 @@ textarea{
 }
 
 button{
-  flex:1;padding:12px 0;border-radius:26px;border:none;
-  font-size:16px;font-weight:600;
+  flex:1;
+  padding:12px 0;
+  border-radius:26px;
+  border:none;
+  font-size:16px;
+  font-weight:600;
 }
-.btn-primary{ background:var(--primary);color:#fff; }
-.btn-secondary{ background:#fff;color:#333;border:1px solid var(--primary); }
+
+/* 產生訊息：紅色底 */
+.btn-primary{
+  background:var(--btn-generate);
+  color:#fff;
+  border:1px solid var(--btn-generate);
+}
+
+/* 複製文字：綠色底 */
+.btn-secondary{
+  background:var(--btn-copy);
+  color:#fff;
+  border:1px solid var(--btn-copy);
+}
+
 
 </style>
 </head>
@@ -200,7 +222,7 @@ button{
 
 <!-- button -->
 <div class="actions">
-<button class="btn-primary" onclick="generateMessage()">產生訊息</button>
+<button class="btn-primary" onclick="generateMessage()">🛷 產生訊息</button>
 <button class="btn-secondary" onclick="copyMessage()">複製文字</button>
 </div>
 

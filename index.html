@@ -30,11 +30,19 @@ body{
   font-family:-apple-system,BlinkMacSystemFont,system-ui,sans-serif;
   margin:0;
   padding:14px 14px 90px;
-  background:var(--bg);
+  /* 先保留原本底色當備援 */
+  background-color:var(--bg);
+  /* 再疊上聖誕淡藍背景圖 */
+  background-image:url("bg-xmas-mobile.png");
+  background-repeat:no-repeat;
+  background-position:center top;
+  background-size:cover;
+
   display:flex;
   justify-content:center;
   color:#111;
 }
+
 
 .container{ width:100%; max-width:520px; }
 
@@ -42,8 +50,28 @@ h1{ text-align:center; margin:6px 0 2px; font-size:22px; font-weight:700; }
 .subtitle{ text-align:center; font-size:13px; color:#777; margin-bottom:12px; }
 
 .section{
-  background:#fff; border-radius:14px; border:1px solid var(--border);
-  padding:14px; margin-bottom:12px; overflow:hidden;
+  background:#fff;
+  border-radius:14px;
+  border:1px solid var(--border);
+  padding:14px;
+  margin-bottom:12px;
+
+  /* 讓帽子可以定位在卡片角落 */
+  position:relative;
+  /* 要讓帽子浮在卡片外，就不能把溢出內容藏起來 */
+  overflow:visible;
+}
+.section::after{
+  content:"";
+  position:absolute;
+  top:-18px;
+  right:10px;
+
+  width:40px;
+  height:40px;
+  background:url("hat-xmas.png") no-repeat center;
+  background-size:contain;
+  pointer-events:none;
 }
 .section h2{ margin:0 0 8px; font-size:16px; font-weight:700; }
 

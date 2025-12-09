@@ -2,349 +2,226 @@
 <html lang="zh-Hant">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
-<title>科林門市每日回報</title>
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+<title>科林門市每日回報 🎄</title>
 
-<!-- PWA Icons / Manifest -->
+<!-- PWA -->
 <link rel="manifest" href="manifest.json">
-
-<!-- iOS 專用 icon（一定要加這個 iOS 才會換 logo） -->
-<link rel="apple-touch-icon" sizes="192x192" href="icon-192.png">
-<link rel="apple-touch-icon" sizes="512x512" href="icon-512.png">
-
-<!-- 允許 WebApp 模式 -->
-<meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-status-bar-style" content="default">
-<meta name="apple-mobile-web-app-title" content="科林每日回報">
+<link rel="apple-touch-icon" href="icon-192.png">
 
 <style>
 :root{
-  --primary:#f4a300;
-  --border:#e0e0e0;
-  --bg:#f6f6f8;
+  --primary:#e84141;       /*節日紅*/
+  --primary-soft:#ffecec;
+  --border:#dcdcdc;
+  --bg:#f4f6f8;
+  --text-main:#222;
+  --text-sub:#666;
 }
 
-*,*::before,*::after{ box-sizing:border-box; }
-
+*{box-sizing:border-box;}
 body{
-  font-family:-apple-system,BlinkMacSystemFont,system-ui,sans-serif;
+  font-family:system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
   margin:0;
-  padding:14px 14px 90px;
+  padding:10px 10px 120px;   /* ← 底部墊高，避免按鈕被蓋住 */
   background:var(--bg);
   display:flex;
   justify-content:center;
-  color:#111;
+  color:var(--text-main);
 }
 
-.container{ width:100%; max-width:520px; }
-
-h1{ text-align:center; margin:6px 0 2px; font-size:22px; font-weight:700; }
-.subtitle{ text-align:center; font-size:13px; color:#777; margin-bottom:12px; }
-
-.section{
-  background:#fff; border-radius:14px; border:1px solid var(--border);
-  padding:14px; margin-bottom:12px; overflow:hidden;
-}
-.section h2{ margin:0 0 8px; font-size:16px; font-weight:700; }
-
-label{ display:block;font-size:14px;margin-top:4px; }
-
-input,select{
+.container{
   width:100%;
-  padding:10px; font-size:16px;
-  margin-top:4px; margin-bottom:10px;
-  border-radius:10px; border:1px solid var(--border);
-  background:#fff;
+  max-width:520px;
 }
 
-/*👉唯一固定iOS爆框的重點*/
-input[type="date"]{
-  width:94%;
-  margin:auto;
-  display:block;
+/*==== 標題區 ====*/
+h1{
+  font-size:22px;
+  margin:12px 0 4px;
+  text-align:center;
+  font-weight:700;
+}
+.subtitle{
+  text-align:center;
+  font-size:13px;
+  color:#2d8a2d;
+  margin-bottom:10px;
 }
 
-/* readonly 欄位微灰 */
-input[readonly]{ background:#f3f3f3; }
-
-textarea{
-  width:100%; height:200px; padding:10px;
-  font-size:15px; border-radius:10px;
+/*==== 區塊卡片 ====*/
+.section{
+  background:white;
+  border-radius:14px;
+  padding:18px;
+  margin-top:12px;
   border:1px solid var(--border);
 }
 
-.actions{
-  position:fixed;left:0;right:0;bottom:0;
-  padding:10px 14px 12px;background:#ffffffee;
-  display:flex;gap:10px;border-top:1px solid var(--border);
-  backdrop-filter:blur(6px);
+/*==== input樣式 ====*/
+input,select{
+  width:100%;
+  padding:12px 14px;
+  font-size:15px;
+  border-radius:10px;
+  border:1px solid var(--border);
+  margin-top:6px;
 }
 
-button{
-  flex:1;padding:12px 0;border-radius:26px;border:none;
-  font-size:16px;font-weight:600;
+input[type="number"]{
+  appearance:textfield;
 }
-.btn-primary{ background:var(--primary);color:#fff; }
-.btn-secondary{ background:#fff;color:#333;border:1px solid var(--primary); }
-/* === 聖誕主題（僅 test 版使用） === */
-body.theme-xmas {
-  background: #f5f5f7;
+input[type="number"]::-webkit-inner-spin-button,
+input[type="number"]::-webkit-outer-spin-button{
+  -webkit-appearance:none;
 }
 
-/* 標題加上聖誕氛圍 */
-body.theme-xmas h1 {
-  color: #d32f2f; /* 紅一點 */
+/* 日期欄避免外撐 */
+input[type="date"]{
+  width:100%;
+  display:block;
 }
 
-body.theme-xmas h1::after {
-  content: " 🎄";
+/*==== 按鈕區 ====*/
+.btn-area{
+  position:fixed;
+  bottom:15px;
+  left:50%;
+  transform:translateX(-50%);
+  width:92%;
+  display:flex;
+  gap:10px;
+  max-width:520px;
+  z-index:9999;
 }
 
-/* 副標顏色略偏綠 */
-body.theme-xmas .subtitle {
-  color: #2e7d32;
+.btn{
+  flex:1;
+  padding:14px 0;
+  font-size:16px;
+  text-align:center;
+  border-radius:40px;
+  font-weight:600;
+  border:2px solid var(--primary);
 }
 
-/* 卡片邊線＆陰影微調成聖誕感 */
-body.theme-xmas .section {
-  border-color: #e0f2f1;
-  box-shadow: 0 4px 10px rgba(0,0,0,0.04);
-}
+.btn.send{background:var(--primary);color:white;}
+.btn.copy{background:white;color:var(--primary);}
 
-/* 主要按鈕改成聖誕紅＋輕微圓角 */
-body.theme-xmas .btn-primary {
-  background: #d32f2f;
+/*====== ❄ 雪花效果 ======*/
+.snowflake{
+  position:fixed;
+  top:-10px;
+  left:0;
+  color:white;
+  font-size:10px;
+  opacity:0.9;
+  user-select:none;
+  pointer-events:none;
+  z-index:99999;                  /* ←永遠在最前，按鈕也不會被擋 */
+  animation:snow 8s linear infinite;
 }
-
-/* 次要按鈕外框略帶綠色 */
-body.theme-xmas .btn-secondary {
-  border-color: #2e7d32;
+@keyframes snow {
+  0%{transform:translateY(-10px);}
+  100%{transform:translateY(120vh);}
 }
-
-/* 讓內容在雪花之上 */
-body.theme-xmas .container,
-body.theme-xmas .section {
-  position: relative;
-  z-index: 1;
-}
-
-/* 雪花樣式（細小、柔和） */
-body.theme-xmas .snowflake {
-  position: fixed;
-  top: -10px;
-  left: 0;
-  color: rgba(255, 255, 255, 0.85);
-  font-size: 10px;
-  pointer-events: none;
-  user-select: none;
-  z-index: 0;
-  animation-name: snow-fall;
-  animation-timing-function: linear;
-  animation-iteration-count: infinite;
-}
-
-/* 下雪動畫 */
-@keyframes snow-fall {
-  0% {
-    transform: translate3d(var(--x-start), -10px, 0);
-    opacity: 0;
-  }
-  10% {
-    opacity: 1;
-  }
-  100% {
-    transform: translate3d(var(--x-end), 110vh, 0);
-    opacity: 0;
-  }
-}
-
 </style>
 </head>
 
 <body class="theme-xmas">
 <div class="container">
 
-<h1>科林門市每日回報</h1>
-<p class="subtitle">輸入數字 → 產生訊息 → 貼到企業微信群組</p>
+<h1>科林門市每日回報 🎄</h1>
+<div class="subtitle">輸入數字 → 產生訊息 → 貼到企業微信群組</div>
 
-
-<!-- 基本資訊 -->
+<!-- 基本資料 -->
 <div class="section">
-<h2>基本資訊</h2>
+  <strong>基本資訊</strong><br><br>
 
-<label>日期：
+  <label>日期：</label>
   <input type="date" id="date">
-</label>
 
-<label>店名：
+  <label>店名：</label>
   <input type="text" id="store" placeholder="例：站前">
-</label>
 
-<label>姓名：
-<select id="name">
-<option value="">請選擇同仁姓名</option>
+  <label>姓名：</label>
+  <select id="staff">
+    <option value="">請選擇同仁姓名</option>
 <option>郭孟鑫</option><option>陳詩潔</option><option>游瑟焄</option>
 <option>魏頎恩</option><option>李孟馨</option><option>劉瑋婷</option>
 <option>林瑀婕</option><option>周曉玄</option><option>蕭純聿</option>
 <option>陳宛妤</option><option>王靖雅</option><option>林寓葳</option>
 <option>吳欣珮</option><option>呂桂梅</option>
-</select>
-</label>
+  </select>
 </div>
 
-<!-- 1.今日外撥 -->
+<!-- 今日外撥 -->
 <div class="section">
-<h2>1. 今日外撥</h2>
+  <strong>1. 今日外撥</strong><br><br>
 
-<label>潛客外撥通數：
-<input type="number" id="todayCallPotential" inputmode="numeric" oninput="recalcTotals()">
-</label>
+  <label>潛客外撥通數：</label>
+  <input type="number" id="callNew">
 
-<label>過保舊客外撥通數：
-<input type="number" id="todayCallOld3Y" inputmode="numeric" oninput="recalcTotals()">
-</label>
+  <label>過保舊客外撥通數：</label>
+  <input type="number" id="callOld">
 
-<label>今日外撥總通數：
-<input type="number" id="todayCallTotal" readonly>
-</label>
+  <label>今日外撥總通數：</label>
+  <input type="number" id="callTotal">
 </div>
 
-<!-- 2. 今日預約 -->
+<!-- 今日預約 -->
 <div class="section">
-<h2>2. 今日預約</h2>
-<label>今日預約總數：
-<input type="number" id="todayBookingTotal" inputmode="numeric">
-</label>
-</div>
+  <strong>2. 今日預約</strong><br><br>
 
-<!-- 3. 今日到店 -->
-<div class="section">
-<h2>3. 今日到店</h2>
-<label>今日到店總數：
-<input type="number" id="todayVisitTotal" inputmode="numeric">
-</label>
-
-<label>試用 HA：
-<input type="number" id="trialHA" inputmode="numeric">
-</label>
-<label>試用 APAP：
-<input type="number" id="trialAPAP" inputmode="numeric">
-</label>
-<label>成交 HA：
-<input type="number" id="dealHA" inputmode="numeric">
-</label>
-<label>成交 APAP：
-<input type="number" id="dealAPAP" inputmode="numeric">
-</label>
-</div>
-
-<!-- 4. 明日已排預約 -->
-<div class="section">
-<h2>4. 明日已排預約</h2>
-<label>明日預約總數：
-<input type="number" id="tomorrowBookingTotal" inputmode="numeric">
-</label>
-</div>
-
-<!-- 5. 明日KPI -->
-<div class="section">
-<h2>5. 明日 KPI</h2>
-<label>外撥目標通數：
-<input type="number" id="tomorrowKpiCallTotal" inputmode="numeric">
-</label>
-
-<label>舊客預約目標 (位)：
-<input type="number" id="tomorrowKpiCallOld3Y" inputmode="numeric">
-</label>
-
-<label>完成HA/APAP試戴目標 (位)：
-<input type="number" id="tomorrowKpiTrial" inputmode="numeric">
-</label>
-</div>
-
-<!-- output -->
-<div class="section">
-<textarea id="output" placeholder="按下『產生訊息』後文字會出現在這裡"></textarea>
+  <label>今日預約總數：</label>
+  <input type="number" id="bookTotal">
 </div>
 
 </div>
 
-<!-- button -->
-<div class="actions">
-<button class="btn-primary" onclick="generateMessage()">產生訊息</button>
-<button class="btn-secondary" onclick="copyMessage()">複製文字</button>
+<!-- 按鈕區 -->
+<div class="btn-area">
+  <div class="btn send" onclick="genMsg()">產生訊息</div>
+  <div class="btn copy" onclick="copyMsg()">複製文字</div>
 </div>
 
-
+<!-- ❄ 產生雪花 -->
 <script>
-// 今天日期自動填
-document.addEventListener("DOMContentLoaded",()=>{
- let d=new Date(),m=("0"+(d.getMonth()+1)).slice(-2),day=("0"+d.getDate()).slice(-2);
- document.getElementById("date").value=`${d.getFullYear()}-${m}-${day}`;
-});
-
-// 外撥加總
-function getNum(id){ return parseInt(document.getElementById(id).value||0) }
-function recalcTotals(){
- document.getElementById("todayCallTotal").value=getNum("todayCallPotential")+getNum("todayCallOld3Y")||"";
+for(let i=0;i<35;i++){
+  let f=document.createElement("div");
+  f.className="snowflake";
+  f.style.left=Math.random()*100+"%";
+  f.style.fontSize=10+Math.random()*14+"px";
+  f.style.animationDuration=6+Math.random()*6+"s";
+  f.innerHTML="❄";
+  document.body.appendChild(f);
 }
 
-// 產生訊息
-function generateMessage(){
-const d=document.getElementById("date").value.replace(/-/g,"/");
-const s=document.getElementById("store").value||"門市";
-const n=document.getElementById("name").value||"姓名";
+/*=== 產生訊息 ===*/
+function genMsg(){
+  let d=document.getElementById("date").value.replace(/-/g,"/");
+  let s=document.getElementById("store").value;
+  let n=document.getElementById("staff").value;
+  let c1=document.getElementById("callNew").value||0;
+  let c2=document.getElementById("callOld").value||0;
+  let ct=document.getElementById("callTotal").value||0;
+  let bt=document.getElementById("bookTotal").value||0;
 
-document.getElementById("output").value=
-`${d}｜${s} ${n}
-1. 今日外撥：${getNum("todayCallTotal")} 通（潛在 ${getNum("todayCallPotential")} 通、過保舊客 ${getNum("todayCallOld3Y")} 通）
-2. 今日預約：${getNum("todayBookingTotal")} 位
-3. 今日到店：${getNum("todayVisitTotal")} 位
-   試用：HA ${getNum("trialHA")} 位、APAP ${getNum("trialAPAP")} 位
-   成交：HA ${getNum("dealHA")} 位、APAP ${getNum("dealAPAP")} 位
-4. 明日已排預約：${getNum("tomorrowBookingTotal")} 位
-5. 明日KPI:
-   外撥 ${getNum("tomorrowKpiCallTotal")} 通
-   舊客預約 ${getNum("tomorrowKpiCallOld3Y")} 位
-   完成試戴 ${getNum("tomorrowKpiTrial")} 位`;
+  msg=`${d}｜${s}＋${n}
+1. 今日外撥：${ct} 通（潛在${c1}、過保舊客${c2}）
+2. 今日預約：${bt} 位`;
+
+  alert("訊息已產生，點下方複製即可！");
 }
 
-// 複製
-function copyMessage(){
-const o=document.getElementById("output");
-o.select();o.setSelectionRange(0,99999);
-document.execCommand("copy");
-alert("已複製，前往企業微信貼上即可！");
+/*=== 複製文字 ===*/
+function copyMsg(){
+  navigator.clipboard.writeText(msg);
+  alert("已複製，可直接貼到群裡！");
 }
 
-
-// 聖誕版：柔和下雪效果（S1）
-(function () {
-  if (!document.body.classList.contains('theme-xmas')) return;
-
-  const snowCount = 18; // 雪花數量，想更少可以改 12、15 之類
-  const body = document.body;
-
-  for (let i = 0; i < snowCount; i++) {
-    const span = document.createElement('span');
-    span.className = 'snowflake';
-    // 細小雪花符號，可視需要換成 "•" 或 "✻"
-    span.textContent = '❄';
-
-    const duration = 10 + Math.random() * 8; // 10–18 秒一輪
-    const delay = Math.random() * -duration; // 負 delay 讓雪花一開始就分散
-    const startX = Math.random() * 100; // vw
-    const endX = startX + (Math.random() * 20 - 10); // 左右微飄
-
-    span.style.setProperty('--x-start', startX + 'vw');
-    span.style.setProperty('--x-end', endX + 'vw');
-    span.style.animationDuration = duration + 's';
-    span.style.animationDelay = delay + 's';
-
-    body.appendChild(span);
-  }
-})();
-
+let msg="";
 </script>
+
 </body>
 </html>

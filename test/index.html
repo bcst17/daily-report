@@ -52,7 +52,7 @@ h1{ text-align:center; margin:6px 0 2px; font-size:22px; font-weight:700; }
   border:1px solid var(--border);
   padding:14px;
   margin-bottom:12px;
-  overflow:hidden;
+  overflow:visible;
   position:relative; /* 🔔 讓帽子可以定位 */
 }
 
@@ -60,18 +60,28 @@ h1{ text-align:center; margin:6px 0 2px; font-size:22px; font-weight:700; }
 .section::after{
   content:"";
   position:absolute;
-  top:10px;
-  right:16px;
-  width:40px;
-  height:40px;
 
-  /* 若你圖片放在 img/ 裡請改成 url("img/santa-hat.png") */
-  background-image:url("santa-hat.png");
+  /* ✅ 把帽子拉到白色框外、稍微往上 */
+  top:-14px;      /* 往上跑一點，數值越小越高，可再微調 */
+  right:4px;      /* 靠近右邊框，可按畫面調整 */
+
+  /* ✅ 帽子再大一點比較像掛在邊緣 */
+  width:32px;
+  height:32px;
+
+  background-image:url("../santa-hat.png"); /* 路徑照你現在的 */
   background-size:contain;
   background-repeat:no-repeat;
   background-position:center;
 
+  /* ✅ 傾斜 45 度 */
+  transform:rotate(45deg);
+
+  /* ✅ 旋轉中心放在「帽子底部附近」，看起來像壓在邊框上 */
+  transform-origin:50% 80%;
+
   pointer-events:none;
+  z-index:1;  /* 確保在白色卡片上方 */
 }
 
 .section h2{ margin:0 0 8px; font-size:16px; font-weight:700; }

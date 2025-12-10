@@ -3,25 +3,24 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
-<title>科林門市每日回報</title>
+<title>台北一區每日回報</title>
 
-<!-- PWA Icons / Manifest -->
 <link rel="manifest" href="manifest.json">
-
-<!-- iOS 專用 icon（一定要加這個 iOS 才會換 logo） -->
 <link rel="apple-touch-icon" sizes="192x192" href="icon-192.png">
 <link rel="apple-touch-icon" sizes="512x512" href="icon-512.png">
 
-<!-- 允許 WebApp 模式 -->
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
-<meta name="apple-mobile-web-app-title" content="科林每日回報">
+<meta name="apple-mobile-web-app-title" content="台北一區每日回報">
 
 <style>
 :root{
   --primary:#f4a300;
   --border:#e0e0e0;
   --bg:#f6f6f8;
+
+  --btn-generate:#2B7344;
+  --btn-copy:#B51A17;
 }
 
 *,*::before,*::after{ box-sizing:border-box; }
@@ -30,21 +29,58 @@ body{
   font-family:-apple-system,BlinkMacSystemFont,system-ui,sans-serif;
   margin:0;
   padding:14px 14px 90px;
-  background:var(--bg);
+  background:#dfeaf3;   /* 單色背景 */
   display:flex;
-  justify-content:center;
+  justify-content:center; /* 讓內容水平置中 */
   color:#111;
+  overflow-x:hidden;      /* 防止任何元素撐出螢幕造成偏移 */
 }
 
-.container{ width:100%; max-width:520px; }
+.container{
+  width:100%;
+  max-width:520px;
+  margin-left:auto;
+  margin-right:auto;
+}
 
 h1{ text-align:center; margin:6px 0 2px; font-size:22px; font-weight:700; }
 .subtitle{ text-align:center; font-size:13px; color:#777; margin-bottom:12px; }
 
+/* 白色卡片樣式 */
 .section{
-  background:#fff; border-radius:14px; border:1px solid var(--border);
-  padding:14px; margin-bottom:12px; overflow:hidden;
+  background:#faf7ef;
+  border-radius:14px;
+  border:1px solid var(--border);
+  padding:14px;
+  margin-bottom:12px;
+  overflow:visible;
+  position:relative;
 }
+
+/* 🎅 每個白色區塊左上角聖誕帽 */
+.section::after{
+  content:"";
+  position:absolute;
+
+  top:-25px;
+  left:-10px;
+  right:auto;
+
+  width:42px;
+  height:42px;
+
+  background-image:url("santa-hat.png");
+  background-size:contain;
+  background-repeat:no-repeat;
+  background-position:center;
+
+  transform:rotate(-30deg);
+  transform-origin:50% 80%;
+
+  pointer-events:none;
+  z-index:1;
+}
+
 .section h2{ margin:0 0 8px; font-size:16px; font-weight:700; }
 
 label{ display:block;font-size:14px;margin-top:4px; }
@@ -57,14 +93,12 @@ input,select{
   background:#fff;
 }
 
-/*👉唯一固定iOS爆框的重點*/
 input[type="date"]{
   width:94%;
   margin:auto;
   display:block;
 }
 
-/* readonly 欄位微灰 */
 input[readonly]{ background:#f3f3f3; }
 
 textarea{
@@ -73,42 +107,119 @@ textarea{
   border:1px solid var(--border);
 }
 
+/* 底部按鈕列 */
 .actions{
   position:fixed;left:0;right:0;bottom:0;
   padding:10px 14px 12px;background:#ffffffee;
   display:flex;gap:10px;border-top:1px solid var(--border);
   backdrop-filter:blur(6px);
+  z-index:50;
 }
 
 button{
-  flex:1;padding:12px 0;border-radius:26px;border:none;
-  font-size:16px;font-weight:600;
+  flex:1;
+  padding:12px 0;
+  border-radius:26px;
+  border:none;
+  font-size:16px;
+  font-weight:600;
 }
-.btn-primary{ background:var(--primary);color:#fff; }
-.btn-secondary{ background:#fff;color:#333;border:1px solid var(--primary); }
 
+.btn-primary{
+  background:var(--btn-generate);
+  color:#fff;
+  border:1px solid var(--btn-generate);
+}
+
+.btn-secondary{
+  background:var(--btn-copy);
+  color:#fff;
+  border:1px solid var(--btn-copy);
+}
+
+/* =============== ❄ Snow Animation (全螢幕＋覆蓋白卡) =============== */
+.snow {
+  pointer-events:none;
+  position:fixed;
+  top:0; left:0;
+  width:100%; height:100%;
+  overflow:hidden;
+  z-index:30;
+}
+
+.snow span {
+  position:absolute;
+  top:-10px;
+  display:block;
+  width:8px; height:8px;
+  background:rgba(255,255,255,.95);
+  border-radius:50%;
+  animation:snowfall 12s linear infinite;
+  opacity:.9;
+}
+
+/* 落下動畫，帶一點水平飄移 */
+@keyframes snowfall {
+  0%   { transform:translate3d(0, -10px, 0); }
+  100% { transform:translate3d(25px, 110vh, 0); }
+}
+
+/* 把雪分散在整個螢幕寬度（10 個「雪柱」循環） */
+.snow span:nth-child(10n+1){ left:5%; }
+.snow span:nth-child(10n+2){ left:15%; }
+.snow span:nth-child(10n+3){ left:25%; }
+.snow span:nth-child(10n+4){ left:35%; }
+.snow span:nth-child(10n+5){ left:45%; }
+.snow span:nth-child(10n+6){ left:55%; }
+.snow span:nth-child(10n+7){ left:65%; }
+.snow span:nth-child(10n+8){ left:75%; }
+.snow span:nth-child(10n+9){ left:85%; }
+.snow span:nth-child(10n+10){ left:95%; }
+
+/* 不同大小、速度、延遲，讓畫面比較自然 */
+.snow span:nth-child(odd) { width:6px;height:6px;animation-duration:10s;opacity:.8;}
+.snow span:nth-child(3n)  { width:10px;height:10px;animation-duration:14s;opacity:.75;}
+.snow span:nth-child(4n)  { animation-delay:3s;transform:translateX(-10px);}
+.snow span:nth-child(5n)  { animation-duration:18s;}
+.snow span:nth-child(7n)  { width:12px;height:12px;opacity:.6;}
+
+/* 🎄 白色卡片右下角槲寄生裝飾 */
+.section::marker{}
+.section .mistletoe{
+  content:"";
+  position:absolute;
+  bottom:-25px;
+  right:-20px;
+
+  width:65px;
+  height:65px;
+
+  background-image:url("mistletoe.png");
+  background-size:contain;
+  background-repeat:no-repeat;
+  background-position:center;
+
+  transform:rotate(45deg);
+  transform-origin:50% 50%;
+
+  pointer-events:none;
+  z-index:8;
+  opacity:0.95;
+}
 </style>
 </head>
 
 <body>
 <div class="container">
 
-<h1>科林門市每日回報</h1>
+<h1>台北一區每日回報</h1>
 <p class="subtitle">輸入數字 → 產生訊息 → 貼到企業微信群組</p>
 
-
-<!-- 基本資訊 -->
 <div class="section">
+<span class="mistletoe"></span>
 <h2>基本資訊</h2>
-
-<label>日期：
-  <input type="date" id="date">
-</label>
-
-<label>店名：
-  <input type="text" id="store" placeholder="例：站前">
-</label>
-
+<label>日期： <input type="date" id="date"></label>
+<label>店名： <input type="text" id="store" placeholder="例：站前"></label>
 <label>姓名：
 <select id="name">
 <option value="">請選擇同仁姓名</option>
@@ -121,104 +232,67 @@ button{
 </label>
 </div>
 
-<!-- 1.今日外撥 -->
 <div class="section">
+<span class="mistletoe"></span>
 <h2>1. 今日外撥</h2>
-
-<label>潛客外撥通數：
-<input type="number" id="todayCallPotential" inputmode="numeric" oninput="recalcTotals()">
-</label>
-
-<label>過保舊客外撥通數：
-<input type="number" id="todayCallOld3Y" inputmode="numeric" oninput="recalcTotals()">
-</label>
-
-<label>今日外撥總通數：
-<input type="number" id="todayCallTotal" readonly>
-</label>
+<label>潛客外撥通數：<input type="number" id="todayCallPotential" inputmode="numeric" oninput="recalcTotals()"></label>
+<label>過保舊客外撥通數：<input type="number" id="todayCallOld3Y" inputmode="numeric" oninput="recalcTotals()"></label>
+<label>今日外撥總通數：<input type="number" id="todayCallTotal" readonly></label>
 </div>
 
-<!-- 2. 今日預約 -->
 <div class="section">
+<span class="mistletoe"></span>
 <h2>2. 今日預約</h2>
-<label>今日預約總數：
-<input type="number" id="todayBookingTotal" inputmode="numeric">
-</label>
+<label>今日預約總數：<input type="number" id="todayBookingTotal" inputmode="numeric"></label>
 </div>
 
-<!-- 3. 今日到店 -->
 <div class="section">
+<span class="mistletoe"></span>
 <h2>3. 今日到店</h2>
-<label>今日到店總數：
-<input type="number" id="todayVisitTotal" inputmode="numeric">
-</label>
-
-<label>試用 HA：
-<input type="number" id="trialHA" inputmode="numeric">
-</label>
-<label>試用 APAP：
-<input type="number" id="trialAPAP" inputmode="numeric">
-</label>
-<label>成交 HA：
-<input type="number" id="dealHA" inputmode="numeric">
-</label>
-<label>成交 APAP：
-<input type="number" id="dealAPAP" inputmode="numeric">
-</label>
+<label>今日到店總數：<input type="number" id="todayVisitTotal" inputmode="numeric"></label>
+<label>試用 HA：<input type="number" id="trialHA" inputmode="numeric"></label>
+<label>試用 APAP：<input type="number" id="trialAPAP" inputmode="numeric"></label>
+<label>成交 HA：<input type="number" id="dealHA" inputmode="numeric"></label>
+<label>成交 APAP：<input type="number" id="dealAPAP" inputmode="numeric"></label>
 </div>
 
-<!-- 4. 明日已排預約 -->
 <div class="section">
+<span class="mistletoe"></span>
 <h2>4. 明日已排預約</h2>
-<label>明日預約總數：
-<input type="number" id="tomorrowBookingTotal" inputmode="numeric">
-</label>
+<label>明日預約總數：<input type="number" id="tomorrowBookingTotal" inputmode="numeric"></label>
 </div>
 
-<!-- 5. 明日KPI -->
 <div class="section">
+<span class="mistletoe"></span>
 <h2>5. 明日 KPI</h2>
-<label>外撥目標通數：
-<input type="number" id="tomorrowKpiCallTotal" inputmode="numeric">
-</label>
-
-<label>舊客預約目標 (位)：
-<input type="number" id="tomorrowKpiCallOld3Y" inputmode="numeric">
-</label>
-
-<label>完成HA/APAP試戴目標 (位)：
-<input type="number" id="tomorrowKpiTrial" inputmode="numeric">
-</label>
+<label>外撥目標通數：<input type="number" id="tomorrowKpiCallTotal" inputmode="numeric"></label>
+<label>舊客預約目標 (位)：<input type="number" id="tomorrowKpiCallOld3Y" inputmode="numeric"></label>
+<label>完成HA/APAP試戴目標 (位)：<input type="number" id="tomorrowKpiTrial" inputmode="numeric"></label>
 </div>
 
-<!-- output -->
 <div class="section">
+<span class="mistletoe"></span>
 <textarea id="output" placeholder="按下『產生訊息』後文字會出現在這裡"></textarea>
 </div>
 
 </div>
 
-<!-- button -->
 <div class="actions">
-<button class="btn-primary" onclick="generateMessage()">產生訊息</button>
-<button class="btn-secondary" onclick="copyMessage()">複製文字</button>
+<button class="btn-primary" onclick="generateMessage()">⛄️ 產生訊息</button>
+<button class="btn-secondary" onclick="copyMessage()">☃️ 複製文字</button>
 </div>
 
-
 <script>
-// 今天日期自動填
 document.addEventListener("DOMContentLoaded",()=>{
  let d=new Date(),m=("0"+(d.getMonth()+1)).slice(-2),day=("0"+d.getDate()).slice(-2);
  document.getElementById("date").value=`${d.getFullYear()}-${m}-${day}`;
 });
 
-// 外撥加總
 function getNum(id){ return parseInt(document.getElementById(id).value||0) }
 function recalcTotals(){
  document.getElementById("todayCallTotal").value=getNum("todayCallPotential")+getNum("todayCallOld3Y")||"";
 }
 
-// 產生訊息
 function generateMessage(){
 const d=document.getElementById("date").value.replace(/-/g,"/");
 const s=document.getElementById("store").value||"門市";
@@ -238,7 +312,6 @@ document.getElementById("output").value=
    完成試戴 ${getNum("tomorrowKpiTrial")} 位`;
 }
 
-// 複製
 function copyMessage(){
 const o=document.getElementById("output");
 o.select();o.setSelectionRange(0,99999);
@@ -246,5 +319,18 @@ document.execCommand("copy");
 alert("已複製，前往企業微信貼上即可！");
 }
 </script>
+
+<!-- ❄ Snow Layer -->
+<div class="snow">
+  <span></span><span></span><span></span><span></span><span></span>
+  <span></span><span></span><span></span><span></span><span></span>
+  <span></span><span></span><span></span><span></span><span></span>
+  <span></span><span></span><span></span><span></span><span></span>
+  <span></span><span></span><span></span><span></span><span></span>
+  <span></span><span></span><span></span><span></span><span></span>
+  <span></span><span></span><span></span><span></span><span></span>
+  <span></span><span></span><span></span><span></span><span></span>
+</div>
+
 </body>
 </html>

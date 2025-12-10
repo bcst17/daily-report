@@ -47,13 +47,34 @@ h1{ text-align:center; margin:6px 0 2px; font-size:22px; font-weight:700; }
 
 /* 白色卡片樣式 */
 .section{
-  background:#E8E8E8;
+  background:#F8F8F8;
   border-radius:14px;
   border:1px solid var(--border);
   padding:14px;
   margin-bottom:12px;
   overflow:visible;
   position:relative; /* 🔔 讓帽子可以定位 */
+}
+
+/* ✨新增 - 燈條在卡片上緣 */
+.section::before{
+  content:"";
+  position:absolute;
+  left:14px; right:14px;
+  top:-8px;
+  height:6px;
+  border-radius:999px;
+
+  background-image:
+    radial-gradient(circle at 0 50%,   #ffeb3b 0, #ffeb3b 35%, transparent 40%),
+    radial-gradient(circle at 18px 50%, #ff5722 0, #ff5722 35%, transparent 40%),
+    radial-gradient(circle at 36px 50%, #4caf50 0, #4caf50 35%, transparent 40%),
+    radial-gradient(circle at 54px 50%, #03a9f4 0, #03a9f4 35%, transparent 40%);
+  background-size:54px 6px;
+  background-repeat:repeat-x;
+
+  animation:lightWave 1.8s linear infinite;
+  z-index:6;
 }
 
 /* 🎅 每個白色區塊右上角自動顯示聖誕帽 */

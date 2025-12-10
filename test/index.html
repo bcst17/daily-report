@@ -37,10 +37,16 @@ body{
   display:flex;
   justify-content:center;
   color:#111;
-  overflow-x:hidden;
+  justify-content:center; /* 讓內容水平置中 */
+  overflow-x:hidden;      /* 防止任何元素撐出螢幕造成偏移 */
 }
 
-.container{ width:100%; max-width:520px; }
+.container{
+  width:100%;
+  max-width:520px;
+  margin-left:auto;     /* 🔥 讓容器居中關鍵 */
+  margin-right:auto;    /* 🔥 兩邊留白等寬 */
+}
 
 h1{ text-align:center; margin:6px 0 2px; font-size:22px; font-weight:700; }
 .subtitle{ text-align:center; font-size:13px; color:#777; margin-bottom:12px; }

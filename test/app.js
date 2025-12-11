@@ -209,22 +209,28 @@ function initMorningHuddle() {
 
   if (!hBooking || !hCall || !hOld || !hTrial) return;
 
-  if (yesterdayData) {
-    // 今日預約目標 = 昨天的「明日預約總數」
-    if (typeof yesterdayData.tomorrowBookingTotal === "number") {
-      hBooking.value = yesterdayData.tomorrowBookingTotal;
-    }
+  // 預設顯示 "-"
+  hBooking.textContent = "-";
+  hCall.textContent = "-";
+  hOld.textContent = "-";
+  hTrial.textContent = "-";
 
-    // 今日 KPI 目標 = 昨天寫的「明日 KPI」
-    if (typeof yesterdayData.tomorrowKpiCallTotal === "number") {
-      hCall.value = yesterdayData.tomorrowKpiCallTotal;
-    }
-    if (typeof yesterdayData.tomorrowKpiCallOld3Y === "number") {
-      hOld.value = yesterdayData.tomorrowKpiCallOld3Y;
-    }
-    if (typeof yesterdayData.tomorrowKpiTrial === "number") {
-      hTrial.value = yesterdayData.tomorrowKpiTrial;
-    }
+  if (!yesterdayData) return;
+
+  // 今日預約目標
+  if (typeof yesterdayData.tomorrowBookingTotal === "number") {
+    hBooking.textContent = yesterdayData.tomorrowBookingTotal;
+  }
+
+  // 今日 KPI（前一天填的明日 KPI）
+  if (typeof yesterdayData.tomorrowKpiCallTotal === "number") {
+    hCall.textContent = yesterdayData.tomorrowKpiCallTotal;
+  }
+  if (typeof yesterdayData.tomorrowKpiCallOld3Y === "number") {
+    hOld.textContent = yesterdayData.tomorrowKpiCallOld3Y;
+  }
+  if (typeof yesterdayData.tomorrowKpiTrial === "number") {
+    hTrial.textContent = yesterdayData.tomorrowKpiTrial;
   }
 }
 

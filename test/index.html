@@ -228,26 +228,26 @@ button{
 <body>
 <div class="container">
 
-<h1>台北一區每日回報</h1>
+<h1>台北一區上班小幫手</h1>
 <p class="subtitle">輸入數字 → 產生訊息 → 貼到企業微信群組</p>
 
 <!-- 🔹 分頁按鈕 -->
 <header class="tab-header">
-  <button id="tab-huddle" type="button">Morning Huddle</button>
+  <button id="tab-huddle" type="button">今日目標</button>
   <button id="tab-report" type="button" class="active">每日回報</button>
 </header>
 
 <!-- 🔹 A. Morning Huddle 介面 -->
 <section id="huddle-view" class="section hidden">
   <span class="mistletoe"></span>
-  <h2>Morning Huddle｜今日目標</h2>
+  <h2>今日目標</h2>
   <p style="font-size:13px;color:#555;margin-top:4px;">
-    之後會自動帶入昨天填寫的「明日已排預約」與「明日 KPI」，目前先手動輸入測試。
+    已自動帶入昨天填寫的「明日已排預約」與「明日 KPI」。
   </p>
-  <label>今日預約目標 (位)：<input type="number" id="huddleTodayBooking" inputmode="numeric"></label>
-  <label>今日外撥目標 (通)：<input type="number" id="huddleTodayCallTotal" inputmode="numeric"></label>
-  <label>今日舊客預約目標 (位)：<input type="number" id="huddleTodayOld3Y" inputmode="numeric"></label>
-  <label>今日完成試戴目標 (位)：<input type="number" id="huddleTodayTrial" inputmode="numeric"></label>
+  <label>今日預約數：<input type="number" id="huddleTodayBooking" inputmode="numeric"></label>
+  <label>今日外撥目標數 (通)：<input type="number" id="huddleTodayCallTotal" inputmode="numeric"></label>
+  <label>今日預計邀約回店目標數 (位)：<input type="number" id="huddleTodayOld3Y" inputmode="numeric"></label>
+  <label>今日邀約試戴目標人數 (位)：<input type="number" id="huddleTodayTrial" inputmode="numeric"></label>
 </section>
 
 <!-- 🔹 B. 原本每日回報畫面包成一個區塊 -->

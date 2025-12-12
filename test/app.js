@@ -175,12 +175,17 @@ function initMorningHuddle() {
   // ===== 昨日執行檢視 =====
 
   function renderCheck(id, actual, target) {
-    const el = document.getElementById(id);
-    if (!el || target === 0) return;
-    const diff = actual - target;
-    const ok = diff >= 0;
-    el.textContent = `${ok ? "✔ 達成" : "✖ 未達成"}（${diff >= 0 ? "+" : ""}${diff}）`;
-  }
+  const el = document.getElementById(id);
+  if (!el || target === 0) return;
+
+  const diff = actual - target;
+  const ok = diff >= 0;
+
+  el.textContent =
+    `目標 ${target} / 執行 ${actual}　` +
+    `${ok ? "✔ 達成" : "✖ 未達成"}（${diff >= 0 ? "+" : ""}${diff}）`;
+}
+
 
   renderCheck(
     "checkTrialText",

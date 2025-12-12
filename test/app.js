@@ -5,8 +5,6 @@ const STORAGE_PREFIX = "daily-report-test-";
 
 // ===== 日期工具 =====
 
-// 取得目前畫面上 #date 的日期（YYYY-MM-DD）
-// 若沒填，則回傳今天日期
 function getCurrentDateStr() {
   const input = document.getElementById("date");
   let value = input && input.value;
@@ -20,7 +18,6 @@ function getCurrentDateStr() {
   return value;
 }
 
-// 在日期字串上加減天數（delta 可為負）
 function addDaysToDateStr(dateStr, delta) {
   const [y, m, d] = dateStr.split("-").map(Number);
   const dt = new Date(y, m - 1, d);
@@ -30,7 +27,7 @@ function addDaysToDateStr(dateStr, delta) {
   return `${dt.getFullYear()}-${mm}-${dd}`;
 }
 
-// ===== localStorage 工具 =====
+// ===== localStorage =====
 
 function getStorageKey(dateStr) {
   return STORAGE_PREFIX + dateStr;
@@ -41,21 +38,16 @@ function loadReport(dateStr) {
     const raw = localStorage.getItem(getStorageKey(dateStr));
     if (!raw) return null;
     return JSON.parse(raw);
-  } catch (e) {
-    console.warn("loadReport 解析失敗", e);
+  } catch {
     return null;
   }
 }
 
 function saveReport(dateStr, data) {
-  try {
-    localStorage.setItem(getStorageKey(dateStr), JSON.stringify(data));
-  } catch (e) {
-    console.warn("saveReport 失敗", e);
-  }
+  localStorage.setItem(getStorageKey(dateStr), JSON.stringify(data));
 }
 
-// ===== 表單欄位工具 =====
+// ===== 表單工具 =====
 
 function getNum(id) {
   const el = document.getElementById(id);
@@ -64,12 +56,12 @@ function getNum(id) {
 
 function setInputValue(id, value) {
   const el = document.getElementById(id);
-  if (!el) return;
-  if (value === undefined || value === null || value === "") return;
+  if (!el || value === undefined || value === null || value === "") return;
   el.value = value;
 }
 
-// 把 localStorage 中的資料，套回今天的表單
+// ===== 套回資料 =====
+
 function applyDataToForm(data) {
   if (!data) return;
 
@@ -93,177 +85,149 @@ function applyDataToForm(data) {
   setInputValue("tomorrowKpiTrial", data.tomorrowKpiTrial);
 }
 
-// 從今天表單蒐集資料，準備存入 localStorage
 function collectTodayFormData() {
-  const data = {};
-  const dateStr = getCurrentDateStr();
-  data.date = dateStr;
+  return {
+    date: getCurrentDateStr(),
+    store: document.getElementById("store")?.value || "",
+    name: document.getElementById("name")?.value || "",
 
-  const storeEl = document.getElementById("store");
-  const nameEl = document.getElementById("name");
-  data.store = (storeEl && storeEl.value) || "";
-  data.name = (nameEl && nameEl.value) || "";
+    todayCallPotential: getNum("todayCallPotential"),
+    todayCallOld3Y: getNum("todayCallOld3Y"),
+    todayCallTotal: getNum("todayCallTotal"),
+    todayInviteReturn: getNum("todayInviteReturn"),
+    todayBookingTotal: getNum("todayBookingTotal"),
+    todayVisitTotal: getNum("todayVisitTotal"),
+    trialHA: getNum("trialHA"),
+    trialAPAP: getNum("trialAPAP"),
+    dealHA: getNum("dealHA"),
+    dealAPAP: getNum("dealAPAP"),
 
-  data.todayCallPotential = getNum("todayCallPotential");
-  data.todayCallOld3Y = getNum("todayCallOld3Y");
-  data.todayCallTotal = getNum("todayCallTotal");
-  data.todayInviteReturn = getNum("todayInviteReturn");
-  data.todayBookingTotal = getNum("todayBookingTotal");
-  data.todayVisitTotal = getNum("todayVisitTotal");
-  data.trialHA = getNum("trialHA");
-  data.trialAPAP = getNum("trialAPAP");
-  data.dealHA = getNum("dealHA");
-  data.dealAPAP = getNum("dealAPAP");
-
-  data.tomorrowBookingTotal = getNum("tomorrowBookingTotal");
-  data.tomorrowKpiCallTotal = getNum("tomorrowKpiCallTotal");
-  data.tomorrowKpiCallOld3Y = getNum("tomorrowKpiCallOld3Y");
-  data.tomorrowKpiTrial = getNum("tomorrowKpiTrial");
-
-  return data;
+    tomorrowBookingTotal: getNum("tomorrowBookingTotal"),
+    tomorrowKpiCallTotal: getNum("tomorrowKpiCallTotal"),
+    tomorrowKpiCallOld3Y: getNum("tomorrowKpiCallOld3Y"),
+    tomorrowKpiTrial: getNum("tomorrowKpiTrial")
+  };
 }
 
-// ===== 原本的邏輯：日期預設 + 計算總外撥 =====
+// ===== 計算 =====
 
-function setDefaultDate() {
-  // 讓 #date 預設是今天，但如果之後你想改日期也可以
-  getCurrentDateStr();
-}
-
-// 計算今日外撥總通數
 function recalcTotals() {
-  const total =
-    getNum("todayCallPotential") + getNum("todayCallOld3Y");
-  const inputTotal = document.getElementById("todayCallTotal");
-  if (inputTotal) {
-    inputTotal.value = total || "";
-  }
+  const total = getNum("todayCallPotential") + getNum("todayCallOld3Y");
+  const el = document.getElementById("todayCallTotal");
+  if (el) el.value = total || "";
 }
 
-// ===== 初始化每日回報資料（自動帶入昨天 / 建議 KPI） =====
+// ===== 初始化每日回報 =====
 
 function initReportData() {
-  const todayStr = getCurrentDateStr();
-  const yesterdayStr = addDaysToDateStr(todayStr, -1);
+  const today = getCurrentDateStr();
+  const yesterday = addDaysToDateStr(today, -1);
 
-  const todayData = loadReport(todayStr);
-  const yesterdayData = loadReport(yesterdayStr);
+  const todayData = loadReport(today);
+  const yesterdayData = loadReport(yesterday);
 
-  // 1) 先把今天已經存過的資料套回來
-  if (todayData) {
-    applyDataToForm(todayData);
-  }
-
-  // 2) 計算「今日外撥總通數」
+  if (todayData) applyDataToForm(todayData);
   recalcTotals();
 
-  // 3) 如果「今日預約總數」是空的，且昨天有「明日預約總數」，就自動帶入
-const todayBookingInput = document.getElementById("todayBookingTotal");
-const bookingHint = document.getElementById("todayBookingHint");
-const bookingHintValue = document.getElementById("todayBookingHintValue");
+  const todayBooking = document.getElementById("todayBookingTotal");
+  const hint = document.getElementById("todayBookingHint");
+  const hintValue = document.getElementById("todayBookingHintValue");
 
-if (
-  todayBookingInput &&
-  todayBookingInput.value === "" &&
-  yesterdayData &&
-  typeof yesterdayData.tomorrowBookingTotal === "number"
-) {
-  // 自動帶入數字
-  todayBookingInput.value = yesterdayData.tomorrowBookingTotal;
-
-  // 顯示提示文字
-  if (bookingHint && bookingHintValue) {
-    bookingHintValue.textContent = yesterdayData.tomorrowBookingTotal;
-    bookingHint.style.display = "block";
-  }
-}
-
-
-  // 4) 如果「明日預約總數」之前有存過，就先帶出（否則留空給使用者填）
-  const tomorrowBookingInput = document.getElementById("tomorrowBookingTotal");
   if (
-    tomorrowBookingInput &&
-    todayData &&
-    typeof todayData.tomorrowBookingTotal === "number"
+    todayBooking &&
+    todayBooking.value === "" &&
+    yesterdayData &&
+    typeof yesterdayData.tomorrowBookingTotal === "number"
   ) {
-    tomorrowBookingInput.value = todayData.tomorrowBookingTotal;
-  }
-
-// 5) 明日 KPI：只帶出自己之前填過的數字，不自動產生建議
-const kpiCall = document.getElementById("tomorrowKpiCallTotal");
-const kpiOld = document.getElementById("tomorrowKpiCallOld3Y");
-const kpiTrial = document.getElementById("tomorrowKpiTrial");
-
-if (todayData) {
-  if (kpiCall && typeof todayData.tomorrowKpiCallTotal === "number") {
-    kpiCall.value = todayData.tomorrowKpiCallTotal;
-  }
-  if (kpiOld && typeof todayData.tomorrowKpiCallOld3Y === "number") {
-    kpiOld.value = todayData.tomorrowKpiCallOld3Y;
-  }
-  if (kpiTrial && typeof todayData.tomorrowKpiTrial === "number") {
-    kpiTrial.value = todayData.tomorrowKpiTrial;
+    todayBooking.value = yesterdayData.tomorrowBookingTotal;
+    if (hint && hintValue) {
+      hintValue.textContent = yesterdayData.tomorrowBookingTotal;
+      hint.style.display = "block";
+    }
   }
 }
 
-}
-
-// ===== Morning Huddle 初始化（從昨天的「明日」帶到今天） =====
+// ===== Morning Huddle（含昨日執行檢視） =====
 
 function initMorningHuddle() {
-  const todayStr = getCurrentDateStr();
-  const yesterdayStr = addDaysToDateStr(todayStr, -1);
-  const yesterdayData = loadReport(yesterdayStr);
+  const today = getCurrentDateStr();
+  const yesterday = addDaysToDateStr(today, -1);
+  const dayBefore = addDaysToDateStr(today, -2);
 
-  const hBooking = document.getElementById("huddleTodayBooking");
-  const hCall = document.getElementById("huddleTodayCallTotal");
-  const hOld = document.getElementById("huddleTodayOld3Y");
-  const hTrial = document.getElementById("huddleTodayTrial");
+  const yesterdayData = loadReport(yesterday);
+  const kpiSource = loadReport(dayBefore);
 
-  if (!hBooking || !hCall || !hOld || !hTrial) return;
+  if (!yesterdayData || !kpiSource) return;
 
-  // 預設顯示 "-"
-  hBooking.textContent = "-";
-  hCall.textContent = "-";
-  hOld.textContent = "-";
-  hTrial.textContent = "-";
+  // 今日目標
+  if (typeof yesterdayData.tomorrowBookingTotal === "number")
+    document.getElementById("huddleTodayBooking").textContent = yesterdayData.tomorrowBookingTotal;
 
-  if (!yesterdayData) return;
+  if (typeof yesterdayData.tomorrowKpiCallTotal === "number")
+    document.getElementById("huddleTodayCallTotal").textContent = yesterdayData.tomorrowKpiCallTotal;
 
-  // 今日預約目標
-  if (typeof yesterdayData.tomorrowBookingTotal === "number") {
-    hBooking.textContent = yesterdayData.tomorrowBookingTotal;
+  if (typeof yesterdayData.tomorrowKpiCallOld3Y === "number")
+    document.getElementById("huddleTodayOld3Y").textContent = yesterdayData.tomorrowKpiCallOld3Y;
+
+  if (typeof yesterdayData.tomorrowKpiTrial === "number")
+    document.getElementById("huddleTodayTrial").textContent = yesterdayData.tomorrowKpiTrial;
+
+  // ===== 昨日執行檢視 =====
+
+  function renderCheck(id, actual, target) {
+    const el = document.getElementById(id);
+    if (!el || target === 0) return;
+    const diff = actual - target;
+    const ok = diff >= 0;
+    el.textContent = `${ok ? "✔ 達成" : "✖ 未達成"}（${diff >= 0 ? "+" : ""}${diff}）`;
   }
 
-  // 今日 KPI（前一天填的明日 KPI）
-  if (typeof yesterdayData.tomorrowKpiCallTotal === "number") {
-    hCall.textContent = yesterdayData.tomorrowKpiCallTotal;
-  }
-  if (typeof yesterdayData.tomorrowKpiCallOld3Y === "number") {
-    hOld.textContent = yesterdayData.tomorrowKpiCallOld3Y;
-  }
-  if (typeof yesterdayData.tomorrowKpiTrial === "number") {
-    hTrial.textContent = yesterdayData.tomorrowKpiTrial;
+  renderCheck(
+    "checkTrialText",
+    (yesterdayData.trialHA || 0) + (yesterdayData.trialAPAP || 0),
+    kpiSource.tomorrowKpiTrial || 0
+  );
+
+  renderCheck(
+    "checkCallText",
+    yesterdayData.todayCallTotal || 0,
+    kpiSource.tomorrowKpiCallTotal || 0
+  );
+
+  renderCheck(
+    "checkInviteText",
+    yesterdayData.todayInviteReturn || 0,
+    kpiSource.tomorrowKpiCallOld3Y || 0
+  );
+
+  // 邀約成功率
+  const rateText = document.getElementById("checkInviteRateText");
+  const badge = document.getElementById("checkInviteRateBadge");
+
+  const calls = yesterdayData.todayCallTotal || 0;
+  const invites = yesterdayData.todayInviteReturn || 0;
+
+  if (calls > 0) {
+    const rate = Math.round((invites / calls) * 100);
+    rateText.textContent = `${rate}%`;
+    badge.style.display = "inline-block";
+    badge.className = "badge " + (rate >= 20 ? "green" : rate >= 10 ? "yellow" : "red");
+    badge.textContent = rate >= 20 ? "高" : rate >= 10 ? "中" : "低";
   }
 }
 
-// ===== 產生訊息（+順便存今天的資料） =====
+// ===== 產生訊息 =====
 
 function generateMessage() {
-  // 先更新外撥總通數
   recalcTotals();
+  const today = getCurrentDateStr();
+  saveReport(today, collectTodayFormData());
 
-  // 在產生文字之前，把今天資料存起來
-  const todayStr = getCurrentDateStr();
-  const data = collectTodayFormData();
-  saveReport(todayStr, data);
-
-  const dateValue = document.getElementById("date").value || "";
-  const d = dateValue.replace(/-/g, "/");
+  const d = document.getElementById("date").value.replace(/-/g, "/");
   const s = document.getElementById("store").value || "門市";
   const n = document.getElementById("name").value || "姓名";
 
-  const msg =
+  document.getElementById("output").value =
 `${d}｜${s} ${n}
 1. 今日外撥：${getNum("todayCallTotal")} 通（潛在 ${getNum("todayCallPotential")} 通、過保舊客 ${getNum("todayCallOld3Y")} 通）
 2. 今日預約：${getNum("todayBookingTotal")} 位
@@ -275,64 +239,45 @@ function generateMessage() {
    外撥 ${getNum("tomorrowKpiCallTotal")} 通
    舊客預約 ${getNum("tomorrowKpiCallOld3Y")} 位
    完成試戴 ${getNum("tomorrowKpiTrial")} 位`;
-
-  const output = document.getElementById("output");
-  if (output) {
-    output.value = msg;
-  }
 }
 
-// ===== 複製訊息（維持原本功能） =====
+// ===== 複製 =====
 
 function copyMessage() {
   const o = document.getElementById("output");
-  if (!o) return;
-
   o.select();
-  o.setSelectionRange(0, 99999);
   document.execCommand("copy");
   alert("已複製，前往企業微信貼上即可！");
 }
 
-// ===== 分頁切換：Morning Huddle / 每日回報 =====
+// ===== Tabs =====
 
 function setupTabs() {
-  const tabHuddle = document.getElementById("tab-huddle");
-  const tabReport = document.getElementById("tab-report");
-  const huddleView = document.getElementById("huddle-view");
-  const reportView = document.getElementById("report-view");
+  const h = document.getElementById("tab-huddle");
+  const r = document.getElementById("tab-report");
+  const hv = document.getElementById("huddle-view");
+  const rv = document.getElementById("report-view");
 
-  if (!tabHuddle || !tabReport || !huddleView || !reportView) {
-    console.warn("有些 tab 或 section 找不到，請檢查 index.html 的 id 是否對應。");
-    return;
-  }
+  h.onclick = () => {
+    hv.classList.remove("hidden");
+    rv.classList.add("hidden");
+    h.classList.add("active");
+    r.classList.remove("active");
+  };
 
-  // 預設顯示「每日回報」
-  huddleView.classList.add("hidden");
-  reportView.classList.remove("hidden");
-  tabReport.classList.add("active");
-  tabHuddle.classList.remove("active");
-
-  tabHuddle.addEventListener("click", () => {
-    huddleView.classList.remove("hidden");
-    reportView.classList.add("hidden");
-    tabHuddle.classList.add("active");
-    tabReport.classList.remove("active");
-  });
-
-  tabReport.addEventListener("click", () => {
-    huddleView.classList.add("hidden");
-    reportView.classList.remove("hidden");
-    tabReport.classList.add("active");
-    tabHuddle.classList.remove("active");
-  });
+  r.onclick = () => {
+    hv.classList.add("hidden");
+    rv.classList.remove("hidden");
+    r.classList.add("active");
+    h.classList.remove("active");
+  };
 }
 
-// ===== 初始化 =====
+// ===== Init =====
 
 document.addEventListener("DOMContentLoaded", () => {
-  setDefaultDate();     // 設定日期預設值
-  setupTabs();          // 分頁切換
-  initReportData();     // 自動帶入昨天、產生 KPI 建議
-  initMorningHuddle();  // Morning Huddle 顯示「昨天寫的明日目標」
+  getCurrentDateStr();
+  setupTabs();
+  initReportData();
+  initMorningHuddle();
 });

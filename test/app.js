@@ -156,15 +156,26 @@ function initReportData() {
   recalcTotals();
 
   // 3) 如果「今日預約總數」是空的，且昨天有「明日預約總數」，就自動帶入
-  const todayBookingInput = document.getElementById("todayBookingTotal");
-  if (
-    todayBookingInput &&
-    todayBookingInput.value === "" &&
-    yesterdayData &&
-    typeof yesterdayData.tomorrowBookingTotal === "number"
-  ) {
-    todayBookingInput.value = yesterdayData.tomorrowBookingTotal;
+const todayBookingInput = document.getElementById("todayBookingTotal");
+const bookingHint = document.getElementById("todayBookingHint");
+const bookingHintValue = document.getElementById("todayBookingHintValue");
+
+if (
+  todayBookingInput &&
+  todayBookingInput.value === "" &&
+  yesterdayData &&
+  typeof yesterdayData.tomorrowBookingTotal === "number"
+) {
+  // 自動帶入數字
+  todayBookingInput.value = yesterdayData.tomorrowBookingTotal;
+
+  // 顯示提示文字
+  if (bookingHint && bookingHintValue) {
+    bookingHintValue.textContent = yesterdayData.tomorrowBookingTotal;
+    bookingHint.style.display = "block";
   }
+}
+
 
   // 4) 如果「明日預約總數」之前有存過，就先帶出（否則留空給使用者填）
   const tomorrowBookingInput = document.getElementById("tomorrowBookingTotal");

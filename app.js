@@ -1,6 +1,6 @@
-console.log("✅ official app.js loaded");
+console.log("✅ prod app.js loaded");
 
-// 🔒 正式版專用儲存前綴（與 test 完全隔離）
+// ===== 正式版儲存前綴（與 test 區隔） =====
 const STORAGE_PREFIX = "daily-report-";
 
 // ===== 日期工具 =====
@@ -42,7 +42,11 @@ function loadReport(dateStr) {
 }
 
 function saveReport(dateStr, data) {
-  localStorage.setItem(getStorageKey(dateStr), JSON.stringify(data));
+  try {
+    localStorage.setItem(getStorageKey(dateStr), JSON.stringify(data));
+  } catch (e) {
+    console.warn("saveReport failed", e);
+  }
 }
 
 // ===== 表單工具 =====
@@ -57,7 +61,7 @@ function setInputValue(id, value) {
   el.value = value;
 }
 
-// ===== 套回資料 =====
+// ===== 套回今日資料 =====
 function applyDataToForm(data) {
   if (!data) return;
 
@@ -81,7 +85,7 @@ function applyDataToForm(data) {
   setInputValue("tomorrowKpiTrial", data.tomorrowKpiTrial);
 }
 
-// ===== 蒐集今日資料 =====
+// ===== 蒐集今日表單 =====
 function collectTodayFormData() {
   return {
     date: getCurrentDateStr(),
@@ -124,8 +128,11 @@ function initReportData() {
   if (todayData) applyDataToForm(todayData);
   recalcTotals();
 
-  // 今日預約自動帶入昨天「明日已排預約」
+  // 今日預約自動帶入提示
   const todayBooking = document.getElementById("todayBookingTotal");
+  const hint = document.getElementById("todayBookingHint");
+  const hintValue = document.getElementById("todayBookingHintValue");
+
   if (
     todayBooking &&
     todayBooking.value === "" &&
@@ -133,10 +140,14 @@ function initReportData() {
     typeof yesterdayData.tomorrowBookingTotal === "number"
   ) {
     todayBooking.value = yesterdayData.tomorrowBookingTotal;
+    if (hint && hintValue) {
+      hintValue.textContent = yesterdayData.tomorrowBookingTotal;
+      hint.style.display = "block";
+    }
   }
 }
 
-// ===== Morning Huddle + 昨日執行檢視 =====
+// ===== Morning Huddle（含昨日執行檢視） =====
 function initMorningHuddle() {
   const today = getCurrentDateStr();
   const yesterday = addDaysToDateStr(today, -1);
@@ -147,28 +158,26 @@ function initMorningHuddle() {
 
   if (!yesterdayData || !kpiSource) return;
 
-  // 今日目標
-  const map = {
-    huddleTodayBooking: yesterdayData.tomorrowBookingTotal,
-    huddleTodayCallTotal: yesterdayData.tomorrowKpiCallTotal,
-    huddleTodayOld3Y: yesterdayData.tomorrowKpiCallOld3Y,
-    huddleTodayTrial: yesterdayData.tomorrowKpiTrial
-  };
+  // 今日目標（來自昨天填的明日）
+  if (typeof yesterdayData.tomorrowBookingTotal === "number")
+    document.getElementById("huddleTodayBooking").textContent = yesterdayData.tomorrowBookingTotal;
 
-  Object.entries(map).forEach(([id, val]) => {
-    if (typeof val === "number") {
-      const el = document.getElementById(id);
-      if (el) el.textContent = val;
-    }
-  });
+  if (typeof yesterdayData.tomorrowKpiCallTotal === "number")
+    document.getElementById("huddleTodayCallTotal").textContent = yesterdayData.tomorrowKpiCallTotal;
 
-  // 昨日執行檢視
+  if (typeof yesterdayData.tomorrowKpiCallOld3Y === "number")
+    document.getElementById("huddleTodayOld3Y").textContent = yesterdayData.tomorrowKpiCallOld3Y;
+
+  if (typeof yesterdayData.tomorrowKpiTrial === "number")
+    document.getElementById("huddleTodayTrial").textContent = yesterdayData.tomorrowKpiTrial;
+
+  // ===== 昨日執行檢視 =====
   function renderCheck(id, actual, target) {
     const el = document.getElementById(id);
     if (!el || target === 0) return;
-    el.textContent =
-      `目標 ${target} / 執行 ${actual}　` +
-      (actual >= target ? "✔ 達成" : "✖ 未達成");
+
+    const ok = actual >= target;
+    el.textContent = `目標 ${target} / 執行 ${actual}　${ok ? "✔ 達成" : "✖ 未達成"}`;
   }
 
   renderCheck(
@@ -188,9 +197,24 @@ function initMorningHuddle() {
     yesterdayData.todayInviteReturn || 0,
     kpiSource.tomorrowKpiCallOld3Y || 0
   );
+
+  // 邀約成功率
+  const rateText = document.getElementById("checkInviteRateText");
+  const badge = document.getElementById("checkInviteRateBadge");
+
+  const calls = yesterdayData.todayCallTotal || 0;
+  const invites = yesterdayData.todayInviteReturn || 0;
+
+  if (calls > 0) {
+    const rate = Math.round((invites / calls) * 100);
+    rateText.textContent = `${rate}%`;
+    badge.style.display = "inline-block";
+    badge.className = "badge " + (rate >= 20 ? "green" : rate >= 10 ? "yellow" : "red");
+    badge.textContent = rate >= 20 ? "高" : rate >= 10 ? "中" : "低";
+  }
 }
 
-// ===== 產生訊息 =====
+// ===== 產生訊息（同時存檔） =====
 function generateMessage() {
   recalcTotals();
   const today = getCurrentDateStr();
@@ -217,14 +241,38 @@ function generateMessage() {
 // ===== 複製 =====
 function copyMessage() {
   const o = document.getElementById("output");
+  if (!o) return;
   o.select();
   document.execCommand("copy");
   alert("已複製，前往企業微信貼上即可！");
 }
 
+// ===== Tabs =====
+function setupTabs() {
+  const h = document.getElementById("tab-huddle");
+  const r = document.getElementById("tab-report");
+  const hv = document.getElementById("huddle-view");
+  const rv = document.getElementById("report-view");
+
+  h.onclick = () => {
+    hv.classList.remove("hidden");
+    rv.classList.add("hidden");
+    h.classList.add("active");
+    r.classList.remove("active");
+  };
+
+  r.onclick = () => {
+    hv.classList.add("hidden");
+    rv.classList.remove("hidden");
+    r.classList.add("active");
+    h.classList.remove("active");
+  };
+}
+
 // ===== Init =====
 document.addEventListener("DOMContentLoaded", () => {
   getCurrentDateStr();
+  setupTabs();
   initReportData();
   initMorningHuddle();
 });

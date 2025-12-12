@@ -183,7 +183,7 @@ function initMorningHuddle() {
 
   el.textContent =
     `目標 ${target} / 執行 ${actual}　` +
-    `${ok ? "✔ 達成" : "✖ 未達成"}（${diff >= 0 ? "+" : ""}${diff}）`;
+    `${ok ? "✔ 達成" : "✖ 未達成"}`;
 }
 
 

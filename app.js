@@ -105,7 +105,7 @@ function collectTodayFormData() {
     tomorrowBookingTotal: getNum("tomorrowBookingTotal"),
     tomorrowKpiCallTotal: getNum("tomorrowKpiCallTotal"),
     tomorrowKpiCallOld3Y: getNum("tomorrowKpiCallOld3Y"),
-    tomorrowKpiTrial: getNum("tomorrowKpiTrial"),
+    tomorrowKpiTrial: getNum("tomorrowKpiTrial")
   };
 }
 
@@ -162,20 +162,16 @@ function initMorningHuddle() {
 
   // 今日目標（昨天填的「明日」）
   if (typeof yesterdayData.tomorrowBookingTotal === "number")
-    document.getElementById("huddleTodayBooking").textContent =
-      yesterdayData.tomorrowBookingTotal;
+    document.getElementById("huddleTodayBooking").textContent = yesterdayData.tomorrowBookingTotal;
 
   if (typeof yesterdayData.tomorrowKpiCallTotal === "number")
-    document.getElementById("huddleTodayCallTotal").textContent =
-      yesterdayData.tomorrowKpiCallTotal;
+    document.getElementById("huddleTodayCallTotal").textContent = yesterdayData.tomorrowKpiCallTotal;
 
   if (typeof yesterdayData.tomorrowKpiCallOld3Y === "number")
-    document.getElementById("huddleTodayOld3Y").textContent =
-      yesterdayData.tomorrowKpiCallOld3Y;
+    document.getElementById("huddleTodayOld3Y").textContent = yesterdayData.tomorrowKpiCallOld3Y;
 
   if (typeof yesterdayData.tomorrowKpiTrial === "number")
-    document.getElementById("huddleTodayTrial").textContent =
-      yesterdayData.tomorrowKpiTrial;
+    document.getElementById("huddleTodayTrial").textContent = yesterdayData.tomorrowKpiTrial;
 
   // 昨日執行檢視（前天KPI 對照 昨天實際）
   if (!kpiSource) return;
@@ -211,7 +207,7 @@ function initMorningHuddle() {
     kpiSource.tomorrowKpiCallOld3Y || 0
   );
 
-  // 邀約成功率（Badge）
+  // 邀約成功率（Badge維持原本）
   const rateText = document.getElementById("checkInviteRateText");
   const badge = document.getElementById("checkInviteRateBadge");
 
@@ -225,8 +221,7 @@ function initMorningHuddle() {
     const rate = Math.round((invites / calls) * 100);
     rateText.textContent = `${rate}%`;
     badge.style.display = "inline-block";
-    badge.className =
-      "badge " + (rate >= 20 ? "green" : rate >= 10 ? "yellow" : "red");
+    badge.className = "badge " + (rate >= 20 ? "green" : rate >= 10 ? "yellow" : "red");
     badge.textContent = rate >= 20 ? "高" : rate >= 10 ? "中" : "低";
   }
 }
@@ -265,9 +260,7 @@ function generateMessage() {
 
     const line = (label, target, actual) => {
       if (!target) return `・${label}：目標 - / 執行 ${actual}`;
-      return `・${label}：目標 ${target} / 執行 ${actual}　${
-        actual >= target ? "✔ 達成" : "✖ 未達成"
-      }`;
+      return `・${label}：目標 ${target} / 執行 ${actual}　${actual >= target ? "✔ 達成" : "✖ 未達成"}`;
     };
 
     let rateLine = "・邀約成功率：-";
@@ -286,7 +279,9 @@ ${rateLine}`;
 
   const checkBlock = buildTodayCheckBlock();
 
-  const msg = `${d}｜${s} ${n}
+  // ✅ 你要的訊息格式（含「成功邀約回店」）
+  const msg =
+`${d}｜${s} ${n}
 1. 今日外撥：
 　${callTotal} 通（潛在 ${callPotential} 通、過保舊客 ${callOld3Y} 通）
 　成功邀約回店 ${inviteReturn} 位
@@ -303,36 +298,15 @@ ${rateLine}`;
   document.getElementById("output").value = msg;
 }
 
-// ===== 複製（優先用 clipboard API，失敗再 fallback） =====
+// ===== 複製 =====
 
-async function copyMessage() {
+function copyMessage() {
   const o = document.getElementById("output");
   if (!o) return;
-
-  const text = o.value || "";
-  if (!text.trim()) {
-    alert("目前沒有可複製的文字，請先按『產生訊息』");
-    return;
-  }
-
-  try {
-    if (navigator.clipboard && window.isSecureContext) {
-      await navigator.clipboard.writeText(text);
-    } else {
-      o.focus();
-      o.select();
-      o.setSelectionRange(0, 99999);
-      document.execCommand("copy");
-    }
-    alert("已複製，前往企業微信貼上即可！");
-  } catch (err) {
-    // 最後保底：仍用選取讓使用者手動複製
-    o.focus();
-    o.select();
-    o.setSelectionRange(0, 99999);
-    alert("自動複製失敗，已幫你選取文字，請手動複製。");
-    console.error(err);
-  }
+  o.select();
+  o.setSelectionRange(0, 99999);
+  document.execCommand("copy");
+  alert("已複製，前往企業微信貼上即可！");
 }
 
 // ===== Tabs =====
@@ -368,8 +342,3 @@ document.addEventListener("DOMContentLoaded", () => {
   initReportData();
   initMorningHuddle();
 });
-
-// ✅✅✅ 讓 index.html 的 onclick / oninput 找得到（正式版「按了沒反應」通常就是缺這段）
-window.recalcTotals = recalcTotals;
-window.generateMessage = generateMessage;
-window.copyMessage = copyMessage;

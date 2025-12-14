@@ -39,6 +39,11 @@ function $(id) {
   return document.getElementById(id);
 }
 
+// ✅ 符號＋文字統一（全站唯一來源）
+function okText(ok) {
+  return ok ? "✔️ 達成" : "✖️ 未達成";
+}
+
 // ===== 讀表單 =====
 function collectForm() {
   const date = getCurrentDateStr();
@@ -144,23 +149,18 @@ function showView(view) {
   huddleBtn.classList.toggle("active", isHuddle);
   reportBtn.classList.toggle("active", !isHuddle);
 
-  // 進入今日檢視時，刷新顯示
   if (isHuddle) renderHuddle();
 }
 
-// ===== 今日檢視（自動帶入 + 昨日執行檢視 + 達成/未達成） =====
-function badgeText(ok) {
-  return ok ? `<span class="badge green">達成</span>` : `<span class="badge red">未達成</span>`;
-}
-
+// ===== 今日檢視（自動帶入 + 昨日執行檢視） =====
 function renderHuddle() {
   const today = getCurrentDateStr();
   const yesterday = addDaysToDateStr(today, -1);
   const dayBeforeYesterday = addDaysToDateStr(today, -2);
 
-  const yData = loadByDate(yesterday);           // 昨天填的「明日目標」= 今天目標
-  const ydData = loadByDate(yesterday);          // 昨天的實績（用於「昨日執行檢視」）
-  const dbyData = loadByDate(dayBeforeYesterday); // 前天填的「明日KPI」= 昨天目標
+  const yData = loadByDate(yesterday);            // 昨天填的「明日已排預約 / 明日KPI」= 今天目標
+  const ydData = loadByDate(yesterday);           // 昨天實績
+  const dbyData = loadByDate(dayBeforeYesterday); // 前天的「明日KPI」= 昨天目標
 
   // A) 今日目標：取昨天的「明日已排預約 / 明日KPI」
   if ($("huddleTodayBooking")) $("huddleTodayBooking").textContent = yData?.tomorrowBookingTotal ?? "-";
@@ -168,7 +168,7 @@ function renderHuddle() {
   if ($("huddleTodayCallTotal")) $("huddleTodayCallTotal").textContent = yData?.tomorrowKpiCallTotal ?? "-";
   if ($("huddleTodayOld3Y")) $("huddleTodayOld3Y").textContent = yData?.tomorrowKpiCallOld3Y ?? "-";
 
-  // 也順便提示＆（可選）自動帶入今日預約
+  // 今日預約：提示＆（可選）自動帶入
   const hintBox = $("todayBookingHint");
   const hintVal = $("todayBookingHintValue");
   if (hintBox && hintVal && yData && Number.isFinite(Number(yData.tomorrowBookingTotal))) {
@@ -184,40 +184,44 @@ function renderHuddle() {
     hintBox.style.display = "none";
   }
 
-  // B) 昨日執行檢視：用「前天設定的KPI」對照「昨天回報實績」
-  const targetTrial = n(dbyData?.tomorrowKpiTrial);
-  const targetCall = n(dbyData?.tomorrowKpiCallTotal);
-  const targetInvite = n(dbyData?.tomorrowKpiCallOld3Y);
-
-  const actualTrial = n(ydData?.trialHA) + n(ydData?.trialAPAP);
-  const actualCall = n(ydData?.todayCallPotential) + n(ydData?.todayCallOld3Y);
-  const actualInvite = n(ydData?.todayInviteReturn);
-
-  function statusText(ok) {
-    return ok ? `✔ 達成` : `✖️ 未達成`;
+  // B) 昨日執行檢視：用「前天設定的 KPI」對照「昨天回報實績」
+  if (!ydData || !dbyData) {
+    if ($("checkTrialText")) $("checkTrialText").textContent = "-";
+    if ($("checkCallText")) $("checkCallText").textContent = "-";
+    if ($("checkInviteText")) $("checkInviteText").textContent = "-";
+    if ($("checkInviteRateText")) $("checkInviteRateText").textContent = "-";
+    const badge = $("checkInviteRateBadge");
+    if (badge) badge.style.display = "none";
+    return;
   }
 
-  // 試戴數
+  const targetTrial = n(dbyData.tomorrowKpiTrial);
+  const targetCall = n(dbyData.tomorrowKpiCallTotal);
+  const targetInvite = n(dbyData.tomorrowKpiCallOld3Y);
+
+  const actualTrial = n(ydData.trialHA) + n(ydData.trialAPAP);
+  const actualCall = n(ydData.todayCallPotential) + n(ydData.todayCallOld3Y);
+  const actualInvite = n(ydData.todayInviteReturn);
+
+  // ✅ 你要的格式：目標 X / 執行 Y  ✔️ 達成（或 ✖️ 未達成）
   if ($("checkTrialText")) {
-    const ok = actualTrial >= targetTrial;
-    $("checkTrialText").textContent = `目標 ${targetTrial} / 執行 ${actualTrial}  ${statusText(ok)}`;
+    $("checkTrialText").textContent =
+      `目標 ${targetTrial} / 執行 ${actualTrial}  ${okText(actualTrial >= targetTrial)}`;
   }
 
-  // 外撥通數
   if ($("checkCallText")) {
-    const ok = actualCall >= targetCall;
-    $("checkCallText").textContent = `目標 ${targetCall} / 執行 ${actualCall}  ${statusText(ok)}`;
+    $("checkCallText").textContent =
+      `目標 ${targetCall} / 執行 ${actualCall}  ${okText(actualCall >= targetCall)}`;
   }
 
-  // 邀約回店數
   if ($("checkInviteText")) {
-    const ok = actualInvite >= targetInvite;
-    $("checkInviteText").textContent = `目標 ${targetInvite} / 執行 ${actualInvite}  ${statusText(ok)}`;
+    $("checkInviteText").textContent =
+      `目標 ${targetInvite} / 執行 ${actualInvite}  ${okText(actualInvite >= targetInvite)}`;
   }
 
-  // 邀約成功率：invite / call（維持你原本右側 badge 的設計）
+  // 邀約成功率：invite / call（保留你右側 badge 的設計）
   const rate = actualCall > 0 ? (actualInvite / actualCall) : 0;
-  const pct = (rate * 100).toFixed(0) + "%";
+  const pct = Math.round(rate * 100) + "%";
   if ($("checkInviteRateText")) $("checkInviteRateText").textContent = pct;
 
   const badge = $("checkInviteRateBadge");
@@ -225,19 +229,18 @@ function renderHuddle() {
     badge.style.display = "inline-block";
     badge.classList.remove("green", "yellow", "red");
 
-    // 你截圖是「20% 高」這種感覺：我做成 3 段文字（高 / 中 / 低）
+    // 門檻你可自行調整
     if (rate >= 0.30) { badge.classList.add("green"); badge.textContent = "高"; }
     else if (rate >= 0.15) { badge.classList.add("yellow"); badge.textContent = "中"; }
     else { badge.classList.add("red"); badge.textContent = "低"; }
   }
 }
 
-// ===== 產生訊息（含達成/未達成段落） =====
+// ===== 產生訊息（比照你截圖版本） =====
 function generateMessage() {
-  saveToday(); // 先存，避免漏資料
+  saveToday();
 
   const d = collectForm();
-
   const title = `${d.date}｜${d.store || ""} ${d.name || ""}`.trim();
 
   const msg =
@@ -261,32 +264,26 @@ ${buildYesterdayCheckText(d.date)}
 }
 window.generateMessage = generateMessage;
 
+// ===== 產生訊息內的「執行檢視」段落（• 條列＋✔️/✖️＋文字） =====
 function buildYesterdayCheckText(todayStr) {
   const yesterday = addDaysToDateStr(todayStr, -1);
   const dayBeforeYesterday = addDaysToDateStr(todayStr, -2);
 
-  // 昨天實績
-  const yd = loadByDate(yesterday);
-  // 前天設定的「明日KPI」= 昨天的 KPI
-  const dby = loadByDate(dayBeforeYesterday);
+  const yd = loadByDate(yesterday);           // 昨天實績
+  const dby = loadByDate(dayBeforeYesterday); // 前天設定（= 昨天 KPI）
 
   if (!yd || !dby) {
     return "•（找不到昨日實績或前日 KPI，請確認前天有填「明日KPI」，且昨天有填回報）";
   }
 
-  // KPI 目標（取前天的明日KPI）
   const targetTrial = n(dby.tomorrowKpiTrial);
   const targetCall  = n(dby.tomorrowKpiCallTotal);
   const targetInvite = n(dby.tomorrowKpiCallOld3Y);
 
-  // 昨天實績（取昨天回報）
   const actualTrial = n(yd.trialHA) + n(yd.trialAPAP);
-  const actualCall  = n(yd.todayCallPotential) + n(yd.todayCallOld3Y); // 或 yd.todayCallTotal 也行
+  const actualCall  = n(yd.todayCallPotential) + n(yd.todayCallOld3Y);
   const actualInvite = n(yd.todayInviteReturn);
 
-  const okText = (ok) => (ok ? "✔️ 達成" : "✖️ 未達成");
-
-  // 邀約成功率
   const rate = actualCall > 0 ? (actualInvite / actualCall) : 0;
   const pct = Math.round(rate * 100) + "%";
 
@@ -297,7 +294,6 @@ function buildYesterdayCheckText(todayStr) {
     `• 邀約成功率：${pct}`,
   ].join("\n");
 }
-
 
 // ===== 複製 =====
 async function copyMessage() {
@@ -348,23 +344,23 @@ function initDateLoad() {
   const dateInput = $("date");
   if (!dateInput) return;
 
-  // 初始日期
   const today = getCurrentDateStr();
 
-  // 載入今天資料（如果有）
   const data = loadByDate(today);
   if (data) fillForm(data);
   recalcTotals();
 
   dateInput.addEventListener("change", () => {
     const ds = getCurrentDateStr();
-    const d = loadByDate(ds);
+
     // 清空再填（避免殘留）
     document.querySelectorAll("input[type='number'], input[type='text'], select").forEach(el => {
       if (el.id === "date") return;
       if (el.tagName === "SELECT") el.value = "";
       else el.value = "";
     });
+
+    const d = loadByDate(ds);
     if (d) fillForm(d);
     recalcTotals();
     renderHuddle();

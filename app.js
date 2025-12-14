@@ -1,6 +1,6 @@
-console.log("✅ app.js loaded");
+console.log("✅ official app.js loaded");
 
-// ✅ 正式版儲存前綴
+// ✅ 正式版儲存前綴（避免跟測試版混在一起）
 const STORAGE_PREFIX = "daily-report-";
 
 // ===== 日期工具 =====
@@ -105,7 +105,7 @@ function collectTodayFormData() {
     tomorrowBookingTotal: getNum("tomorrowBookingTotal"),
     tomorrowKpiCallTotal: getNum("tomorrowKpiCallTotal"),
     tomorrowKpiCallOld3Y: getNum("tomorrowKpiCallOld3Y"),
-    tomorrowKpiTrial: getNum("tomorrowKpiTrial")
+    tomorrowKpiTrial: getNum("tomorrowKpiTrial"),
   };
 }
 
@@ -129,6 +129,7 @@ function initReportData() {
   if (todayData) applyDataToForm(todayData);
   recalcTotals();
 
+  // 今日預約：若空白，帶入昨日的「明日已排預約」
   const todayBooking = document.getElementById("todayBookingTotal");
   const hint = document.getElementById("todayBookingHint");
   const hintValue = document.getElementById("todayBookingHintValue");
@@ -147,7 +148,7 @@ function initReportData() {
   }
 }
 
-// ===== Morning Huddle =====
+// ===== Morning Huddle（含昨日執行檢視：前天KPI對照昨天） =====
 
 function initMorningHuddle() {
   const today = getCurrentDateStr();
@@ -159,35 +160,58 @@ function initMorningHuddle() {
 
   if (!yesterdayData) return;
 
+  // 今日目標（昨天填的「明日」）
   if (typeof yesterdayData.tomorrowBookingTotal === "number")
-    document.getElementById("huddleTodayBooking").textContent = yesterdayData.tomorrowBookingTotal;
+    document.getElementById("huddleTodayBooking").textContent =
+      yesterdayData.tomorrowBookingTotal;
 
   if (typeof yesterdayData.tomorrowKpiCallTotal === "number")
-    document.getElementById("huddleTodayCallTotal").textContent = yesterdayData.tomorrowKpiCallTotal;
+    document.getElementById("huddleTodayCallTotal").textContent =
+      yesterdayData.tomorrowKpiCallTotal;
 
   if (typeof yesterdayData.tomorrowKpiCallOld3Y === "number")
-    document.getElementById("huddleTodayOld3Y").textContent = yesterdayData.tomorrowKpiCallOld3Y;
+    document.getElementById("huddleTodayOld3Y").textContent =
+      yesterdayData.tomorrowKpiCallOld3Y;
 
   if (typeof yesterdayData.tomorrowKpiTrial === "number")
-    document.getElementById("huddleTodayTrial").textContent = yesterdayData.tomorrowKpiTrial;
+    document.getElementById("huddleTodayTrial").textContent =
+      yesterdayData.tomorrowKpiTrial;
 
+  // 昨日執行檢視（前天KPI 對照 昨天實際）
   if (!kpiSource) return;
 
   function renderCheck(id, actual, target) {
     const el = document.getElementById(id);
     if (!el) return;
 
+    // target = 0 視為沒有設定 KPI
     if (!target) {
       el.textContent = `目標 - / 執行 ${actual}　—`;
       return;
     }
-    el.textContent = `目標 ${target} / 執行 ${actual}　${actual >= target ? "✔ 達成" : "✖ 未達成"}`;
+    const ok = actual >= target;
+    el.textContent = `目標 ${target} / 執行 ${actual}　${ok ? "✔ 達成" : "✖ 未達成"}`;
   }
 
-  renderCheck("checkTrialText", (yesterdayData.trialHA || 0) + (yesterdayData.trialAPAP || 0), kpiSource.tomorrowKpiTrial || 0);
-  renderCheck("checkCallText", yesterdayData.todayCallTotal || 0, kpiSource.tomorrowKpiCallTotal || 0);
-  renderCheck("checkInviteText", yesterdayData.todayInviteReturn || 0, kpiSource.tomorrowKpiCallOld3Y || 0);
+  renderCheck(
+    "checkTrialText",
+    (yesterdayData.trialHA || 0) + (yesterdayData.trialAPAP || 0),
+    kpiSource.tomorrowKpiTrial || 0
+  );
 
+  renderCheck(
+    "checkCallText",
+    yesterdayData.todayCallTotal || 0,
+    kpiSource.tomorrowKpiCallTotal || 0
+  );
+
+  renderCheck(
+    "checkInviteText",
+    yesterdayData.todayInviteReturn || 0,
+    kpiSource.tomorrowKpiCallOld3Y || 0
+  );
+
+  // 邀約成功率（Badge）
   const rateText = document.getElementById("checkInviteRateText");
   const badge = document.getElementById("checkInviteRateBadge");
 
@@ -201,12 +225,117 @@ function initMorningHuddle() {
     const rate = Math.round((invites / calls) * 100);
     rateText.textContent = `${rate}%`;
     badge.style.display = "inline-block";
-    badge.className = "badge " + (rate >= 20 ? "green" : rate >= 10 ? "yellow" : "red");
+    badge.className =
+      "badge " + (rate >= 20 ? "green" : rate >= 10 ? "yellow" : "red");
     badge.textContent = rate >= 20 ? "高" : rate >= 10 ? "中" : "低";
   }
 }
 
-// ===== Tabs & Init =====
+// ===== ✅ 產生訊息（加入：成功邀約回店 + 今日執行檢視(對照昨日KPI)） =====
+
+function generateMessage() {
+  recalcTotals();
+
+  const today = getCurrentDateStr();
+  const yesterday = addDaysToDateStr(today, -1);
+  const yesterdayData = loadReport(yesterday); // ✅ 用昨天的「明日KPI」當今天對照來源
+
+  // 先把今天資料存起來
+  const todayData = collectTodayFormData();
+  saveReport(today, todayData);
+
+  const d = (document.getElementById("date").value || "").replace(/-/g, "/");
+  const s = document.getElementById("store").value || "門市";
+  const n = document.getElementById("name").value || "姓名";
+
+  const callTotal = getNum("todayCallTotal");
+  const callPotential = getNum("todayCallPotential");
+  const callOld3Y = getNum("todayCallOld3Y");
+  const inviteReturn = getNum("todayInviteReturn");
+
+  const trialTotal = getNum("trialHA") + getNum("trialAPAP");
+
+  // ===== 今日執行檢視（對照昨日 KPI）=====
+  function buildTodayCheckBlock() {
+    if (!yesterdayData) return ""; // 找不到昨日資料就先不顯示
+
+    const targetTrial = yesterdayData.tomorrowKpiTrial || 0;
+    const targetCall = yesterdayData.tomorrowKpiCallTotal || 0;
+    const targetInvite = yesterdayData.tomorrowKpiCallOld3Y || 0;
+
+    const line = (label, target, actual) => {
+      if (!target) return `・${label}：目標 - / 執行 ${actual}`;
+      return `・${label}：目標 ${target} / 執行 ${actual}　${
+        actual >= target ? "✔ 達成" : "✖ 未達成"
+      }`;
+    };
+
+    let rateLine = "・邀約成功率：-";
+    if (callTotal > 0) {
+      const rate = Math.round((inviteReturn / callTotal) * 100);
+      rateLine = `・邀約成功率：${rate}%`;
+    }
+
+    return `
+📊 今日執行檢視（對照昨日 KPI）
+${line("試戴數", targetTrial, trialTotal)}
+${line("外撥通數", targetCall, callTotal)}
+${line("邀約回店數", targetInvite, inviteReturn)}
+${rateLine}`;
+  }
+
+  const checkBlock = buildTodayCheckBlock();
+
+  const msg = `${d}｜${s} ${n}
+1. 今日外撥：
+　${callTotal} 通（潛在 ${callPotential} 通、過保舊客 ${callOld3Y} 通）
+　成功邀約回店 ${inviteReturn} 位
+2. 今日預約：${getNum("todayBookingTotal")} 位
+3. 今日到店：${getNum("todayVisitTotal")} 位
+　試用：HA ${getNum("trialHA")} 位、APAP ${getNum("trialAPAP")} 位
+　成交：HA ${getNum("dealHA")} 位、APAP ${getNum("dealAPAP")} 位
+4. 明日已排預約：${getNum("tomorrowBookingTotal")} 位
+5. 明日KPI：
+　完成試戴 ${getNum("tomorrowKpiTrial")} 位
+　外撥 ${getNum("tomorrowKpiCallTotal")} 通
+　舊客預約 ${getNum("tomorrowKpiCallOld3Y")} 位${checkBlock ? "\n" + checkBlock : ""}`;
+
+  document.getElementById("output").value = msg;
+}
+
+// ===== 複製（優先用 clipboard API，失敗再 fallback） =====
+
+async function copyMessage() {
+  const o = document.getElementById("output");
+  if (!o) return;
+
+  const text = o.value || "";
+  if (!text.trim()) {
+    alert("目前沒有可複製的文字，請先按『產生訊息』");
+    return;
+  }
+
+  try {
+    if (navigator.clipboard && window.isSecureContext) {
+      await navigator.clipboard.writeText(text);
+    } else {
+      o.focus();
+      o.select();
+      o.setSelectionRange(0, 99999);
+      document.execCommand("copy");
+    }
+    alert("已複製，前往企業微信貼上即可！");
+  } catch (err) {
+    // 最後保底：仍用選取讓使用者手動複製
+    o.focus();
+    o.select();
+    o.setSelectionRange(0, 99999);
+    alert("自動複製失敗，已幫你選取文字，請手動複製。");
+    console.error(err);
+  }
+}
+
+// ===== Tabs =====
 
 function setupTabs() {
   const h = document.getElementById("tab-huddle");
@@ -231,9 +360,16 @@ function setupTabs() {
   };
 }
 
+// ===== Init =====
+
 document.addEventListener("DOMContentLoaded", () => {
   getCurrentDateStr();
   setupTabs();
   initReportData();
   initMorningHuddle();
 });
+
+// ✅✅✅ 讓 index.html 的 onclick / oninput 找得到（正式版「按了沒反應」通常就是缺這段）
+window.recalcTotals = recalcTotals;
+window.generateMessage = generateMessage;
+window.copyMessage = copyMessage;

@@ -62,9 +62,9 @@ function hasDataOnDate(dateStr) {
 }
 
 /**
- * ✅ 取得「最近一次有資料的日期」（會跳過休假日）
+ * ✅ 從某天往回找「最近一次有資料的日期」（跳過休假日）
  * @param {string} fromDateStr - 從這天往回找（不含當天，預設找前一天開始）
- * @param {number} maxLookbackDays - 最多往回找幾天（避免無限迴圈）
+ * @param {number} maxLookbackDays
  * @returns {string|null}
  */
 function findPrevDateWithData(fromDateStr, maxLookbackDays = 60) {
@@ -77,7 +77,7 @@ function findPrevDateWithData(fromDateStr, maxLookbackDays = 60) {
 }
 
 /**
- * ✅ 取得「最近兩次有資料的日期」：
+ * ✅ 取得「最近兩次有資料的日期」
  * d1 = 最近一次有資料（上一次上班日）
  * d0 = d1 再往前最近一次有資料（上上一次上班日）
  */
@@ -86,6 +86,17 @@ function getPrevTwoDataDates(todayStr) {
   if (!d1) return { d1: null, d0: null };
   const d0 = findPrevDateWithData(d1);
   return { d1, d0 };
+}
+
+/**
+ * ✅ 取得「昨日KPI來源日」：
+ * 先用「昨天」(today-1)；若昨天沒資料→回退到「最近一次有資料的日期」
+ * （這樣休假日也不會空）
+ */
+function getKpiSourceDateForToday(todayStr) {
+  const yesterday = addDaysToDateStr(todayStr, -1);
+  if (hasDataOnDate(yesterday)) return yesterday;
+  return findPrevDateWithData(todayStr);
 }
 
 // ===== 讀表單 =====
@@ -183,12 +194,13 @@ function showView(view) {
   if (isHuddle) renderHuddle();
 }
 
-// ===== 今日檢視（預設：最近一次有資料） =====
+// ===== 今日檢視（畫面） =====
+// A) 今日目標：仍用「最近一次有資料」當作目標來源（跳過休假）
+// B) 昨日執行檢視：維持「昨天（最近一次有資料） vs 前天（上上次有資料）」← 你指定只有這邊才這樣
 function renderHuddle() {
   const today = getCurrentDateStr();
   const { d1, d0 } = getPrevTwoDataDates(today);
 
-  // dPrev = 最近一次有資料（上一次上班日）→ 用它的「明日已排預約 / 明日KPI」當作今日目標顯示
   const prevData = d1 ? loadByDate(d1) : null;
 
   // A) 今日目標（以最近一次有資料為準）
@@ -197,14 +209,13 @@ function renderHuddle() {
   if ($("huddleTodayCallTotal")) $("huddleTodayCallTotal").textContent = prevData?.tomorrowKpiCallTotal ?? "-";
   if ($("huddleTodayOld3Y")) $("huddleTodayOld3Y").textContent = prevData?.tomorrowKpiCallOld3Y ?? "-";
 
-  // 今日預約：提示＆（可選）自動帶入（仍以最近一次有資料的「明日已排預約」為準）
+  // 今日預約：提示＆（可選）自動帶入
   const hintBox = $("todayBookingHint");
   const hintVal = $("todayBookingHintValue");
   if (hintBox && hintVal && prevData && Number.isFinite(Number(prevData.tomorrowBookingTotal))) {
     hintVal.textContent = prevData.tomorrowBookingTotal;
     hintBox.style.display = "block";
 
-    // 若今日預約空白，就自動帶入
     if ($("todayBookingTotal") && String($("todayBookingTotal").value || "").trim() === "") {
       $("todayBookingTotal").value = prevData.tomorrowBookingTotal;
       saveToday();
@@ -213,8 +224,7 @@ function renderHuddle() {
     hintBox.style.display = "none";
   }
 
-  // B) 昨日執行檢視（跳過休假日）：
-  // 用 d0（上上次有資料）設定的 KPI（明日KPI）對照 d1（上一次有資料）的實績
+  // B) 昨日執行檢視：d0 KPI（明日KPI） vs d1 實績
   const execData = d1 ? loadByDate(d1) : null;
   const kpiSetData = d0 ? loadByDate(d0) : null;
 
@@ -236,23 +246,19 @@ function renderHuddle() {
   const actualCall = n(execData.todayCallPotential) + n(execData.todayCallOld3Y);
   const actualInvite = n(execData.todayInviteReturn);
 
-  // ✅ 你要的格式：目標 X / 執行 Y  ✔️ 達成（或 ✖️ 未達成）
   if ($("checkTrialText")) {
     $("checkTrialText").textContent =
       `目標 ${targetTrial} / 執行 ${actualTrial}  ${okText(actualTrial >= targetTrial)}`;
   }
-
   if ($("checkCallText")) {
     $("checkCallText").textContent =
       `目標 ${targetCall} / 執行 ${actualCall}  ${okText(actualCall >= targetCall)}`;
   }
-
   if ($("checkInviteText")) {
     $("checkInviteText").textContent =
       `目標 ${targetInvite} / 執行 ${actualInvite}  ${okText(actualInvite >= targetInvite)}`;
   }
 
-  // 邀約成功率：invite / call（保留你右側 badge 的設計）
   const rate = actualCall > 0 ? (actualInvite / actualCall) : 0;
   const pct = Math.round(rate * 100) + "%";
   if ($("checkInviteRateText")) $("checkInviteRateText").textContent = pct;
@@ -268,7 +274,9 @@ function renderHuddle() {
   }
 }
 
-// ===== 產生訊息（比照你截圖版本） =====
+// ===== 產生訊息 =====
+// ✅ 你指定：今日執行檢視 = 「今天實績」對照「昨天KPI」(昨天填的明日KPI)
+// 若昨天休假沒資料 → 自動回退到「最近一次有資料」當 KPI 來源（避免空白）
 function generateMessage() {
   saveToday();
 
@@ -288,41 +296,49 @@ function generateMessage() {
    外撥 ${d.tomorrowKpiCallTotal} 通
    舊客預約 ${d.tomorrowKpiCallOld3Y} 位
 
-📊 今日執行檢視（以最近一次有資料為準）
-${buildPrevDataCheckText(d.date)}
+📊 今日執行檢視（對照昨日 KPI）
+${buildTodayVsYesterdayKpiText(d)}
 `;
 
   if ($("output")) $("output").value = msg;
 }
 window.generateMessage = generateMessage;
 
-// ===== 產生訊息內的「執行檢視」段落（• 條列＋✔️/✖️＋文字） =====
-function buildPrevDataCheckText(todayStr) {
-  const { d1, d0 } = getPrevTwoDataDates(todayStr);
+// ===== 今日執行檢視：今天 vs 昨日KPI =====
+function buildTodayVsYesterdayKpiText(todayForm) {
+  const todayStr = todayForm.date;
 
-  const execData = d1 ? loadByDate(d1) : null;    // 最近一次有資料 → 實績
-  const kpiSetData = d0 ? loadByDate(d0) : null;  // 上上次有資料 → KPI 目標（明日KPI）
+  // KPI 來源日：優先昨天，沒有就回退到最近一次有資料
+  const kpiSourceDate = getKpiSourceDateForToday(todayStr);
+  const kpiSourceData = kpiSourceDate ? loadByDate(kpiSourceDate) : null;
 
-  if (!execData || !kpiSetData) {
-    return "•（找不到足夠的歷史資料：需要「最近一次有資料」與「再往前一次有資料」）";
+  if (!kpiSourceData) {
+    return "•（找不到昨日 KPI：請確認前一個上班日有填寫「明日KPI」）";
   }
 
-  const targetTrial = n(kpiSetData.tomorrowKpiTrial);
-  const targetCall  = n(kpiSetData.tomorrowKpiCallTotal);
-  const targetInvite = n(kpiSetData.tomorrowKpiCallOld3Y);
+  // 「昨日KPI」其實是：昨天填的「明日KPI」
+  const targetTrial = n(kpiSourceData.tomorrowKpiTrial);
+  const targetCall = n(kpiSourceData.tomorrowKpiCallTotal);
+  const targetInvite = n(kpiSourceData.tomorrowKpiCallOld3Y);
 
-  const actualTrial = n(execData.trialHA) + n(execData.trialAPAP);
-  const actualCall  = n(execData.todayCallPotential) + n(execData.todayCallOld3Y);
-  const actualInvite = n(execData.todayInviteReturn);
+  // 今天實績（直接用目前表單數字，不用等存檔）
+  const actualTrial = n(todayForm.trialHA) + n(todayForm.trialAPAP);
+  const actualCall = n(todayForm.todayCallTotal); // 已是總通數
+  const actualInvite = n(todayForm.todayInviteReturn);
 
   const rate = actualCall > 0 ? (actualInvite / actualCall) : 0;
   const pct = Math.round(rate * 100) + "%";
+
+  // 額外提示 KPI 來源日（不想顯示就把這行刪掉）
+  const kpiNote = (kpiSourceDate === addDaysToDateStr(todayStr, -1))
+    ? ""
+    : `（昨日休假，改以前次資料 ${kpiSourceDate} 的 KPI 對照）`;
 
   return [
     `• 試戴數：目標 ${targetTrial} / 執行 ${actualTrial}   ${okText(actualTrial >= targetTrial)}`,
     `• 外撥通數：目標 ${targetCall} / 執行 ${actualCall}   ${okText(actualCall >= targetCall)}`,
     `• 邀約回店數：目標 ${targetInvite} / 執行 ${actualInvite}   ${okText(actualInvite >= targetInvite)}`,
-    `• 邀約成功率：${pct}`,
+    `• 邀約成功率：${pct} ${kpiNote}`.trim(),
   ].join("\n");
 }
 
@@ -376,7 +392,6 @@ function initDateLoad() {
 
   const today = getCurrentDateStr();
 
-  // 載入當天資料
   const data = loadByDate(today);
   if (data) fillForm(data);
   recalcTotals();

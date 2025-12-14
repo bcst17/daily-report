@@ -284,7 +284,7 @@ function buildYesterdayCheckText(todayStr) {
   const actualCall  = n(yd.todayCallPotential) + n(yd.todayCallOld3Y); // 或 yd.todayCallTotal 也行
   const actualInvite = n(yd.todayInviteReturn);
 
-  const okText = (ok) => (ok ? "✓ 達成" : "✘ 未達成");
+  const okText = (ok) => (ok ? "✔️ 達成" : "✖️ 未達成");
 
   // 邀約成功率
   const rate = actualCall > 0 ? (actualInvite / actualCall) : 0;

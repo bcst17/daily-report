@@ -194,7 +194,7 @@ function renderHuddle() {
   const actualInvite = n(ydData?.todayInviteReturn);
 
   function statusText(ok) {
-    return ok ? `✔ 達成` : `✘ 未達成`;
+    return ok ? `✔ 達成` : `✖️ 未達成`;
   }
 
   // 試戴數

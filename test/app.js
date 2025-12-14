@@ -3,6 +3,41 @@ console.log("✅ test app.js loaded");
 // ✅ 測試版儲存前綴（不要動，避免污染正式版）
 const STORAGE_PREFIX = "daily-report-test-";
 
+// ===== ↓↓↓ 新增：Google Sheet 串接（測試版）↓↓↓ =====
+const SHEET_INGEST_URL =
+  "https://script.google.com/macros/s/AKfycbxwYN_YGa5W8Fqg8YrSPTFkhkqnLB61hZ3lFgU-5kIHTSK_DmasH573pv7GutF8wf8S/exec";
+const INGEST_KEY = "dailyreport-key-2025";
+
+// 防止同一天同內容重複送出
+function sheetSentKey(dateStr) {
+  return `${STORAGE_PREFIX}sheet-sent-${dateStr}`;
+}
+function simpleHash(str) {
+  let h = 0;
+  for (let i = 0; i < str.length; i++) {
+    h = (h << 5) - h + str.charCodeAt(i);
+    h |= 0;
+  }
+  return String(h);
+}
+
+// no-cors：避免 GitHub Pages → Apps Script 的 CORS 擋回應（Failed to fetch）
+async function sendReportToSheet(payload) {
+  fetch(SHEET_INGEST_URL, {
+    method: "POST",
+    mode: "no-cors",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({
+      key: INGEST_KEY,
+      env: "test", // 標記為測試版
+      ...payload
+    })
+  });
+  return true;
+}
+// ===== ↑↑↑ 新增結束 ↑↑↑ =====
+
+
 // ===== 日期工具 =====
 function getCurrentDateStr() {
   const input = document.getElementById("date");
@@ -301,6 +336,47 @@ ${buildTodayVsYesterdayKpiText(d)}
 `;
 
   if ($("output")) $("output").value = msg;
+
+  // ===== ↓↓↓ 新增：直接送 Google Sheet（測試版）↓↓↓ =====
+  try {
+    const todayStr = d.date;
+    const hash = simpleHash(msg);
+    const lastHash = localStorage.getItem(sheetSentKey(todayStr));
+
+    // 同一天同內容就不重送
+    if (lastHash !== hash) {
+      sendReportToSheet({
+        date: d.date,
+        store: d.store,
+        name: d.name,
+
+        calls_total: d.todayCallTotal,
+        calls_potential: d.todayCallPotential,
+        calls_old: d.todayCallOld3Y,
+
+        appt_today: d.todayBookingTotal,
+        visit_today: d.todayVisitTotal,
+
+        trial_ha: d.trialHA,
+        trial_apap: d.trialAPAP,
+        deal_ha: d.dealHA,
+        deal_apap: d.dealAPAP,
+
+        appt_tomorrow: d.tomorrowBookingTotal,
+        kpi_call_tomorrow: d.tomorrowKpiCallTotal,
+        kpi_old_appt_tomorrow: d.tomorrowKpiCallOld3Y,
+        kpi_trial_tomorrow: d.tomorrowKpiTrial,
+
+        message_text: msg
+      });
+
+      localStorage.setItem(sheetSentKey(todayStr), hash);
+    }
+  } catch (err) {
+    // no-cors 看不到回傳，這裡只做保底不影響同仁操作
+    console.error("send to sheet failed:", err);
+  }
+  // ===== ↑↑↑ 新增結束 ↑↑↑ =====
 }
 window.generateMessage = generateMessage;
 

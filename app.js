@@ -3,6 +3,41 @@ console.log("✅ official app.js loaded");
 // ✅ 正式版儲存前綴（避免跟測試版混在一起）
 const STORAGE_PREFIX = "daily-report-";
 
+// ===== ↓↓↓ Google Sheet 串接（正式版）↓↓↓ =====
+const SHEET_INGEST_URL =
+  "https://script.google.com/macros/s/AKfycbxwYN_YGa5W8Fqg8YrSPTFkhkqnLB61hZ3lFgU-5kIHTSK_DmasH573pv7GutF8wf8S/exec";
+const INGEST_KEY = "dailyreport-key-2025";
+
+// 防止同一天同內容重複送出
+function sheetSentKey(dateStr) {
+  return `${STORAGE_PREFIX}sheet-sent-${dateStr}`;
+}
+function simpleHash(str) {
+  let h = 0;
+  for (let i = 0; i < str.length; i++) {
+    h = (h << 5) - h + str.charCodeAt(i);
+    h |= 0;
+  }
+  return String(h);
+}
+
+// no-cors：避免 GitHub Pages → Apps Script 的 CORS 擋回應
+async function sendReportToSheet(payload) {
+  fetch(SHEET_INGEST_URL, {
+    method: "POST",
+    mode: "no-cors",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({
+      key: INGEST_KEY,
+      env: "official", // ✅ 正式版標記
+      ...payload
+    })
+  });
+  return true;
+}
+// ===== ↑↑↑ Google Sheet 串接結束 ↑↑↑ =====
+
+
 // ===== 日期工具 =====
 function getCurrentDateStr() {
   const input = document.getElementById("date");
@@ -30,23 +65,34 @@ function storageKey(dateStr) {
   return `${STORAGE_PREFIX}${dateStr}`;
 }
 
-function n(v) {
-  const x = Number(String(v ?? "").trim());
-  return Number.isFinite(x) ? x : 0;
-}
-
 function $(id) {
   return document.getElementById(id);
 }
 
-// ✅ 符號＋文字統一（全站唯一來源）
+// 儲存用：保留空白
+function v(id) {
+  const el = $(id);
+  if (!el) return "";
+  return String(el.value ?? "").trim();
+}
+
+// 計算用：空白 → 0
+function num(val) {
+  const s = String(val ?? "").trim();
+  if (s === "") return 0;
+  const x = Number(s);
+  return Number.isFinite(x) ? x : 0;
+}
+
+// 達成文字
 function okText(ok) {
   return ok ? "✔️ 達成" : "✖️ 未達成";
 }
 
-// ===== 儲存/讀取 =====
+// ===== 儲存 / 讀取 =====
 function saveToday() {
   const date = getCurrentDateStr();
+  recalcTotals(false);
   const payload = collectForm();
   localStorage.setItem(storageKey(date), JSON.stringify(payload));
 }
@@ -61,7 +107,6 @@ function hasDataOnDate(dateStr) {
   return localStorage.getItem(storageKey(dateStr)) != null;
 }
 
-// 從某天往回找最近一次有資料（跳過休假日）
 function findPrevDateWithData(fromDateStr, maxLookbackDays = 60) {
   let cursor = addDaysToDateStr(fromDateStr, -1);
   for (let i = 0; i < maxLookbackDays; i++) {
@@ -71,7 +116,6 @@ function findPrevDateWithData(fromDateStr, maxLookbackDays = 60) {
   return null;
 }
 
-// 取得最近兩次有資料日：d1=上一次、d0=上上一次
 function getPrevTwoDataDates(todayStr) {
   const d1 = findPrevDateWithData(todayStr);
   if (!d1) return { d1: null, d0: null };
@@ -79,54 +123,59 @@ function getPrevTwoDataDates(todayStr) {
   return { d1, d0 };
 }
 
-// 取得「昨日KPI來源日」：優先昨天，沒有就回退到最近一次有資料
 function getKpiSourceDateForToday(todayStr) {
   const yesterday = addDaysToDateStr(todayStr, -1);
   if (hasDataOnDate(yesterday)) return yesterday;
   return findPrevDateWithData(todayStr);
 }
 
-// ===== 讀表單 =====
+// ===== 讀表單（✅ 改成：數字欄位用字串存，不要變 0） =====
 function collectForm() {
   const date = getCurrentDateStr();
 
   const obj = {
     date,
-    store: $("store")?.value?.trim() || "",
-    name: $("name")?.value?.trim() || "",
+    store: v("store"),
+    name: v("name"),
 
-    // 今日外撥
-    todayCallPotential: n($("todayCallPotential")?.value),
-    todayCallOld3Y: n($("todayCallOld3Y")?.value),
-    todayCallTotal: n($("todayCallTotal")?.value),
-    todayInviteReturn: n($("todayInviteReturn")?.value),
+    // 今日外撥（字串）
+    todayCallPotential: v("todayCallPotential"),
+    todayCallOld3Y: v("todayCallOld3Y"),
+    todayCallTotal: v("todayCallTotal"),
+    todayInviteReturn: v("todayInviteReturn"),
 
-    // 今日預約/到店
-    todayBookingTotal: n($("todayBookingTotal")?.value),
-    todayVisitTotal: n($("todayVisitTotal")?.value),
+    // 今日預約/到店（字串）
+    todayBookingTotal: v("todayBookingTotal"),
+    todayVisitTotal: v("todayVisitTotal"),
 
-    // 試用/成交
-    trialHA: n($("trialHA")?.value),
-    trialAPAP: n($("trialAPAP")?.value),
-    dealHA: n($("dealHA")?.value),
-    dealAPAP: n($("dealAPAP")?.value),
+    // 試用/成交（字串）
+    trialHA: v("trialHA"),
+    trialAPAP: v("trialAPAP"),
+    dealHA: v("dealHA"),
+    dealAPAP: v("dealAPAP"),
 
-    // 明日
-    tomorrowBookingTotal: n($("tomorrowBookingTotal")?.value),
-    tomorrowKpiCallTotal: n($("tomorrowKpiCallTotal")?.value),
-    tomorrowKpiCallOld3Y: n($("tomorrowKpiCallOld3Y")?.value),
-    tomorrowKpiTrial: n($("tomorrowKpiTrial")?.value),
+    // 明日（字串）
+    tomorrowBookingTotal: v("tomorrowBookingTotal"),
+    tomorrowKpiCallTotal: v("tomorrowKpiCallTotal"),
+    tomorrowKpiCallOld3Y: v("tomorrowKpiCallOld3Y"),
+    tomorrowKpiTrial: v("tomorrowKpiTrial"),
 
     updatedAt: new Date().toISOString(),
   };
 
-  // 保險：總通數重新算一次
-  obj.todayCallTotal = obj.todayCallPotential + obj.todayCallOld3Y;
+  // ✅ 保險：總通數重新算一次（但存回字串；兩格都空就存空白）
+  const pRaw = obj.todayCallPotential;
+  const oRaw = obj.todayCallOld3Y;
+  if (pRaw === "" && oRaw === "") {
+    obj.todayCallTotal = "";
+  } else {
+    obj.todayCallTotal = String(num(pRaw) + num(oRaw));
+  }
 
   return obj;
 }
 
-// ===== 寫回表單 =====
+// ===== 寫回表單（✅ 直接寫字串；空白就空白，不會出現 0） =====
 function fillForm(data) {
   if (!data) return;
 
@@ -135,7 +184,9 @@ function fillForm(data) {
 
   if ($("todayCallPotential")) $("todayCallPotential").value = data.todayCallPotential ?? "";
   if ($("todayCallOld3Y")) $("todayCallOld3Y").value = data.todayCallOld3Y ?? "";
-  recalcTotals();
+
+  // ✅ total 由 recalcTotals 統一處理（避免被塞 0）
+  recalcTotals(false);
 
   if ($("todayInviteReturn")) $("todayInviteReturn").value = data.todayInviteReturn ?? "";
 
@@ -153,12 +204,24 @@ function fillForm(data) {
   if ($("tomorrowKpiTrial")) $("tomorrowKpiTrial").value = data.tomorrowKpiTrial ?? "";
 }
 
-// ===== 計算外撥總通數 =====
-function recalcTotals() {
-  const p = n($("todayCallPotential")?.value);
-  const o = n($("todayCallOld3Y")?.value);
-  if ($("todayCallTotal")) $("todayCallTotal").value = p + o;
-  saveToday();
+// ===== 計算外撥總通數（✅ 兩格都空 → total 空白） =====
+function recalcTotals(doSave = true) {
+  const pRaw = v("todayCallPotential");
+  const oRaw = v("todayCallOld3Y");
+
+  if (!$("todayCallTotal")) {
+    if (doSave) saveToday();
+    return;
+  }
+
+  // ✅ 兩個都沒填：總通數保持空白（不顯示 0）
+  if (pRaw === "" && oRaw === "") {
+    $("todayCallTotal").value = "";
+  } else {
+    $("todayCallTotal").value = String(num(pRaw) + num(oRaw));
+  }
+
+  if (doSave) saveToday();
 }
 window.recalcTotals = recalcTotals;
 
@@ -182,8 +245,6 @@ function showView(view) {
 }
 
 // ===== 今日檢視（畫面） =====
-// A) 今日目標：最近一次有資料
-// B) 昨日執行檢視：上一次回報（實績） vs 上上一次（KPI）
 function renderHuddle() {
   const today = getCurrentDateStr();
   const { d1, d0 } = getPrevTwoDataDates(today);
@@ -191,19 +252,19 @@ function renderHuddle() {
   const prevData = d1 ? loadByDate(d1) : null;
 
   // A) 今日目標（以最近一次有資料為準）
-  if ($("huddleTodayBooking")) $("huddleTodayBooking").textContent = prevData?.tomorrowBookingTotal ?? "-";
-  if ($("huddleTodayTrial")) $("huddleTodayTrial").textContent = prevData?.tomorrowKpiTrial ?? "-";
-  if ($("huddleTodayCallTotal")) $("huddleTodayCallTotal").textContent = prevData?.tomorrowKpiCallTotal ?? "-";
-  if ($("huddleTodayOld3Y")) $("huddleTodayOld3Y").textContent = prevData?.tomorrowKpiCallOld3Y ?? "-";
+  if ($("huddleTodayBooking")) $("huddleTodayBooking").textContent = (prevData?.tomorrowBookingTotal ?? "-") || "-";
+  if ($("huddleTodayTrial")) $("huddleTodayTrial").textContent = (prevData?.tomorrowKpiTrial ?? "-") || "-";
+  if ($("huddleTodayCallTotal")) $("huddleTodayCallTotal").textContent = (prevData?.tomorrowKpiCallTotal ?? "-") || "-";
+  if ($("huddleTodayOld3Y")) $("huddleTodayOld3Y").textContent = (prevData?.tomorrowKpiCallOld3Y ?? "-") || "-";
 
   // 今日預約：提示＆（可選）自動帶入
   const hintBox = $("todayBookingHint");
   const hintVal = $("todayBookingHintValue");
-  if (hintBox && hintVal && prevData && Number.isFinite(Number(prevData.tomorrowBookingTotal))) {
+  if (hintBox && hintVal && prevData && String(prevData.tomorrowBookingTotal ?? "").trim() !== "") {
     hintVal.textContent = prevData.tomorrowBookingTotal;
     hintBox.style.display = "block";
 
-    if ($("todayBookingTotal") && String($("todayBookingTotal").value || "").trim() === "") {
+    if ($("todayBookingTotal") && v("todayBookingTotal") === "") {
       $("todayBookingTotal").value = prevData.tomorrowBookingTotal;
       saveToday();
     }
@@ -225,25 +286,27 @@ function renderHuddle() {
     return;
   }
 
-  const targetTrial = n(kpiSetData.tomorrowKpiTrial);
-  const targetCall = n(kpiSetData.tomorrowKpiCallTotal);
-  const targetInvite = n(kpiSetData.tomorrowKpiCallOld3Y);
+  const targetTrial = num(kpiSetData.tomorrowKpiTrial);
+  const targetCall = num(kpiSetData.tomorrowKpiCallTotal);
+  const targetInvite = num(kpiSetData.tomorrowKpiCallOld3Y);
 
-  const actualTrial = n(execData.trialHA) + n(execData.trialAPAP);
-  const actualCall = n(execData.todayCallPotential) + n(execData.todayCallOld3Y);
-  const actualInvite = n(execData.todayInviteReturn);
+  const actualTrial = num(execData.trialHA) + num(execData.trialAPAP);
+  const actualCall = num(execData.todayCallPotential) + num(execData.todayCallOld3Y);
+  const actualInvite = num(execData.todayInviteReturn);
 
   if ($("checkTrialText")) {
-    $("checkTrialText").textContent = `目標 ${targetTrial} / 執行 ${actualTrial}  ${okText(actualTrial >= targetTrial)}`;
+    $("checkTrialText").textContent =
+      `目標 ${targetTrial} / 執行 ${actualTrial}  ${okText(actualTrial >= targetTrial)}`;
   }
   if ($("checkCallText")) {
-    $("checkCallText").textContent = `目標 ${targetCall} / 執行 ${actualCall}  ${okText(actualCall >= targetCall)}`;
+    $("checkCallText").textContent =
+      `目標 ${targetCall} / 執行 ${actualCall}  ${okText(actualCall >= targetCall)}`;
   }
   if ($("checkInviteText")) {
-    $("checkInviteText").textContent = `目標 ${targetInvite} / 執行 ${actualInvite}  ${okText(actualInvite >= targetInvite)}`;
+    $("checkInviteText").textContent =
+      `目標 ${targetInvite} / 執行 ${actualInvite}  ${okText(actualInvite >= targetInvite)}`;
   }
 
-  // ✅ 邀約成功率 = 成功邀約回店人數 / 今日外撥總通數
   const rate = actualCall > 0 ? (actualInvite / actualCall) : 0;
   const pct = Math.round(rate * 100) + "%";
   if ($("checkInviteRateText")) $("checkInviteRateText").textContent = pct;
@@ -252,6 +315,7 @@ function renderHuddle() {
   if (badge) {
     badge.style.display = "inline-block";
     badge.classList.remove("green", "yellow", "red");
+
     if (rate >= 0.30) { badge.classList.add("green"); badge.textContent = "高"; }
     else if (rate >= 0.15) { badge.classList.add("yellow"); badge.textContent = "中"; }
     else { badge.classList.add("red"); badge.textContent = "低"; }
@@ -259,34 +323,78 @@ function renderHuddle() {
 }
 
 // ===== 產生訊息 =====
-// 今日執行檢視 = 今天實績 vs 昨日KPI（昨天填的明日KPI；昨天休假則回退到最近一次有資料）
 function generateMessage() {
   saveToday();
 
   const d = collectForm();
-  const title = `${d.date}｜${d.store || ""} ${d.name || ""}`.trim();
+
+  // ✅ 訊息輸出用數字（空白視為 0）
+  const title = `${d.date}｜${(d.store || "")} ${(d.name || "")}`.trim();
+
+  const todayCallPotential = num(d.todayCallPotential);
+  const todayCallOld3Y = num(d.todayCallOld3Y);
+  const todayCallTotal = todayCallPotential + todayCallOld3Y;
 
   const msg =
 `${title}
-1. 今日外撥：${d.todayCallTotal} 通（潛客 ${d.todayCallPotential} 通、過保舊客 ${d.todayCallOld3Y} 通）
-2. 今日預約：${d.todayBookingTotal} 位
-3. 今日到店：${d.todayVisitTotal} 位
-   試用：HA ${d.trialHA} 位、APAP ${d.trialAPAP} 位
-   成交：HA ${d.dealHA} 位、APAP ${d.dealAPAP} 位
-4. 明日已排預約：${d.tomorrowBookingTotal} 位
+1. 今日外撥：${todayCallTotal} 通（潛客 ${todayCallPotential} 通、過保舊客 ${todayCallOld3Y} 通）
+2. 今日預約：${num(d.todayBookingTotal)} 位
+3. 今日到店：${num(d.todayVisitTotal)} 位
+   試用：HA ${num(d.trialHA)} 位、APAP ${num(d.trialAPAP)} 位
+   成交：HA ${num(d.dealHA)} 位、APAP ${num(d.dealAPAP)} 位
+4. 明日已排預約：${num(d.tomorrowBookingTotal)} 位
 5. 明日KPI：
-   完成試戴 ${d.tomorrowKpiTrial} 位
-   外撥 ${d.tomorrowKpiCallTotal} 通
-   舊客預約 ${d.tomorrowKpiCallOld3Y} 位
+   完成試戴 ${num(d.tomorrowKpiTrial)} 位
+   外撥 ${num(d.tomorrowKpiCallTotal)} 通
+   舊客預約 ${num(d.tomorrowKpiCallOld3Y)} 位
 
 📊 今日執行檢視（對照昨日 KPI）
 ${buildTodayVsYesterdayKpiText(d)}
 `;
 
   if ($("output")) $("output").value = msg;
+
+  // ===== 直接送 Google Sheet（測試版）=====
+  try {
+    const todayStr = d.date;
+    const hash = simpleHash(msg);
+    const lastHash = localStorage.getItem(sheetSentKey(todayStr));
+
+    if (lastHash !== hash) {
+      sendReportToSheet({
+        date: d.date,
+        store: d.store,
+        name: d.name,
+
+        calls_total: todayCallTotal,
+        calls_potential: todayCallPotential,
+        calls_old: todayCallOld3Y,
+
+        appt_today: num(d.todayBookingTotal),
+        visit_today: num(d.todayVisitTotal),
+
+        trial_ha: num(d.trialHA),
+        trial_apap: num(d.trialAPAP),
+        deal_ha: num(d.dealHA),
+        deal_apap: num(d.dealAPAP),
+
+        appt_tomorrow: num(d.tomorrowBookingTotal),
+        kpi_call_tomorrow: num(d.tomorrowKpiCallTotal),
+        kpi_old_appt_tomorrow: num(d.tomorrowKpiCallOld3Y),
+        kpi_trial_tomorrow: num(d.tomorrowKpiTrial),
+
+        message_text: msg
+      });
+
+      localStorage.setItem(sheetSentKey(todayStr), hash);
+    }
+  } catch (err) {
+    console.error("send to sheet failed:", err);
+  }
 }
 window.generateMessage = generateMessage;
 
+// ===== 今日執行檢視：今天 vs 昨日KPI =====
 function buildTodayVsYesterdayKpiText(todayForm) {
   const todayStr = todayForm.date;
 
@@ -297,24 +405,27 @@ function buildTodayVsYesterdayKpiText(todayForm) {
     return "•（找不到昨日 KPI：請確認前一個上班日有填寫「明日KPI」）";
   }
 
-  const targetTrial = n(kpiSourceData.tomorrowKpiTrial);
-  const targetCall = n(kpiSourceData.tomorrowKpiCallTotal);
-  const targetInvite = n(kpiSourceData.tomorrowKpiCallOld3Y);
+  const targetTrial = num(kpiSourceData.tomorrowKpiTrial);
+  const targetCall = num(kpiSourceData.tomorrowKpiCallTotal);
+  const targetInvite = num(kpiSourceData.tomorrowKpiCallOld3Y);
 
-  const actualTrial = n(todayForm.trialHA) + n(todayForm.trialAPAP);
-  // ✅ 防呆：分母永遠用「潛客+舊客」＝外撥總通數
-  const actualCall = n(todayForm.todayCallPotential) + n(todayForm.todayCallOld3Y);
-  const actualInvite = n(todayForm.todayInviteReturn);
+  const actualTrial = num(todayForm.trialHA) + num(todayForm.trialAPAP);
 
-  // ✅ 邀約成功率 = 成功邀約回店人數 / 今日外撥總通數
+  const actualCall = num(todayForm.todayCallPotential) + num(todayForm.todayCallOld3Y);
+  const actualInvite = num(todayForm.todayInviteReturn);
+
   const rate = actualCall > 0 ? (actualInvite / actualCall) : 0;
   const pct = Math.round(rate * 100) + "%";
+
+  const kpiNote = (kpiSourceDate === addDaysToDateStr(todayStr, -1))
+    ? ""
+    : `（昨日休假，改以前次資料 ${kpiSourceDate} 的 KPI 對照）`;
 
   return [
     `• 試戴數：目標 ${targetTrial} / 執行 ${actualTrial}   ${okText(actualTrial >= targetTrial)}`,
     `• 外撥通數：目標 ${targetCall} / 執行 ${actualCall}   ${okText(actualCall >= targetCall)}`,
     `• 邀約回店數：目標 ${targetInvite} / 執行 ${actualInvite}   ${okText(actualInvite >= targetInvite)}`,
-    `• 邀約成功率：${pct}`,
+    `• 邀約成功率：${pct} ${kpiNote}`.trim(),
   ].join("\n");
 }
 
@@ -370,11 +481,12 @@ function initDateLoad() {
 
   const data = loadByDate(today);
   if (data) fillForm(data);
-  recalcTotals();
+  recalcTotals(false);
 
   dateInput.addEventListener("change", () => {
     const ds = getCurrentDateStr();
 
+    // 清空再填（避免殘留）
     document.querySelectorAll("input[type='number'], input[type='text'], select").forEach(el => {
       if (el.id === "date") return;
       if (el.tagName === "SELECT") el.value = "";
@@ -383,7 +495,7 @@ function initDateLoad() {
 
     const d = loadByDate(ds);
     if (d) fillForm(d);
-    recalcTotals();
+    recalcTotals(false);
     renderHuddle();
   });
 }

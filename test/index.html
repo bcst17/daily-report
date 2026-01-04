@@ -98,14 +98,22 @@ h1{
   box-shadow: 0 2px 8px rgba(138, 154, 91, 0.1);
 }
 
-/* 🌿 每個白色區塊左上角裝飾：簡潔小葉子 */
-.section::before{
-  content:"🍃";
-  position:absolute;
-  top:-10px;
-  left:10px;
-  font-size: 16px;
-  opacity: 0.6;
+/* 🎂 將左上角葉子換成生日帽 */
+.section::before {
+  content: "";               /* 清除原本的葉子文字 */
+  position: absolute;
+  top: -22px;                /* 向上偏移，讓帽子有突出來的感覺 */
+  left: -10px;               /* 向左偏移 */
+  width: 45px;               /* 調整帽子寬度 */
+  height: 45px;              /* 調整帽子高度 */
+  background-image: url("birthday-hat.png"); /* 👈 這裡請確保檔名正確 */
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+  transform: rotate(-15deg);  /* 輕微旋轉讓帽子更俏皮 */
+  z-index: 10;
+  opacity: 1;                /* 恢復不透明度，讓帽子色彩鮮艷 */
+  pointer-events: none;
 }
 
 .section h2{ margin:0 0 8px; font-size:16px; font-weight:700; color: var(--primary-dark); }

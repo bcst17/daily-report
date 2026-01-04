@@ -37,7 +37,7 @@ body{
   background: var(--bg);
   display:flex;
   justify-content:center;
-  color:#33422E; /* 深綠色調文字 */
+  color:#33422E;
   overflow-x:hidden;
 }
 
@@ -48,7 +48,7 @@ body{
   margin-right:auto;
 }
 
-/* 🌿 標題增加一月慶生元素 */
+/* 🌿 標題：增加生日慶祝感 */
 h1{ 
   text-align:center; 
   margin:6px 0 2px; 
@@ -58,6 +58,11 @@ h1{
   justify-content: center;
   align-items: center;
   gap: 8px;
+}
+h1::after {
+  content: "🎂"; 
+  font-size: 18px;
+  opacity: 0.8;
 }
 
 .subtitle{ text-align:center; font-size:13px; color:#6A7A5B; margin-bottom:8px; }
@@ -86,7 +91,7 @@ h1{
   border-color:var(--primary);
 }
 
-/* 白色卡片樣式 - 移除聖誕帽與槲寄生 */
+/* 白色卡片樣式 */
 .section{
   background: var(--card-bg);
   border-radius:14px;
@@ -98,7 +103,7 @@ h1{
   box-shadow: 0 2px 8px rgba(138, 154, 91, 0.1);
 }
 
-/* 🌿 每個白色區塊左上角裝飾：簡潔小葉子 */
+/* 🌿 每個區塊左上角小葉子 */
 .section::before{
   content:"🍃";
   position:absolute;
@@ -106,6 +111,11 @@ h1{
   left:10px;
   font-size: 16px;
   opacity: 0.6;
+}
+
+/* ✨ 特別處理最後一個區塊：放置角色浮水印 */
+.section:last-of-type {
+  overflow: visible !important;
 }
 
 .section h2{ margin:0 0 8px; font-size:16px; font-weight:700; color: var(--primary-dark); }
@@ -118,13 +128,6 @@ input,select{
   margin-top:4px; margin-bottom:10px;
   border-radius:10px; border:1px solid var(--border);
   background:#fff;
-  color: #333;
-}
-
-input:focus, select:focus{
-  outline: none;
-  border-color: var(--primary);
-  box-shadow: 0 0 0 2px rgba(138, 154, 91, 0.2);
 }
 
 textarea{
@@ -132,6 +135,20 @@ textarea{
   font-size:15px; border-radius:10px;
   border:1px solid var(--border);
   background: #fff;
+  position: relative;
+  z-index: 5; /* 確保在背景上方 */
+}
+
+/* 🎭 角色浮水印樣式 */
+.character-watermark {
+  position: absolute;
+  right: -5px;     /* 往右偏移呈現探頭感 */
+  bottom: -15px;    /* 往下偏移 */
+  width: 130px;    /* 角色寬度 */
+  height: auto;
+  z-index: 10;     /* 疊在最上方 */
+  pointer-events: none; /* 讓圖片不影響點擊文字框 */
+  filter: drop-shadow(2px 2px 5px rgba(0,0,0,0.1));
 }
 
 .actions{
@@ -143,79 +160,42 @@ textarea{
 }
 
 button{
-  padding:12px 0;
-  border-radius:26px;
-  border:none;
-  font-size:16px;
-  font-weight:600;
-  cursor: pointer;
-  transition: transform 0.1s;
-}
-button:active { transform: scale(0.98); }
-
-.btn-primary{
-  flex:1;
-  background:var(--btn-generate);
-  color:#fff;
+  padding:12px 0; border-radius:26px; border:none;
+  font-size:16px; font-weight:600; cursor: pointer;
 }
 
-.btn-secondary{
-  flex:1;
-  background:var(--btn-copy);
-  color:#fff;
-}
+.btn-primary{ flex:1; background:var(--btn-generate); color:#fff; }
+.btn-secondary{ flex:1; background:var(--btn-copy); color:#fff; }
 
-/* =============== 🍃 Leaf Animation (一月生機動畫) =============== */
+/* =============== 🍃 Leaf Animation (背景動畫) =============== */
 .leaves {
-  pointer-events:none;
-  position:fixed;
-  top:0; left:0;
-  width:100%; height:100%;
-  overflow:hidden;
-  z-index:30;
+  pointer-events:none; position:fixed;
+  top:0; left:0; width:100%; height:100%;
+  overflow:hidden; z-index:30;
 }
-
 .leaves span {
-  position:absolute;
-  top:-20px;
-  display:block;
-  font-size: 14px;
-  animation: leafFall 10s linear infinite;
-  opacity: 0;
+  position:absolute; top:-20px; display:block;
+  font-size: 14px; animation: leafFall 10s linear infinite; opacity: 0;
 }
-
 @keyframes leafFall {
   0%   { transform: translate(0, 0) rotate(0deg); opacity: 0; }
   10%  { opacity: 0.8; }
   90%  { opacity: 0.8; }
   100% { transform: translate(100px, 105vh) rotate(360deg); opacity: 0; }
 }
+.leaves span:nth-child(1){ left:10%; animation-duration: 8s; }
+.leaves span:nth-child(2){ left:25%; animation-duration: 12s; }
+.leaves span:nth-child(3){ left:40%; animation-duration: 10s; }
+.leaves span:nth-child(4){ left:60%; animation-duration: 9s; }
+.leaves span:nth-child(5){ left:80%; animation-duration: 11s; }
+.leaves span:nth-child(6){ left:95%; animation-duration: 13s; }
 
-/* 葉片隨機分佈與差異化 */
-.leaves span:nth-child(1){ left:10%; animation-duration: 8s; animation-delay: 0s; }
-.leaves span:nth-child(2){ left:25%; animation-duration: 12s; animation-delay: 2s; }
-.leaves span:nth-child(3){ left:40%; animation-duration: 10s; animation-delay: 4s; }
-.leaves span:nth-child(4){ left:60%; animation-duration: 9s; animation-delay: 1s; }
-.leaves span:nth-child(5){ left:80%; animation-duration: 11s; animation-delay: 5s; }
-.leaves span:nth-child(6){ left:95%; animation-duration: 13s; animation-delay: 3s; }
-
-/* 🔹 顯示 / 隱藏用 */
 .hidden{ display:none; }
-
-/* 🔹 狀態標籤優化 */
-.badge{
-  display:inline-block;
-  margin-left:6px;
-  padding:2px 8px;
-  border-radius:999px;
-  font-size:12px;
-  font-weight:700;
-}
+.badge{ display:inline-block; margin-left:6px; padding:2px 8px; border-radius:999px; font-size:12px; font-weight:700; }
 .badge.green{ background:#E8F0E3; color:#4F6F41; }
 .badge.yellow{ background:#FFF7E1; color:#8A6D3B; }
 .badge.red{ background:#FBEAEA; color:#A94442; }
 
-/* Huddle 樣式微調 */
 .huddle-row{ display:flex; justify-content:space-between; align-items:center; margin-top:8px; font-size:14px; }
 .huddle-separator{ height:1px; background:var(--border); margin:12px 0; opacity:0.5; }
 .check-row{ display:flex; justify-content:space-between; align-items:flex-start; margin-top:10px; font-size:14px; }
@@ -226,7 +206,7 @@ button:active { transform: scale(0.98); }
 <div class="container">
 
 <h1>台北一區上班小助手🌿</h1>
-<p class="subtitle">輸入數字 → 產生訊息 → 複製貼到企業微信群組</p>
+<p class="subtitle">一月新氣象 · 種下成長的種子</p>
 
 <header class="tab-header">
   <button id="tab-huddle" type="button">今日檢視</button>
@@ -244,15 +224,6 @@ button:active { transform: scale(0.98); }
     <span class="huddle-value"><span id="huddleTodayTrial">-</span> 位</span>
   </div>
   <div class="huddle-separator"></div>
-  <div class="huddle-row">
-    <span class="huddle-label">今日外撥目標數</span>
-    <span class="huddle-value"><span id="huddleTodayCallTotal">-</span> 通</span>
-  </div>
-  <div class="huddle-row">
-    <span class="huddle-label">邀約回店目標數</span>
-    <span class="huddle-value"><span id="huddleTodayOld3Y">-</span> 位</span>
-  </div>
-  <div class="huddle-separator"></div>
   <h2>昨日執行檢視</h2>
   <div class="check-row">
     <span class="check-label">試戴數</span>
@@ -261,10 +232,6 @@ button:active { transform: scale(0.98); }
   <div class="check-row">
     <span class="check-label">外撥通數</span>
     <span class="check-value" id="checkCallText">-</span>
-  </div>
-  <div class="check-row">
-    <span class="check-label">邀約回店數</span>
-    <span class="check-value" id="checkInviteText">-</span>
   </div>
   <div class="check-row">
     <span class="check-label">邀約成功率</span>
@@ -277,60 +244,61 @@ button:active { transform: scale(0.98); }
 
 <div id="report-view">
   <div class="section">
-  <h2>基本資訊</h2>
-  <label>日期： <input type="date" id="date"></label>
-  <label>店名： <input type="text" id="store" placeholder="例：站前"></label>
-  <label>姓名：
-  <select id="name">
-    <option value="">請選擇同仁姓名</option>
-    <option>郭孟鑫</option><option>陳詩潔</option><option>游瑟焄</option>
-    <option>魏頎恩</option><option>李孟馨</option><option>劉瑋婷</option>
-    <option>周曉玄</option><option>蕭純聿</option><option>陳宛妤</option>
-    <option>林寓葳</option><option>吳欣珮</option><option>呂桂梅</option>
-    <option>李俊諺</option><option>蔡秉忻</option>
-  </select>
-  </label>
+    <h2>基本資訊</h2>
+    <label>日期： <input type="date" id="date"></label>
+    <label>店名： <input type="text" id="store" placeholder="例：站前"></label>
+    <label>姓名：
+      <select id="name">
+        <option value="">請選擇同仁姓名</option>
+        <option>郭孟鑫</option><option>陳詩潔</option><option>游瑟焄</option>
+        <option>魏頎恩</option><option>李孟馨</option><option>劉瑋婷</option>
+        <option>周曉玄</option><option>蕭純聿</option><option>陳宛妤</option>
+        <option>林寓葳</option><option>吳欣珮</option><option>呂桂梅</option>
+        <option>李俊諺</option><option>蔡秉忻</option>
+      </select>
+    </label>
   </div>
 
   <div class="section">
-  <h2>1. 今日外撥</h2>
-  <label>潛客外撥通數：<input type="number" id="todayCallPotential" inputmode="numeric" oninput="recalcTotals()"></label>
-  <label>過保舊客外撥通數：<input type="number" id="todayCallOld3Y" inputmode="numeric" oninput="recalcTotals()"></label>
-  <label>今日外撥總通數：<input type="number" id="todayCallTotal" readonly></label>
-  <label>成功邀約回店人數：<input type="number" id="todayInviteReturn" inputmode="numeric"></label>
+    <h2>1. 今日外撥</h2>
+    <label>潛客外撥通數：<input type="number" id="todayCallPotential" inputmode="numeric" oninput="recalcTotals()"></label>
+    <label>過保舊客外撥通數：<input type="number" id="todayCallOld3Y" inputmode="numeric" oninput="recalcTotals()"></label>
+    <label>今日外撥總通數：<input type="number" id="todayCallTotal" readonly></label>
+    <label>成功邀約回店人數：<input type="number" id="todayInviteReturn" inputmode="numeric"></label>
   </div>
 
   <div class="section">
-  <h2>2. 今日預約</h2>
-  <label>今日預約總數：<input type="number" id="todayBookingTotal" inputmode="numeric"></label>
-  <div id="todayBookingHint" style="font-size:12px;color:#6A7A5B;margin-top:4px;display:none;">
-    （已帶入昨日填寫的「明日已排預約」：<span id="todayBookingHintValue"></span> 位）
-  </div>
-  </div>
-
-  <div class="section">
-  <h2>3. 今日到店</h2>
-  <label>今日到店總數：<input type="number" id="todayVisitTotal" inputmode="numeric"></label>
-  <label>試用 HA：<input type="number" id="trialHA" inputmode="numeric"></label>
-  <label>試用 APAP：<input type="number" id="trialAPAP" inputmode="numeric"></label>
-  <label>成交 HA：<input type="number" id="dealHA" inputmode="numeric"></label>
-  <label>成交 APAP：<input type="number" id="dealAPAP" inputmode="numeric"></label>
+    <h2>2. 今日預約</h2>
+    <label>今日預約總數：<input type="number" id="todayBookingTotal" inputmode="numeric"></label>
+    <div id="todayBookingHint" style="font-size:12px;color:#6A7A5B;margin-top:4px;display:none;">
+      （已帶入昨日填寫的「明日已排預約」：<span id="todayBookingHintValue"></span> 位）
+    </div>
   </div>
 
   <div class="section">
-  <h2>4. 明日已排預約</h2>
-  <label>明日預約總數：<input type="number" id="tomorrowBookingTotal" inputmode="numeric"></label>
+    <h2>3. 今日到店</h2>
+    <label>今日到店總數：<input type="number" id="todayVisitTotal" inputmode="numeric"></label>
+    <label>試用 HA：<input type="number" id="trialHA" inputmode="numeric"></label>
+    <label>試用 APAP：<input type="number" id="trialAPAP" inputmode="numeric"></label>
+    <label>成交 HA：<input type="number" id="dealHA" inputmode="numeric"></label>
+    <label>成交 APAP：<input type="number" id="dealAPAP" inputmode="numeric"></label>
   </div>
 
   <div class="section">
-  <h2>5. 明日 KPI</h2>
-  <label>外撥目標通數：<input type="number" id="tomorrowKpiCallTotal" inputmode="numeric"></label>
-  <label>邀約回店目標數 (位)：<input type="number" id="tomorrowKpiCallOld3Y" inputmode="numeric"></label>
-  <label>完成HA/APAP試戴目標 (位)：<input type="number" id="tomorrowKpiTrial" inputmode="numeric"></label>
+    <h2>4. 明日已排預約</h2>
+    <label>明日預約總數：<input type="number" id="tomorrowBookingTotal" inputmode="numeric"></label>
   </div>
 
   <div class="section">
-  <textarea id="output" placeholder="按下『產生訊息』後文字會出現在這裡"></textarea>
+    <h2>5. 明日 KPI</h2>
+    <label>外撥目標通數：<input type="number" id="tomorrowKpiCallTotal" inputmode="numeric"></label>
+    <label>邀約回店目標數 (位)：<input type="number" id="tomorrowKpiCallOld3Y" inputmode="numeric"></label>
+    <label>完成HA/APAP試戴目標 (位)：<input type="number" id="tomorrowKpiTrial" inputmode="numeric"></label>
+  </div>
+
+  <div class="section">
+    <textarea id="output" placeholder="按下『產生訊息』後文字會出現在這裡"></textarea>
+    <img src="character.png" class="character-watermark" alt="character">
   </div>
 </div>
 

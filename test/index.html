@@ -227,6 +227,8 @@ button:active { transform: scale(0.98); }
   bottom: -20px;   /* 往下偏移，與底部結合 */
   width: 120px;    /* 根據圖片大小調整寬度 */
   height: auto;
+  /* 核心調整 */
+  opacity: 0.1;         /* 調整透明度：0.1 很淡 ~ 0.9 很濃 */
   z-index: 10;     /* 確保在文字框上方 */
   pointer-events: none; /* 重要！這讓使用者點擊圖片時，依然能選到下方的文字框 */
   filter: drop-shadow(2px 2px 5px rgba(0,0,0,0.1)); /* 增加輕微陰影更有立體感 */

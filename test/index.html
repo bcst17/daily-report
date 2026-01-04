@@ -220,19 +220,22 @@ button:active { transform: scale(0.98); }
 .huddle-separator{ height:1px; background:var(--border); margin:12px 0; opacity:0.5; }
 .check-row{ display:flex; justify-content:space-between; align-items:flex-start; margin-top:10px; font-size:14px; }
 
-/* 角色裝飾定位 */
-.footer-character {
+/* 🎭 角色半透明裝飾 */
+.character-watermark {
   position: absolute;
-  right: -10px;    /* 往右偏移，營造探頭感 */
-  bottom: -20px;   /* 往下偏移，與底部結合 */
-  width: 120px;    /* 根據圖片大小調整寬度 */
+  right: -10px;         /* 稍微超出框線，呈現探頭感 */
+  bottom: -15px;        /* 稍微超出底部 */
+  width: 130px;         /* 調整適合的大小 */
   height: auto;
-  z-index: 10;     /* 確保在文字框上方 */
-  pointer-events: none; /* 重要！這讓使用者點擊圖片時，依然能選到下方的文字框 */
-  filter: drop-shadow(2px 2px 5px rgba(0,0,0,0.1)); /* 增加輕微陰影更有立體感 */
+  
+  /* 核心調整 */
+  opacity: 0.5;         /* 調整透明度：0.1 很淡 ~ 0.9 很濃 */
+  z-index: 10;          /* 雖然在上方，但因為半透明且有偏移，不會完全擋住 */
+  
+  pointer-events: none; /* 讓滑鼠點擊可以直接穿透圖片，點到下方的文字或按鈕 */
 }
 
-/* 確保父容器不會切掉超出的角色 */
+/* 確保最後一個區塊不會切掉超出的圖片 */
 .section:last-of-type {
   overflow: visible !important;
 }

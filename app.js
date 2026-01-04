@@ -1,7 +1,7 @@
-console.log("✅ official app.js loaded");
+console.log("✅ Jan Style app.js loaded");
 
-// ✅ 正式版儲存前綴（避免跟測試版混在一起）
-const STORAGE_PREFIX = "daily-report-";
+// ✅ 測試版儲存前綴
+const STORAGE_PREFIX = "daily-report-test-";
 
 // ===== ↓↓↓ Google Sheet 串接（測試版）↓↓↓ =====
 const SHEET_INGEST_URL = "https://script.google.com/macros/s/AKfycbxwYN_YGa5W8Fqg8YrSPTFkhkqnLB61hZ3lFgU-5kIHTSK_DmasH573pv7GutF8wf8S/exec";

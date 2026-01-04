@@ -228,7 +228,7 @@ button:active { transform: scale(0.98); }
   width: 120px;    /* 根據圖片大小調整寬度 */
   height: auto;
   /* 核心調整 */
-  opacity: 0.1;         /* 調整透明度：0.1 很淡 ~ 0.9 很濃 */
+  opacity: 0.3;         /* 調整透明度：0.1 很淡 ~ 0.9 很濃 */
   z-index: 5;     /* 確保在文字框上方 */
   pointer-events: none; /* 重要！這讓使用者點擊圖片時，依然能選到下方的文字框 */
   filter: drop-shadow(2px 2px 5px rgba(0,0,0,0.1)); /* 增加輕微陰影更有立體感 */
@@ -246,6 +246,11 @@ button:active { transform: scale(0.98); }
     right: -5px;
     bottom: -15px;
   }
+}
+/* 專門針對日期的修改 */
+#date {
+  width: 94%; /* 你可以調整成想要的百分比或像素，如 200px */
+  display: block; /* 確保它不會跟標籤擠在同一行，或改成 inline-block 併排 */
 }
 </style>
 </head>

@@ -219,6 +219,32 @@ button:active { transform: scale(0.98); }
 .huddle-row{ display:flex; justify-content:space-between; align-items:center; margin-top:8px; font-size:14px; }
 .huddle-separator{ height:1px; background:var(--border); margin:12px 0; opacity:0.5; }
 .check-row{ display:flex; justify-content:space-between; align-items:flex-start; margin-top:10px; font-size:14px; }
+
+/* 角色裝飾定位 */
+.footer-character {
+  position: absolute;
+  right: -10px;    /* 往右偏移，營造探頭感 */
+  bottom: -20px;   /* 往下偏移，與底部結合 */
+  width: 120px;    /* 根據圖片大小調整寬度 */
+  height: auto;
+  z-index: 10;     /* 確保在文字框上方 */
+  pointer-events: none; /* 重要！這讓使用者點擊圖片時，依然能選到下方的文字框 */
+  filter: drop-shadow(2px 2px 5px rgba(0,0,0,0.1)); /* 增加輕微陰影更有立體感 */
+}
+
+/* 確保父容器不會切掉超出的角色 */
+.section:last-of-type {
+  overflow: visible !important;
+}
+
+/* 針對小螢幕微調，避免擋住太多文字 */
+@media (max-width: 400px) {
+  .footer-character {
+    width: 90px;
+    right: -5px;
+    bottom: -15px;
+  }
+}
 </style>
 </head>
 
@@ -331,6 +357,8 @@ button:active { transform: scale(0.98); }
 
   <div class="section">
   <textarea id="output" placeholder="按下『產生訊息』後文字會出現在這裡"></textarea>
+  
+  <img src="character.png" class="footer-character" alt="decoration">
   </div>
 </div>
 

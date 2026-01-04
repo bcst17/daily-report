@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
-<title>台北一區上班小助手💼</title>
+<title>台北一區上班小助手🌿</title>
 
 <link rel="manifest" href="manifest.json">
 
@@ -16,12 +16,16 @@
 
 <style>
 :root{
-  --primary:#f4a300;
-  --border:#e0e0e0;
-  --bg:#f6f6f8;
+  /* 方案三：大地復甦配色 */
+  --primary: #8A9A5B;      /* 鼠尾草綠 */
+  --primary-dark: #708238;
+  --secondary: #E5D3B3;    /* 燕麥色 */
+  --border: #D1D7C4;
+  --bg: #F0F2EB;           /* 極淺灰綠背景 */
 
-  --btn-generate:#2B7344;
-  --btn-copy:#B51A17;
+  --btn-generate: #8A9A5B; /* 產生按鈕改為綠色 */
+  --btn-copy: #A68966;     /* 複製按鈕改為木質棕色 */
+  --card-bg: #FAF9F6;      /* 溫潤白 */
 }
 
 *,*::before,*::after{ box-sizing:border-box; }
@@ -30,10 +34,10 @@ body{
   font-family:-apple-system,BlinkMacSystemFont,system-ui,sans-serif;
   margin:0;
   padding:14px 14px 90px;
-  background:#dfeaf3;
+  background: var(--bg);
   display:flex;
   justify-content:center;
-  color:#111;
+  color:#33422E; /* 深綠色調文字 */
   overflow-x:hidden;
 }
 
@@ -44,8 +48,24 @@ body{
   margin-right:auto;
 }
 
-h1{ text-align:center; margin:6px 0 2px; font-size:22px; font-weight:700; }
-.subtitle{ text-align:center; font-size:13px; color:#777; margin-bottom:8px; }
+/* 🌿 標題增加一月慶生元素 */
+h1{ 
+  text-align:center; 
+  margin:6px 0 2px; 
+  font-size:22px; 
+  font-weight:700;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 8px;
+}
+h1::after {
+  content: "🎂"; /* 慶祝一月壽星 */
+  font-size: 18px;
+  opacity: 0.8;
+}
+
+.subtitle{ text-align:center; font-size:13px; color:#6A7A5B; margin-bottom:8px; }
 
 /* 🔹 分頁標籤 */
 .tab-header{
@@ -61,6 +81,8 @@ h1{ text-align:center; margin:6px 0 2px; font-size:22px; font-weight:700; }
   border:1px solid var(--border);
   background:#fff;
   font-size:14px;
+  color: #6A7A5B;
+  cursor: pointer;
 }
 
 .tab-header button.active{
@@ -69,39 +91,31 @@ h1{ text-align:center; margin:6px 0 2px; font-size:22px; font-weight:700; }
   border-color:var(--primary);
 }
 
-/* 白色卡片樣式 */
+/* 白色卡片樣式 - 移除聖誕帽與槲寄生 */
 .section{
-  background:#faf7ef;
+  background: var(--card-bg);
   border-radius:14px;
   border:1px solid var(--border);
   padding:14px;
   margin-bottom:12px;
   overflow:visible;
   position:relative;
+  box-shadow: 0 2px 8px rgba(138, 154, 91, 0.1);
 }
 
-/* 🎅 每個白色區塊右上角自動顯示聖誕帽 */
-.section::after{
-  content:"";
+/* 🌿 每個白色區塊左上角裝飾：簡潔小葉子 */
+.section::before{
+  content:"🍃";
   position:absolute;
-  top:-25px;
-  left:-10px;
-  right:auto;
-  width:42px;
-  height:42px;
-  background-image:url("../santa-hat.png");
-  background-size:contain;
-  background-repeat:no-repeat;
-  background-position:center;
-  transform:rotate(-25deg);
-  transform-origin:50% 80%;
-  pointer-events:none;
-  z-index:1;
+  top:-10px;
+  left:10px;
+  font-size: 16px;
+  opacity: 0.6;
 }
 
-.section h2{ margin:0 0 8px; font-size:16px; font-weight:700; }
+.section h2{ margin:0 0 8px; font-size:16px; font-weight:700; color: var(--primary-dark); }
 
-label{ display:block;font-size:14px;margin-top:4px; }
+label{ display:block;font-size:14px;margin-top:4px; color: #4A5A3B; }
 
 input,select{
   width:100%;
@@ -109,27 +123,27 @@ input,select{
   margin-top:4px; margin-bottom:10px;
   border-radius:10px; border:1px solid var(--border);
   background:#fff;
+  color: #333;
 }
 
-input[type="date"]{
-  width:94%;
-  margin:auto;
-  display:block;
+input:focus, select:focus{
+  outline: none;
+  border-color: var(--primary);
+  box-shadow: 0 0 0 2px rgba(138, 154, 91, 0.2);
 }
-
-input[readonly]{ background:#f3f3f3; }
 
 textarea{
   width:100%; height:200px; padding:10px;
   font-size:15px; border-radius:10px;
   border:1px solid var(--border);
+  background: #fff;
 }
 
 .actions{
   position:fixed;left:0;right:0;bottom:0;
-  padding:10px 14px 12px;background:#ffffffee;
+  padding:10px 14px 12px;background:rgba(255,255,255,0.9);
   display:flex;gap:10px;border-top:1px solid var(--border);
-  backdrop-filter:blur(6px);
+  backdrop-filter:blur(10px);
   z-index:50;
 }
 
@@ -139,24 +153,25 @@ button{
   border:none;
   font-size:16px;
   font-weight:600;
+  cursor: pointer;
+  transition: transform 0.1s;
 }
+button:active { transform: scale(0.98); }
 
 .btn-primary{
   flex:1;
   background:var(--btn-generate);
   color:#fff;
-  border:1px solid var(--btn-generate);
 }
 
 .btn-secondary{
   flex:1;
   background:var(--btn-copy);
   color:#fff;
-  border:1px solid var(--btn-copy);
 }
 
-/* =============== ❄ Snow Animation (全螢幕＋覆蓋白卡) =============== */
-.snow {
+/* =============== 🍃 Leaf Animation (一月生機動畫) =============== */
+.leaves {
   pointer-events:none;
   position:fixed;
   top:0; left:0;
@@ -165,103 +180,34 @@ button{
   z-index:30;
 }
 
-.snow span {
+.leaves span {
   position:absolute;
-  top:-10px;
+  top:-20px;
   display:block;
-  width:8px; height:8px;
-  background:rgba(255,255,255,.95);
-  border-radius:50%;
-  animation:snowfall 12s linear infinite;
-  opacity:.9;
+  font-size: 14px;
+  animation: leafFall 10s linear infinite;
+  opacity: 0;
 }
 
-@keyframes snowfall {
-  0%   { transform:translate3d(0, -10px, 0); }
-  100% { transform:translate3d(25px, 110vh, 0); }
+@keyframes leafFall {
+  0%   { transform: translate(0, 0) rotate(0deg); opacity: 0; }
+  10%  { opacity: 0.8; }
+  90%  { opacity: 0.8; }
+  100% { transform: translate(100px, 105vh) rotate(360deg); opacity: 0; }
 }
 
-.snow span:nth-child(10n+1){ left:5%; }
-.snow span:nth-child(10n+2){ left:15%; }
-.snow span:nth-child(10n+3){ left:25%; }
-.snow span:nth-child(10n+4){ left:35%; }
-.snow span:nth-child(10n+5){ left:45%; }
-.snow span:nth-child(10n+6){ left:55%; }
-.snow span:nth-child(10n+7){ left:65%; }
-.snow span:nth-child(10n+8){ left:75%; }
-.snow span:nth-child(10n+9){ left:85%; }
-.snow span:nth-child(10n+10){ left:95%; }
-
-.snow span:nth-child(odd) { width:6px;height:6px;animation-duration:10s;opacity:.8;}
-.snow span:nth-child(3n)  { width:10px;height:10px;animation-duration:14s;opacity:.75;}
-.snow span:nth-child(4n)  { animation-delay:3s;transform:translateX(-10px);}
-.snow span:nth-child(5n)  { animation-duration:18s;}
-.snow span:nth-child(7n)  { width:12px;height:12px;opacity:.6;}
-
-/* 🎄 白色卡片右下角槲寄生裝飾 */
-.section::marker{}
-.section .mistletoe{
-  content:"";
-  position:absolute;
-  bottom:-30px;
-  right:-20px;
-  width:65px;
-  height:65px;
-  background-image:url("../mistletoe.png");
-  background-size:contain;
-  background-repeat:no-repeat;
-  background-position:center;
-  transform:rotate(45deg);
-  transform-origin:50% 50%;
-  pointer-events:none;
-  z-index:8;
-  opacity:0.95;
-}
+/* 葉片隨機分佈與差異化 */
+.leaves span:nth-child(1){ left:10%; animation-duration: 8s; animation-delay: 0s; }
+.leaves span:nth-child(2){ left:25%; animation-duration: 12s; animation-delay: 2s; }
+.leaves span:nth-child(3){ left:40%; animation-duration: 10s; animation-delay: 4s; }
+.leaves span:nth-child(4){ left:60%; animation-duration: 9s; animation-delay: 1s; }
+.leaves span:nth-child(5){ left:80%; animation-duration: 11s; animation-delay: 5s; }
+.leaves span:nth-child(6){ left:95%; animation-duration: 13s; animation-delay: 3s; }
 
 /* 🔹 顯示 / 隱藏用 */
-.hidden{
-  display:none;
-}
+.hidden{ display:none; }
 
-/* 🔹 Morning Huddle 列排版 */
-.huddle-row{
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-  margin-top:8px;
-  font-size:14px;
-}
-
-.huddle-label{ color:#333; }
-.huddle-value{ font-weight:600; color:#000; }
-
-/* 🔹 Morning Huddle 分組分隔線 */
-.huddle-separator{
-  height:1px;
-  background:#ddd;
-  margin:12px 0;
-  opacity:0.7;
-}
-
-/* 🔹 昨日執行檢視 */
-.check-row{
-  display:flex;
-  justify-content:space-between;
-  align-items:flex-start;
-  margin-top:10px;
-  font-size:14px;
-  line-height:1.35;
-}
-.check-label{
-  color:#333;
-  min-width:92px;
-}
-.check-value{
-  text-align:right;
-  font-weight:600;
-  color:#111;
-  max-width:72%;
-}
+/* 🔹 狀態標籤優化 */
 .badge{
   display:inline-block;
   margin-left:6px;
@@ -269,81 +215,62 @@ button{
   border-radius:999px;
   font-size:12px;
   font-weight:700;
-  vertical-align:middle;
 }
-.badge.green{ background:#e7f7ed; color:#137333; }
-.badge.yellow{ background:#fff4d6; color:#8a5a00; }
-.badge.red{ background:#fde8e8; color:#b91c1c; }
+.badge.green{ background:#E8F0E3; color:#4F6F41; }
+.badge.yellow{ background:#FFF7E1; color:#8A6D3B; }
+.badge.red{ background:#FBEAEA; color:#A94442; }
+
+/* Huddle 樣式微調 */
+.huddle-row{ display:flex; justify-content:space-between; align-items:center; margin-top:8px; font-size:14px; }
+.huddle-separator{ height:1px; background:var(--border); margin:12px 0; opacity:0.5; }
+.check-row{ display:flex; justify-content:space-between; align-items:flex-start; margin-top:10px; font-size:14px; }
 </style>
 </head>
 
 <body>
 <div class="container">
 
-<h1>台北一區上班小助手💼</h1>
-<p class="subtitle">輸入數字 → 產生訊息 → 複製貼到企業微信群組</p>
+<h1>台北一區上班小助手🌿</h1>
+<p class="subtitle">一月新氣象 · 祝壽星生日快樂</p>
 
-<!-- 🔹 分頁按鈕 -->
 <header class="tab-header">
   <button id="tab-huddle" type="button">今日檢視</button>
   <button id="tab-report" type="button" class="active">每日回報</button>
 </header>
 
-<!-- 🔹 A. Morning Huddle 介面 -->
 <section id="huddle-view" class="section hidden">
-  <span class="mistletoe"></span>
   <h2>今日目標</h2>
-  <p style="font-size:13px;color:#555;margin-top:4px;">
-    已自動帶入昨天填寫的「明日已排預約」與「明日 KPI」。
-  </p>
-
-  <!-- 🔹 第一組：與今日預約相關 -->
   <div class="huddle-row">
     <span class="huddle-label">今日預約數</span>
     <span class="huddle-value"><span id="huddleTodayBooking">-</span> 位</span>
   </div>
-
   <div class="huddle-row">
     <span class="huddle-label">邀約試戴目標數</span>
     <span class="huddle-value"><span id="huddleTodayTrial">-</span> 位</span>
   </div>
-
   <div class="huddle-separator"></div>
-
-  <!-- 🔹 第二組：與外撥相關 -->
   <div class="huddle-row">
     <span class="huddle-label">今日外撥目標數</span>
     <span class="huddle-value"><span id="huddleTodayCallTotal">-</span> 通</span>
   </div>
-
   <div class="huddle-row">
     <span class="huddle-label">邀約回店目標數</span>
     <span class="huddle-value"><span id="huddleTodayOld3Y">-</span> 位</span>
   </div>
-
-  <!-- ✅ 新增：昨日執行檢視 -->
   <div class="huddle-separator"></div>
-
-  <h2 style="margin-top:0;">昨日執行檢視</h2>
-  <p style="font-size:13px;color:#555;margin-top:4px;">
-    以「前天設定的 KPI」對照「昨天實際回報」。
-  </p>
-
+  <h2>昨日執行檢視</h2>
   <div class="check-row">
     <span class="check-label">試戴數</span>
     <span class="check-value" id="checkTrialText">-</span>
   </div>
-
   <div class="check-row">
     <span class="check-label">外撥通數</span>
     <span class="check-value" id="checkCallText">-</span>
   </div>
-
   <div class="check-row">
     <span class="check-label">邀約回店數</span>
     <span class="check-value" id="checkInviteText">-</span>
   </div>
-
   <div class="check-row">
     <span class="check-label">邀約成功率</span>
     <span class="check-value">
@@ -353,48 +280,40 @@ button{
   </div>
 </section>
 
-<!-- 🔹 B. 原本每日回報畫面包成一個區塊 -->
 <div id="report-view">
   <div class="section">
-  <span class="mistletoe"></span>
   <h2>基本資訊</h2>
   <label>日期： <input type="date" id="date"></label>
   <label>店名： <input type="text" id="store" placeholder="例：站前"></label>
   <label>姓名：
   <select id="name">
-  <option value="">請選擇同仁姓名</option>
-  <option>郭孟鑫</option><option>陳詩潔</option><option>游瑟焄</option>
-  <option>魏頎恩</option><option>李孟馨</option><option>劉瑋婷</option>
-  <option>林瑀婕</option><option>周曉玄</option><option>蕭純聿</option>
-  <option>陳宛妤</option><option>王靖雅</option><option>林寓葳</option>
-  <option>吳欣珮</option><option>呂桂梅</option><option>蔡秉忻</option>
+    <option value="">請選擇同仁姓名</option>
+    <option>郭孟鑫</option><option>陳詩潔</option><option>游瑟焄</option>
+    <option>魏頎恩</option><option>李孟馨</option><option>劉瑋婷</option>
+    <option>林瑀婕</option><option>周曉玄</option><option>蕭純聿</option>
+    <option>陳宛妤</option><option>王靖雅</option><option>林寓葳</option>
+    <option>吳欣珮</option><option>呂桂梅</option><option>蔡秉忻</option>
   </select>
   </label>
   </div>
 
   <div class="section">
-  <span class="mistletoe"></span>
   <h2>1. 今日外撥</h2>
   <label>潛客外撥通數：<input type="number" id="todayCallPotential" inputmode="numeric" oninput="recalcTotals()"></label>
   <label>過保舊客外撥通數：<input type="number" id="todayCallOld3Y" inputmode="numeric" oninput="recalcTotals()"></label>
   <label>今日外撥總通數：<input type="number" id="todayCallTotal" readonly></label>
-  <!-- ✅ 新增（不會出現在產生訊息中） -->
   <label>成功邀約回店人數：<input type="number" id="todayInviteReturn" inputmode="numeric"></label>
   </div>
 
   <div class="section">
-  <span class="mistletoe"></span>
   <h2>2. 今日預約</h2>
   <label>今日預約總數：<input type="number" id="todayBookingTotal" inputmode="numeric"></label>
-
-  <!-- 🔹 自動帶入提示（預設隱藏） -->
-  <div id="todayBookingHint" style="font-size:12px;color:#666;margin-top:4px;display:none;">
+  <div id="todayBookingHint" style="font-size:12px;color:#6A7A5B;margin-top:4px;display:none;">
     （已帶入昨日填寫的「明日已排預約」：<span id="todayBookingHintValue"></span> 位）
   </div>
   </div>
 
   <div class="section">
-  <span class="mistletoe"></span>
   <h2>3. 今日到店</h2>
   <label>今日到店總數：<input type="number" id="todayVisitTotal" inputmode="numeric"></label>
   <label>試用 HA：<input type="number" id="trialHA" inputmode="numeric"></label>
@@ -404,13 +323,11 @@ button{
   </div>
 
   <div class="section">
-  <span class="mistletoe"></span>
   <h2>4. 明日已排預約</h2>
   <label>明日預約總數：<input type="number" id="tomorrowBookingTotal" inputmode="numeric"></label>
   </div>
 
   <div class="section">
-  <span class="mistletoe"></span>
   <h2>5. 明日 KPI</h2>
   <label>外撥目標通數：<input type="number" id="tomorrowKpiCallTotal" inputmode="numeric"></label>
   <label>邀約回店目標數 (位)：<input type="number" id="tomorrowKpiCallOld3Y" inputmode="numeric"></label>
@@ -418,32 +335,22 @@ button{
   </div>
 
   <div class="section">
-  <span class="mistletoe"></span>
   <textarea id="output" placeholder="按下『產生訊息』後文字會出現在這裡"></textarea>
   </div>
-</div><!-- /#report-view -->
+</div>
 
-</div><!-- /.container -->
+</div>
 
 <div class="actions">
-<button class="btn-primary" onclick="generateMessage()">⛄️ 產生訊息</button>
-<button class="btn-secondary" onclick="copyMessage()">☃️ 複製文字</button>
+<button class="btn-primary" onclick="generateMessage()">🌱 產生訊息</button>
+<button class="btn-secondary" onclick="copyMessage()">✨ 複製文字</button>
 </div>
 
-<!-- ❄ Snow Layer -->
-<div class="snow">
-  <span></span><span></span><span></span><span></span><span></span>
-  <span></span><span></span><span></span><span></span><span></span>
-  <span></span><span></span><span></span><span></span><span></span>
-  <span></span><span></span><span></span><span></span><span></span>
-  <span></span><span></span><span></span><span></span><span></span>
-  <span></span><span></span><span></span><span></span><span></span>
-  <span></span><span></span><span></span><span></span><span></span>
-  <span></span><span></span><span></span><span></span><span></span>
+<div class="leaves">
+  <span>🍃</span><span>🌿</span><span>🍃</span><span>🌱</span><span>🍃</span><span>🌿</span>
 </div>
 
-<!-- 🔹 外部 app.js -->
-<script src="app.js?v=8"></script>
+<script src="app.js?v=9"></script>
 
 </body>
 </html>

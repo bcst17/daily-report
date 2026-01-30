@@ -27,34 +27,33 @@ async function sendReportToSheet(payload) {
     return true;
 }
 
-// ===== 【一月更新】專屬特效：綠意噴發 (Leaf Shower) =====
-function spawnLeafShower() {
-    const symbols = ['🍃', '🌿', '🌱', '✨', '🟢'];
-    const count = 15; // 噴發數量
+// ===== 【二月更新】新年噴發：紅包與金幣 =====
+function spawnNewYearShower() {
+    const symbols = ['🧧', '🪙', '✨', '🏮', '🧨', '🍊'];
+    const count = 18; 
 
     for (let i = 0; i < count; i++) {
-        const leaf = document.createElement('div');
-        leaf.innerText = symbols[Math.floor(Math.random() * symbols.length)];
-        leaf.style.position = 'fixed';
-        leaf.style.bottom = '80px'; // 從按鈕附近噴出
-        leaf.style.left = (Math.random() * 80 + 10) + '%';
-        leaf.style.fontSize = (Math.random() * 20 + 10) + 'px';
-        leaf.style.zIndex = '100';
-        leaf.style.pointerEvents = 'none';
-        leaf.style.transition = 'all 1.5s ease-out';
+        const item = document.createElement('div');
+        item.innerText = symbols[Math.floor(Math.random() * symbols.length)];
+        item.style.position = 'fixed';
+        item.style.bottom = '80px';
+        item.style.left = (Math.random() * 80 + 10) + '%';
+        item.style.fontSize = (Math.random() * 25 + 15) + 'px'; // 加大尺寸
+        item.style.zIndex = '100';
+        item.style.pointerEvents = 'none';
+        item.style.transition = 'all 1.2s cubic-bezier(0.25, 0.46, 0.45, 0.94)';
         
-        document.body.appendChild(leaf);
+        document.body.appendChild(item);
 
-        // 隨機噴發軌跡
-        const destinationX = (Math.random() - 0.5) * 200;
-        const destinationY = -(Math.random() * 300 + 100);
+        const destinationX = (Math.random() - 0.5) * 250;
+        const destinationY = -(Math.random() * 400 + 150);
 
         requestAnimationFrame(() => {
-            leaf.style.transform = `translate(${destinationX}px, ${destinationY}px) rotate(${Math.random() * 360}deg)`;
-            leaf.style.opacity = '0';
+            item.style.transform = `translate(${destinationX}px, ${destinationY}px) rotate(${Math.random() * 720}deg)`;
+            item.style.opacity = '0';
         });
 
-        setTimeout(() => leaf.remove(), 1500);
+        setTimeout(() => item.remove(), 1200);
     }
 }
 
@@ -221,7 +220,7 @@ function renderHuddle() {
 // ===== 【一月更新】產生訊息並觸發特效 =====
 function generateMessage() {
     saveToday();
-    spawnLeafShower(); // 觸發噴發效果
+    spawnNewYearShower(); // 觸發噴發效果
     
     const d = collectForm();
     const title = `${d.date}｜${(d.store || "")} ${(d.name || "")}`.trim();
@@ -287,7 +286,7 @@ function buildTodayVsYesterdayKpiText(todayForm) {
 async function copyMessage() {
     const text = $("output")?.value || "";
     if (!text.trim()) return;
-    spawnLeafShower(); // 複製成功也噴發一下！
+    spawnNewYearShower(); // 複製成功也噴發一下！
 
     try {
         await navigator.clipboard.writeText(text);

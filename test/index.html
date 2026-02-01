@@ -15,57 +15,30 @@
 <meta name="apple-mobile-web-app-title" content="台北一區上班小助手">
 
 <style>
-:root {
-  /* 二月：金箋紅火配色 */
-  --primary: #C41E3A;      /* 硃砂紅（主色） */
-  --primary-dark: #96162C; /* 深絳紅（按鈕深色） */
-  --secondary: #F9E4B7;    /* 溫潤金（副標題與淺色背景） */
-  --border: #E8D5B5;       /* 香檳金邊框 */
-  --bg: #FFF9F0;           /* 暖色奶油白（取代原本的淺綠背景，像宣紙色） */
+:root{
+  /* 方案三：大地復甦配色 */
+  --primary: #C41E3A;      /* 經典春聯紅 */
+  --primary-dark: #96162C;
+  --secondary: #F9E4B7;    /* 淺金燕麥色（背景卡片感） */
+  --border: #D1D7C4;
+  --bg: #FEF7F2;           /* 暖米色底色 */
 
-  --btn-generate: #C41E3A; /* 產生按鈕：火熱紅 */
-  --btn-copy: #AF923B;     /* 複製按鈕：富貴金 */
-  --card-bg: #FFFFFF;      /* 純白卡片，增加明亮度 */
+  --btn-generate: #C41E3A; /* 紅色按鈕 */
+  --btn-copy: #AF923B;     /* 亮金棕色（財富感） */
+  --card-bg: #FAF9F6;      /* 溫潤白 */
 }
 
-body {
-  font-family: -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
-  margin: 0;
-  padding: 14px 14px 90px;
+*,*::before,*::after{ box-sizing:border-box; }
+
+body{
+  font-family:-apple-system,BlinkMacSystemFont,system-ui,sans-serif;
+  margin:0;
+  padding:14px 14px 90px;
   background: var(--bg);
-  display: flex;
-  justify-content: center;
-  color: #3D1B1B; /* 深檀木色（取代深綠，更有墨寶質感，且與紅色更搭） */
-  overflow-x: hidden;
-}
-
-/* 針對綠色文字的細節修正 */
-.subtitle { 
-  text-align: center; 
-  font-size: 13px; 
-  color: #8B4513; /* 赭石色，取代原本的草綠色 */
-  margin-bottom: 8px; 
-}
-
-label { 
-  display: block; 
-  font-size: 14px; 
-  margin-top: 4px; 
-  color: #5D4037; /* 深褐紅，取代原本的深綠標籤 */
-}
-
-.section h2 { 
-  margin: 0 0 8px; 
-  font-size: 16px; 
-  font-weight: 700; 
-  color: var(--primary); /* 標題直接用硃砂紅 */
-}
-
-/* 修正輸入框 focus 時的顏色 */
-input:focus, select:focus {
-  outline: none;
-  border-color: var(--primary);
-  box-shadow: 0 0 0 2px rgba(196, 30, 58, 0.1);
+  display:flex;
+  justify-content:center;
+  color:#33422E; /* 深綠色調文字 */
+  overflow-x:hidden;
 }
 
 

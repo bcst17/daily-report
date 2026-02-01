@@ -29,7 +29,7 @@ async function sendReportToSheet(payload) {
 
 // ===== 【二月更新】新年噴發：紅包與金幣 =====
 function spawnNewYearShower() {
-    const symbols = ['🧧', '🪙', '✨', '🏮', '🧨', '🍊'];
+    const symbols = ['🧧', '🌸', '✨', '🏮', '🧨', '🍊'];
     const count = 18; 
 
     for (let i = 0; i < count; i++) {

@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
-<title>台北一區上班小助手🌿</title>
+<title>台北一區上班小助手</title>
 
 <link rel="manifest" href="manifest.json">
 
@@ -17,15 +17,15 @@
 <style>
 :root{
   /* 方案三：大地復甦配色 */
-  --primary: #8A9A5B;      /* 鼠尾草綠 */
-  --primary-dark: #708238;
-  --secondary: #E5D3B3;    /* 燕麥色 */
-  --border: #D1D7C4;
-  --bg: #F0F2EB;           /* 極淺灰綠背景 */
+  --primary: #C41E3A;      /* 經典春聯紅 */
+  --primary-dark: #96162C;
+  --secondary: #F9E4B7;    /* 淺金燕麥色（背景卡片感） */
+  --border: #E8D5B5;
+  --bg: #FFF9F0;           /* 暖米色底色 */
 
-  --btn-generate: #8A9A5B; /* 產生按鈕改為綠色 */
-  --btn-copy: #A68966;     /* 複製按鈕改為木質棕色 */
-  --card-bg: #FAF9F6;      /* 溫潤白 */
+  --btn-generate: #C41E3A; /* 紅色按鈕 */
+  --btn-copy: #AF923B;     /* 亮金棕色（財富感） */
+  --card-bg: #FBF4F4;      /* 溫潤白 */
 }
 
 *,*::before,*::after{ box-sizing:border-box; }
@@ -37,7 +37,7 @@ body{
   background: var(--bg);
   display:flex;
   justify-content:center;
-  color:#33422E; /* 深綠色調文字 */
+  color:#3D1B1B‎; /* 深綠色調文字 */
   overflow-x:hidden;
 }
 
@@ -48,16 +48,40 @@ body{
   margin-right:auto;
 }
 
-/* 🌿 標題增加一月慶生元素 */
-h1{ 
-  text-align:center; 
-  margin:6px 0 2px; 
-  font-size:22px; 
-  font-weight:700;
+/* 🧧 標題增加一月慶生元素 */
+/* 🧧 標題配置 */
+h1 { 
+  text-align: center; 
+  margin: 10px 0 5px; 
+  font-size: 24px; 
+  font-weight: 700;
   display: flex;
   justify-content: center;
   align-items: center;
-  gap: 8px;
+  gap: 12px; /* 調整文字與左右圖片春聯的距離 */
+  color: var(--primary);
+}
+
+/* 左側自訂春聯 */
+h1::before {
+  content: "";
+  display: block;
+  width: 35px;  /* 您可以根據圖片比例調整寬度 */
+  height: 35px; /* 您可以根據圖片比例調整高度 */
+  background: url("left-fai-chun.png") no-repeat center;
+  background-size: contain;
+  flex-shrink: 0;
+}
+
+/* 右側自訂春聯 */
+h1::after {
+  content: "";
+  display: block;
+  width: 35px;  /* 寬度建議與左側一致 */
+  height: 35px; /* 高度建議與左側一致 */
+  background: url("right-fai-chun.png") no-repeat center;
+  background-size: contain;
+  flex-shrink: 0;
 }
 
 .subtitle{ text-align:center; font-size:13px; color:#6A7A5B; margin-bottom:8px; }
@@ -76,7 +100,7 @@ h1{
   border:1px solid var(--border);
   background:#fff;
   font-size:14px;
-  color: #6A7A5B;
+  color: #8B4513;
   cursor: pointer;
 }
 
@@ -102,15 +126,15 @@ h1{
 .section::before {
   content: "";               /* 清除原本的葉子文字 */
   position: absolute;
-  top: -28px;                /* 向上偏移，讓帽子有突出來的感覺 */
-  left: -23px;               /* 向左偏移 */
-  width: 45px;               /* 調整帽子寬度 */
-  height: 45px;              /* 調整帽子高度 */
-  background-image: url("birthday-hat.png"); /* 👈 這裡請確保檔名正確 */
+  top: -24px;                /* 向上偏移，讓帽子有突出來的感覺 */
+  left: 320px;               /* 向左偏移 */
+  width: 100px;               /* 調整帽子寬度 */
+  height: 100px;              /* 調整帽子高度 */
+  background-image: url("red-envelope.png"); /* 👈 這裡請確保檔名正確 */
   background-size: contain;
   background-repeat: no-repeat;
   background-position: center;
-  transform: rotate(-37deg);  /* 輕微旋轉讓帽子更俏皮 */
+  transform: rotate(0deg);  /* 輕微旋轉讓帽子更俏皮 */
   z-index: 10;
   opacity: 1;                /* 恢復不透明度，讓帽子色彩鮮艷 */
   pointer-events: none;
@@ -231,12 +255,12 @@ button:active { transform: scale(0.98); }
 /* 角色裝飾定位 */
 .footer-character {
   position: absolute;
-  right: 10px;    /* 往右偏移，營造探頭感 */
-  bottom: 10px;   /* 往下偏移，與底部結合 */
+  right: 60px;    /* 往右偏移，營造探頭感 */
+  bottom: 19px;   /* 往下偏移，與底部結合 */
   width: 120px;    /* 根據圖片大小調整寬度 */
   height: auto;
   /* 核心調整 */
-  opacity: 0.3;         /* 調整透明度：0.1 很淡 ~ 0.9 很濃 */
+  opacity: 0.5;         /* 調整透明度：0.1 很淡 ~ 0.9 很濃 */
   z-index: 5;     /* 確保在文字框上方 */
   pointer-events: none; /* 重要！這讓使用者點擊圖片時，依然能選到下方的文字框 */
   filter: drop-shadow(2px 2px 5px rgba(0,0,0,0.1)); /* 增加輕微陰影更有立體感 */
@@ -266,7 +290,7 @@ button:active { transform: scale(0.98); }
 <body>
 <div class="container">
 
-<h1>台北一區上班小助手🌿</h1>
+<h1>台北一區上班小助手</h1>
 <p class="subtitle">輸入數字 → 產生訊息 → 複製貼到企業微信群組</p>
 
 <header class="tab-header">
@@ -373,22 +397,22 @@ button:active { transform: scale(0.98); }
   <div class="section">
   <textarea id="output" placeholder="按下『產生訊息』後文字會出現在這裡"></textarea>
   
-  <img src="character.png" class="footer-character" alt="decoration">
+  <img src="new-year-character.png" class="footer-character" alt="decoration">
   </div>
 </div>
 
 </div>
 
 <div class="actions">
-<button class="btn-primary" onclick="generateMessage()">🌱 產生訊息</button>
-<button class="btn-secondary" onclick="copyMessage()">✨ 複製文字</button>
+<button class="btn-primary" onclick="generateMessage()">💰 產生訊息</button>
+<button class="btn-secondary" onclick="copyMessage()">🏮 複製文字</button>
 </div>
 
 <div class="leaves">
-  <span>🍃</span><span>🌿</span><span>🍃</span><span>🌱</span><span>🍃</span><span>🌿</span>
+  <span>🧧</span><span>💰</span><span>🧧</span><span>✨</span><span>🧨</span><span>🧧</span>
 </div>
 
-<script src="app.js?v=11"></script>
+<script src="app.js?v=12"></script>
 
 </body>
 </html>

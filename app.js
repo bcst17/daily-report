@@ -286,11 +286,11 @@ function buildTodayVsYesterdayKpiText(todayForm) {
 async function copyMessage() {
     const text = $("output")?.value || "";
     if (!text.trim()) return;
-    spawnLeafShower(); // 複製成功也噴發一下！
+    spawnNewYearShower(); // 複製成功也噴發一下！
 
     try {
         await navigator.clipboard.writeText(text);
-        alert("✨ 已複製到剪貼簿，新年快樂！");
+        alert("🧧 訊息已複製！祝您業績長紅！");
     } catch {
         const ta = $("output");
         if (ta) { ta.select(); document.execCommand("copy"); alert("✨ 已複製到剪貼簿！"); }

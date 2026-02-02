@@ -220,7 +220,7 @@ function renderHuddle() {
 // ===== 【一月更新】產生訊息並觸發特效 =====
 function generateMessage() {
     saveToday();
-    spawnLeafShower(); // 觸發噴發效果
+    spawnNewYearShower(); // 觸發噴發效果
     
     const d = collectForm();
     const title = `${d.date}｜${(d.store || "")} ${(d.name || "")}`.trim();

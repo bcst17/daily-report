@@ -50,15 +50,39 @@ body{
 }
 
 /* 🧧 標題增加一月慶生元素 */
-h1{ 
-  text-align:center; 
-  margin:6px 0 2px; 
-  font-size:22px; 
-  font-weight:700;
+/* 🧧 標題配置 */
+h1 { 
+  text-align: center; 
+  margin: 10px 0 5px; 
+  font-size: 24px; 
+  font-weight: 700;
   display: flex;
   justify-content: center;
   align-items: center;
-  gap: 8px;
+  gap: 12px; /* 調整文字與左右圖片春聯的距離 */
+  color: var(--primary);
+}
+
+/* 左側自訂春聯 */
+h1::before {
+  content: "";
+  display: block;
+  width: 35px;  /* 您可以根據圖片比例調整寬度 */
+  height: 35px; /* 您可以根據圖片比例調整高度 */
+  background: url("left-fai-chun.png") no-repeat center;
+  background-size: contain;
+  flex-shrink: 0;
+}
+
+/* 右側自訂春聯 */
+h1::after {
+  content: "";
+  display: block;
+  width: 35px;  /* 寬度建議與左側一致 */
+  height: 35px; /* 高度建議與左側一致 */
+  background: url("right-fai-chun.png") no-repeat center;
+  background-size: contain;
+  flex-shrink: 0;
 }
 
 .subtitle{ text-align:center; font-size:13px; color:#6A7A5B; margin-bottom:8px; }

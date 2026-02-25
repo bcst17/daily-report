@@ -1,7 +1,52 @@
-console.log("✅ Jan Style app.js loaded");
+console.log("✅ Jan Style app.js loaded with Monthly Plan Support");
 
 // ✅ 測試版儲存前綴
 const STORAGE_PREFIX = "daily-report-test-";
+
+// ===== ↓↓↓ 當月計畫資料庫 (後台輸入區) ↓↓↓ =====
+// 這裡可以預先輸入每位同仁的計畫，數量不限
+const monthlyData = {
+  "郭孟鑫": [
+    { content: "確認 1~2 月 YTD 達標狀況與長庚 2 月成交進度落後問題", target: "確認春節暫借名單執行度及歸還時間是否需安排在 2 月" },
+    { content: "考量 3 月進度，全面確認歷年個人交貨客人，檢查是否有遺漏孤兒個案", target: "舊客進店盡量發放介紹卡" }
+  ],
+  "陳詩潔": [
+    { content: "著重台大潛客追蹤（1+2 月個人績效已達標）", target: "1. 台大成交率維持 40% 以上；2. 確認近幾個月潛客追蹤狀況；3. 確認訂閱個案轉買斷機會" }
+  ],
+  "游瑟焄": [
+    { content: "針對半年以上未進店之歷年站前舊客優先聯繫", target: "每月至少 2 位交貨，以達成林長目標" }
+  ],
+  "魏頎恩": [
+    { content: "2023往前的歷年舊客名單，針對半年以上未進店者聯繫", target: "每日聯繫四位，邀約目標2位回店(依3月份平均每日預約人數計算)" },
+    { content: "2025年台大RS潛客，聯繫邀約至門市體驗Vauto", target: "不設定目標，方案一優先" }
+  ],
+  "李孟馨": [
+    { content: "確認近三個月台大潛客名單", target: "不另撈名單，由本人於門市系統自行確認" },
+    { content: "聯繫台大歷年舊客（有效、高階、過保），優先邀約回站前店", target: "共 60 位名單，3 月底前完成（日均致電約 4 位）" }
+  ],
+  "劉瑋婷": [
+    { content: "HA0368693李素卿、HA0107324郭寶玉，多找幾個舊客新舊機比較的case，確認Intent展示比較差異", target: "2/4討論完，整理討論後的回饋給秉忻" },
+    { content: "金山南潛客名單，跟俊諺討論潛客邀約成功率，並設定每日五通名單", target: "每日五通，邀約成功率至少20%" }
+  ],
+  "周曉玄": [{ content: " ", target: " " }],
+  "蕭純聿": [
+    { content: "1.2月忠孝試聽來源，集中在新客(第一季HA目標24萬，忠孝成交23萬) 考量現有2+3月預約量，暫不用額外有外撥名單", target: "年初先持續把雲端表單新增，備好今年忠孝HA舊客換機目標名單" }
+  ],
+  "陳宛妤": [{ content: " ", target: " " }],
+  "林寓葳": [
+    { content: "天母1月份HST相較於12月少一半 1. 秉忻跟Leo確認近期轉介狀況 2. 寓葳抓9~11月區間的HST，確認是否有暫借APAP需求", target: "AHI > 15的個案皆有邀約暫借" },
+    { content: "目前春節暫借名單進度OK，可以先為3~4月目標做準備。先把2015~2018HA舊客名單看完(填寫用戶類別、用戶狀況)，同步確認可邀約回店服務名單", target: "2月底前完成 預計3月起開始針對歷年潛客聯繫。" }
+  ],
+  "吳欣珮": [
+    { content: "八德歷年交貨(工讀生已篩選完畢)，2/5.6這兩天盡可能先聯繫近半年未進店的名單聯繫完(2023往前)", target: "2月份多四位舊客進店" }
+  ],
+  "呂桂梅": [
+    { content: "八德歷年交貨「半年未進店」「半年有回電但無NS」，與欣珮合力完成2023~2018的名單", target: "安排過年前回店" },
+    { content: "APAP訂閱中名單，待秉忻確認優惠後聯繫鼓勵轉買斷", target: "N" }
+  ],
+  "李俊諺": [{ content: " ", target: " " }],
+  "蔡秉忻": [{ content: " ", target: " " }]
+};
 
 // ===== ↓↓↓ Google Sheet 串接（測試版）↓↓↓ =====
 const SHEET_INGEST_URL = "https://script.google.com/macros/s/AKfycbxwYN_YGa5W8Fqg8YrSPTFkhkqnLB61hZ3lFgU-5kIHTSK_DmasH573pv7GutF8wf8S/exec";
@@ -38,7 +83,7 @@ function spawnNewYearShower() {
         item.style.position = 'fixed';
         item.style.bottom = '80px';
         item.style.left = (Math.random() * 80 + 10) + '%';
-        item.style.fontSize = (Math.random() * 25 + 15) + 'px'; // 加大尺寸
+        item.style.fontSize = (Math.random() * 25 + 15) + 'px';
         item.style.zIndex = '100';
         item.style.pointerEvents = 'none';
         item.style.transition = 'all 1.2s cubic-bezier(0.25, 0.46, 0.45, 0.94)';
@@ -91,7 +136,7 @@ function num(val) {
 }
 function okText(ok) { return ok ? "✔️ 達成" : "✖️ 未達成"; }
 
-// ===== 儲存/讀取邏輯 (保持不變) =====
+// ===== 儲存/讀取邏輯 =====
 function saveToday() {
     const date = getCurrentDateStr();
     recalcTotals(false);
@@ -169,13 +214,81 @@ function recalcTotals(doSave = true) {
 }
 window.recalcTotals = recalcTotals;
 
+// ===== 分頁切換邏輯 (更新以支援新分頁) =====
 function showView(view) {
-    const isHuddle = view === "huddle";
-    $("huddle-view").classList.toggle("hidden", !isHuddle);
-    $("report-view").classList.toggle("hidden", isHuddle);
-    $("tab-huddle").classList.toggle("active", isHuddle);
-    $("tab-report").classList.toggle("active", !isHuddle);
-    if (isHuddle) renderHuddle();
+    const views = {
+        'huddle': $('huddle-view'),
+        'report': $('report-view'),
+        'plan': $('plan-view')
+    };
+    const tabs = {
+        'huddle': $('tab-huddle'),
+        'report': $('tab-report'),
+        'plan': $('tab-plan')
+    };
+
+    // 切換顯示狀態
+    Object.keys(views).forEach(key => {
+        if (views[key]) views[key].classList.toggle("hidden", key !== view);
+        if (tabs[key]) tabs[key].classList.toggle("active", key === view);
+    });
+
+    if (view === "huddle") renderHuddle();
+}
+
+// ===== 當月計畫渲染邏輯 (移除 Emoji 版) =====
+function initPlanTab() {
+    const select = $("plan-name-select");
+    const container = $("plan-list-container");
+    if (!select || !container) return;
+
+    // 清空並重新生成下拉選單選項
+    select.innerHTML = '<option value="">-- 請選擇 --</option>';
+    Object.keys(monthlyData).forEach(name => {
+        const opt = document.createElement("option");
+        opt.value = name;
+        opt.textContent = name;
+        select.appendChild(opt);
+    });
+
+    select.addEventListener("change", () => {
+        const name = select.value;
+        container.innerHTML = "";
+
+        if (!name || !monthlyData[name]) {
+            container.innerHTML = '<p style="text-align:center; color:#999; font-size:14px;">請選擇姓名以查看計畫</p>';
+            return;
+        }
+
+        // 生成任務卡片
+        monthlyData[name].forEach((plan, index) => {
+            const planEl = document.createElement("div");
+            planEl.style.cssText = "background: #fff; border: 1px solid var(--border); border-radius: 12px; padding: 18px; margin-bottom: 18px; border-left: 6px solid var(--primary); box-shadow: 0 4px 10px rgba(0,0,0,0.05);";
+            
+            planEl.innerHTML = `
+                <div style="font-weight: 800; color: var(--primary-dark); font-size: 19px; margin-bottom: 12px; border-bottom: 1px dashed var(--border); padding-bottom: 10px; letter-spacing: 1px;">任務 ${index + 1}</div>
+                
+                <div style="margin-bottom: 16px;">
+                    <div style="font-weight: bold; color: var(--primary); font-size: 14px; margin-bottom: 8px;">
+                        內容
+                    </div>
+                    <div style="font-size: 15px; line-height: 1.8; color: #333; padding-left: 2px; text-align: justify; word-break: break-all;">
+                        ${plan.content}
+                    </div>
+                </div>
+
+                <div>
+                    <div style="font-weight: bold; color: var(--primary); font-size: 14px; margin-bottom: 8px;">
+                        目標
+                    </div>
+                    <div style="font-size: 15px; line-height: 1.8; color: #444; padding-left: 2px; text-align: justify; word-break: break-all;">
+                        ${plan.target}
+                    </div>
+                </div>
+            `;
+            container.appendChild(planEl);
+        });
+    });
 }
 
 function renderHuddle() {
@@ -217,10 +330,10 @@ function renderHuddle() {
     }
 }
 
-// ===== 【一月更新】產生訊息並觸發特效 =====
+// ===== 產生訊息 =====
 function generateMessage() {
     saveToday();
-    spawnNewYearShower(); // 觸發噴發效果
+    spawnNewYearShower(); 
     
     const d = collectForm();
     const title = `${d.date}｜${(d.store || "")} ${(d.name || "")}`.trim();
@@ -243,7 +356,6 @@ ${buildTodayVsYesterdayKpiText(d)}`;
 
     if ($("output")) $("output").value = msg;
 
-    // Google Sheet 送出 (保持不變)
     try {
         const hash = simpleHash(msg);
         if (localStorage.getItem(sheetSentKey(d.date)) !== hash) {
@@ -282,11 +394,10 @@ function buildTodayVsYesterdayKpiText(todayForm) {
     ].join("\n");
 }
 
-// ===== 【一月更新】複製訊息並觸發特效 =====
 async function copyMessage() {
     const text = $("output")?.value || "";
     if (!text.trim()) return;
-    spawnNewYearShower(); // 複製成功也噴發一下！
+    spawnNewYearShower(); 
 
     try {
         await navigator.clipboard.writeText(text);
@@ -298,7 +409,7 @@ async function copyMessage() {
 }
 window.copyMessage = copyMessage;
 
-// ===== 初始化邏輯 (保持不變) =====
+// ===== 初始化邏輯 =====
 function bindAutoSave() {
     [ "store","name","todayCallPotential","todayCallOld3Y","todayInviteReturn",
       "todayBookingTotal","todayVisitTotal","trialHA","trialAPAP","dealHA","dealAPAP",
@@ -329,9 +440,13 @@ function initDateLoad() {
 }
 
 document.addEventListener("DOMContentLoaded", () => {
+    // 綁定分頁按鈕
     if($("tab-huddle")) $("tab-huddle").addEventListener("click", () => showView("huddle"));
     if($("tab-report")) $("tab-report").addEventListener("click", () => showView("report"));
+    if($("tab-plan")) $("tab-plan").addEventListener("click", () => showView("plan"));
+
     bindAutoSave();
     initDateLoad();
     renderHuddle();
+    initPlanTab(); // 初始化當月計畫分頁邏輯
 });

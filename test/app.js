@@ -1,7 +1,35 @@
-console.log("✅ Jan Style app.js loaded");
+console.log("✅ Jan Style app.js loaded with Monthly Plan Support");
 
 // ✅ 測試版儲存前綴
 const STORAGE_PREFIX = "daily-report-test-";
+
+// ===== ↓↓↓ 當月計畫資料庫 (後台輸入區) ↓↓↓ =====
+// 這裡可以預先輸入每位同仁的計畫，數量不限
+const monthlyData = {
+  "郭孟鑫": [
+    { content: "提升聽助具銷售額", target: "達成率 110%" },
+    { content: "完成 5 場社區衛教講座", target: "有效潛客 +20 位" },
+    { content: "iPAS AI 證照研習", target: "完成模擬試題練習" }
+  ],
+  "陳詩潔": [
+    { content: "優化售後回訪流程", target: "滿意度 4.8 顆星" },
+    { content: "舊客回流專案", target: "邀約回店人數提升 15%" }
+  ],
+  "游瑟焄": [
+    { content: "門市陳列優化", target: "完成春節主題佈置" }
+  ],
+  "魏頎恩": [{ content: "專業技術考核", target: "通過 A 級驗配師認證" }],
+  "李孟馨": [{ content: "客戶資料數位化", target: "完成 2024 年舊檔建檔" }],
+  "劉瑋婷": [{ content: "新人教育訓練", target: "帶領新進同仁完成首單" }],
+  "周曉玄": [{ content: "異業合作洽談", target: "新增 2 家合作藥局" }],
+  "蕭純聿": [{ content: "官方帳號經營", target: "每週發布 2 篇衛教文" }],
+  "陳宛妤": [{ content: "APAP 推廣計畫", target: "試戴轉換率提升至 30%" }],
+  "林寓葳": [{ content: "店務流程簡化", target: "縮短掛號等待時間 5 分鐘" }],
+  "吳欣珮": [{ content: "庫存管理優化", target: "達成零庫存差異目標" }],
+  "呂桂梅": [{ content: "資深客戶關懷", target: "完成 50 位老客戶電話問候" }],
+  "李俊諺": [{ content: "輔具補助諮詢", target: "協助 10 位客戶申請補助" }],
+  "蔡秉忻": [{ content: "門市環境整潔", target: "達成 5S 評核優等" }]
+};
 
 // ===== ↓↓↓ Google Sheet 串接（測試版）↓↓↓ =====
 const SHEET_INGEST_URL = "https://script.google.com/macros/s/AKfycbxwYN_YGa5W8Fqg8YrSPTFkhkqnLB61hZ3lFgU-5kIHTSK_DmasH573pv7GutF8wf8S/exec";
@@ -38,7 +66,7 @@ function spawnNewYearShower() {
         item.style.position = 'fixed';
         item.style.bottom = '80px';
         item.style.left = (Math.random() * 80 + 10) + '%';
-        item.style.fontSize = (Math.random() * 25 + 15) + 'px'; // 加大尺寸
+        item.style.fontSize = (Math.random() * 25 + 15) + 'px';
         item.style.zIndex = '100';
         item.style.pointerEvents = 'none';
         item.style.transition = 'all 1.2s cubic-bezier(0.25, 0.46, 0.45, 0.94)';
@@ -91,7 +119,7 @@ function num(val) {
 }
 function okText(ok) { return ok ? "✔️ 達成" : "✖️ 未達成"; }
 
-// ===== 儲存/讀取邏輯 (保持不變) =====
+// ===== 儲存/讀取邏輯 =====
 function saveToday() {
     const date = getCurrentDateStr();
     recalcTotals(false);
@@ -169,13 +197,65 @@ function recalcTotals(doSave = true) {
 }
 window.recalcTotals = recalcTotals;
 
+// ===== 分頁切換邏輯 (更新以支援新分頁) =====
 function showView(view) {
-    const isHuddle = view === "huddle";
-    $("huddle-view").classList.toggle("hidden", !isHuddle);
-    $("report-view").classList.toggle("hidden", isHuddle);
-    $("tab-huddle").classList.toggle("active", isHuddle);
-    $("tab-report").classList.toggle("active", !isHuddle);
-    if (isHuddle) renderHuddle();
+    const views = {
+        'huddle': $('huddle-view'),
+        'report': $('report-view'),
+        'plan': $('plan-view')
+    };
+    const tabs = {
+        'huddle': $('tab-huddle'),
+        'report': $('tab-report'),
+        'plan': $('tab-plan')
+    };
+
+    // 切換顯示狀態
+    Object.keys(views).forEach(key => {
+        if (views[key]) views[key].classList.toggle("hidden", key !== view);
+        if (tabs[key]) tabs[key].classList.toggle("active", key === view);
+    });
+
+    if (view === "huddle") renderHuddle();
+}
+
+// ===== 當月計畫渲染邏輯 =====
+function initPlanTab() {
+    const select = $("plan-name-select");
+    const container = $("plan-list-container");
+    if (!select || !container) return;
+
+    // 清空並重新生成下拉選單選項 (確保與資料庫同步)
+    select.innerHTML = '<option value="">-- 請選擇 --</option>';
+    Object.keys(monthlyData).forEach(name => {
+        const opt = document.createElement("option");
+        opt.value = name;
+        opt.textContent = name;
+        select.appendChild(opt);
+    });
+
+    // 監聽選擇事件
+    select.addEventListener("change", () => {
+        const name = select.value;
+        container.innerHTML = "";
+
+        if (!name || !monthlyData[name]) {
+            container.innerHTML = '<p style="text-align:center; color:#999; font-size:14px;">請選擇姓名以查看計畫</p>';
+            return;
+        }
+
+        // 生成計畫卡片
+        monthlyData[name].forEach((plan, index) => {
+            const planEl = document.createElement("div");
+            planEl.style.cssText = "background: #fff; border: 1px solid var(--border); border-radius: 10px; padding: 12px; margin-bottom: 10px; border-left: 5px solid var(--primary);";
+            planEl.innerHTML = `
+                <div style="font-weight: bold; color: var(--primary-dark); margin-bottom: 5px;">計畫 ${index + 1}</div>
+                <div style="font-size: 15px; margin-bottom: 4px;"><strong>內容：</strong>${plan.content}</div>
+                <div style="font-size: 14px; color: #666;"><strong>目標：</strong>${plan.target}</div>
+            `;
+            container.appendChild(planEl);
+        });
+    });
 }
 
 function renderHuddle() {
@@ -217,10 +297,10 @@ function renderHuddle() {
     }
 }
 
-// ===== 【一月更新】產生訊息並觸發特效 =====
+// ===== 產生訊息 =====
 function generateMessage() {
     saveToday();
-    spawnNewYearShower(); // 觸發噴發效果
+    spawnNewYearShower(); 
     
     const d = collectForm();
     const title = `${d.date}｜${(d.store || "")} ${(d.name || "")}`.trim();
@@ -243,7 +323,6 @@ ${buildTodayVsYesterdayKpiText(d)}`;
 
     if ($("output")) $("output").value = msg;
 
-    // Google Sheet 送出 (保持不變)
     try {
         const hash = simpleHash(msg);
         if (localStorage.getItem(sheetSentKey(d.date)) !== hash) {
@@ -282,11 +361,10 @@ function buildTodayVsYesterdayKpiText(todayForm) {
     ].join("\n");
 }
 
-// ===== 【一月更新】複製訊息並觸發特效 =====
 async function copyMessage() {
     const text = $("output")?.value || "";
     if (!text.trim()) return;
-    spawnNewYearShower(); // 複製成功也噴發一下！
+    spawnNewYearShower(); 
 
     try {
         await navigator.clipboard.writeText(text);
@@ -298,7 +376,7 @@ async function copyMessage() {
 }
 window.copyMessage = copyMessage;
 
-// ===== 初始化邏輯 (保持不變) =====
+// ===== 初始化邏輯 =====
 function bindAutoSave() {
     [ "store","name","todayCallPotential","todayCallOld3Y","todayInviteReturn",
       "todayBookingTotal","todayVisitTotal","trialHA","trialAPAP","dealHA","dealAPAP",
@@ -329,9 +407,13 @@ function initDateLoad() {
 }
 
 document.addEventListener("DOMContentLoaded", () => {
+    // 綁定分頁按鈕
     if($("tab-huddle")) $("tab-huddle").addEventListener("click", () => showView("huddle"));
     if($("tab-report")) $("tab-report").addEventListener("click", () => showView("report"));
+    if($("tab-plan")) $("tab-plan").addEventListener("click", () => showView("plan"));
+
     bindAutoSave();
     initDateLoad();
     renderHuddle();
+    initPlanTab(); // 初始化當月計畫分頁邏輯
 });

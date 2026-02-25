@@ -259,7 +259,7 @@ function initPlanTab() {
                 
                 <div style="margin-bottom: 16px;">
                     <div style="font-weight: bold; color: var(--primary); font-size: 14px; margin-bottom: 8px; display: flex; align-items: center; gap: 6px;">
-                        <span style="font-size: 16px;">📌</span> 行動計畫內容
+                        <span style="font-size: 16px;">📌</span> 內容
                     </div>
                     <div style="font-size: 15px; line-height: 1.8; color: #333; padding-left: 4px; text-align: justify; word-break: break-all;">
                         ${plan.content}
@@ -268,7 +268,7 @@ function initPlanTab() {
 
                 <div>
                     <div style="font-weight: bold; color: var(--primary); font-size: 14px; margin-bottom: 8px; display: flex; align-items: center; gap: 6px;">
-                        <span style="font-size: 16px;">🎯</span> 達成目標
+                        <span style="font-size: 16px;">🎯</span> 目標
                     </div>
                     <div style="font-size: 15px; line-height: 1.8; color: #444; padding-left: 4px; text-align: justify; word-break: break-all;">
                         ${plan.target}

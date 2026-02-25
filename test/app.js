@@ -236,14 +236,13 @@ function showView(view) {
     if (view === "huddle") renderHuddle();
 }
 
-// ===== 當月計畫渲染邏輯 (完整修正版) =====
+// ===== 當月計畫渲染邏輯 (移除 Emoji 版) =====
 function initPlanTab() {
     const select = $("plan-name-select");
     const container = $("plan-list-container");
     if (!select || !container) return;
 
-    // --- 補回選單生成邏輯 ---
-    // 清空並重新生成下拉選單選項 (確保與資料庫同步)
+    // 清空並重新生成下拉選單選項
     select.innerHTML = '<option value="">-- 請選擇 --</option>';
     Object.keys(monthlyData).forEach(name => {
         const opt = document.createElement("option");
@@ -252,7 +251,6 @@ function initPlanTab() {
         select.appendChild(opt);
     });
 
-    // --- 監聽選擇事件並渲染卡片 ---
     select.addEventListener("change", () => {
         const name = select.value;
         container.innerHTML = "";
@@ -262,29 +260,28 @@ function initPlanTab() {
             return;
         }
 
-        // 生成任務卡片 (已將「計畫」改為「任務」，並優化間距)
+        // 生成任務卡片
         monthlyData[name].forEach((plan, index) => {
             const planEl = document.createElement("div");
-            // 增加整體內距、圓角與陰影感
             planEl.style.cssText = "background: #fff; border: 1px solid var(--border); border-radius: 12px; padding: 18px; margin-bottom: 18px; border-left: 6px solid var(--primary); box-shadow: 0 4px 10px rgba(0,0,0,0.05);";
             
             planEl.innerHTML = `
                 <div style="font-weight: 800; color: var(--primary-dark); font-size: 19px; margin-bottom: 12px; border-bottom: 1px dashed var(--border); padding-bottom: 10px; letter-spacing: 1px;">任務 ${index + 1}</div>
                 
                 <div style="margin-bottom: 16px;">
-                    <div style="font-weight: bold; color: var(--primary); font-size: 14px; margin-bottom: 8px; display: flex; align-items: center; gap: 6px;">
-                        <span style="font-size: 16px;">📌</span> 內容
+                    <div style="font-weight: bold; color: var(--primary); font-size: 14px; margin-bottom: 8px;">
+                        內容
                     </div>
-                    <div style="font-size: 15px; line-height: 1.8; color: #333; padding-left: 4px; text-align: justify; word-break: break-all;">
+                    <div style="font-size: 15px; line-height: 1.8; color: #333; padding-left: 2px; text-align: justify; word-break: break-all;">
                         ${plan.content}
                     </div>
                 </div>
 
                 <div>
-                    <div style="font-weight: bold; color: var(--primary); font-size: 14px; margin-bottom: 8px; display: flex; align-items: center; gap: 6px;">
-                        <span style="font-size: 16px;">🎯</span> 目標
+                    <div style="font-weight: bold; color: var(--primary); font-size: 14px; margin-bottom: 8px;">
+                        目標
                     </div>
-                    <div style="font-size: 15px; line-height: 1.8; color: #444; padding-left: 4px; text-align: justify; word-break: break-all;">
+                    <div style="font-size: 15px; line-height: 1.8; color: #444; padding-left: 2px; text-align: justify; word-break: break-all;">
                         ${plan.target}
                     </div>
                 </div>

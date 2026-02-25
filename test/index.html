@@ -297,6 +297,7 @@ button:active { transform: scale(0.98); }
 <header class="tab-header">
   <button id="tab-huddle" type="button">今日檢視</button>
   <button id="tab-report" type="button" class="active">每日回報</button>
+  <button id="tab-plan" type="button">當月計畫</button>
 </header>
 
 <section id="huddle-view" class="section hidden">
@@ -357,6 +358,19 @@ button:active { transform: scale(0.98); }
   </select>
   </label>
   </div>
+
+  <section id="plan-view" class="section hidden">
+  <h2>個人月度行動計畫</h2>
+  
+  <label for="plan-name-select">請選擇姓名：</label>
+  <select id="plan-name-select">
+    <option value="">-- 請選擇 --</option>
+    </select>
+
+  <div id="plan-list-container" style="margin-top: 15px;">
+    <p style="text-align:center; color:#999; font-size:14px;">請選擇姓名以查看計畫</p>
+  </div>
+</section>
 
   <div class="section">
   <h2>1. 今日外撥</h2>

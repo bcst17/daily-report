@@ -49,7 +49,6 @@ body{
   margin-right:auto;
 }
 
-/* 🧧 標題增加一月慶生元素 */
 /* 🧧 標題配置 */
 h1 { 
   text-align: center; 
@@ -59,27 +58,25 @@ h1 {
   display: flex;
   justify-content: center;
   align-items: center;
-  gap: 12px; /* 調整文字與左右圖片春聯的距離 */
+  gap: 12px; 
   color: var(--primary);
 }
 
-/* 左側自訂春聯 */
 h1::before {
   content: "";
   display: block;
-  width: 35px;  /* 您可以根據圖片比例調整寬度 */
-  height: 35px; /* 您可以根據圖片比例調整高度 */
+  width: 35px;
+  height: 35px;
   background: url("left-fai-chun.png") no-repeat center;
   background-size: contain;
   flex-shrink: 0;
 }
 
-/* 右側自訂春聯 */
 h1::after {
   content: "";
   display: block;
-  width: 35px;  /* 寬度建議與左側一致 */
-  height: 35px; /* 高度建議與左側一致 */
+  width: 35px;
+  height: 35px;
   background: url("right-fai-chun.png") no-repeat center;
   background-size: contain;
   flex-shrink: 0;
@@ -111,7 +108,6 @@ h1::after {
   border-color:var(--primary);
 }
 
-/* 白色卡片樣式 - 移除聖誕帽與槲寄生 */
 .section{
   background: var(--card-bg);
   border-radius:14px;
@@ -123,21 +119,18 @@ h1::after {
   box-shadow: 0 2px 8px rgba(138, 154, 91, 0.1);
 }
 
-/* 🎂 將左上角葉子換成生日帽 */
 .section::before {
-  content: "";               /* 清除原本的葉子文字 */
+  content: "";
   position: absolute;
-  top: -24px;                /* 向上偏移，讓帽子有突出來的感覺 */
-  left: 320px;               /* 向左偏移 */
-  width: 100px;               /* 調整帽子寬度 */
-  height: 100px;              /* 調整帽子高度 */
-  background-image: url("red-envelope.png"); /* 👈 這裡請確保檔名正確 */
+  top: -24px;
+  left: 320px;
+  width: 100px;
+  height: 100px;
+  background-image: url("red-envelope.png");
   background-size: contain;
   background-repeat: no-repeat;
   background-position: center;
-  transform: rotate(0deg);  /* 輕微旋轉讓帽子更俏皮 */
   z-index: 10;
-  opacity: 1;                /* 恢復不透明度，讓帽子色彩鮮艷 */
   pointer-events: none;
 }
 
@@ -198,7 +191,7 @@ button:active { transform: scale(0.98); }
   color:#fff;
 }
 
-/* =============== 🍃 Leaf Animation (一月生機動畫) =============== */
+/* =============== 🍃 Leaf Animation =============== */
 .leaves {
   pointer-events:none;
   position:fixed;
@@ -224,7 +217,6 @@ button:active { transform: scale(0.98); }
   100% { transform: translate(100px, 105vh) rotate(360deg); opacity: 0; }
 }
 
-/* 葉片隨機分佈與差異化 */
 .leaves span:nth-child(1){ left:10%; animation-duration: 8s; animation-delay: 0s; }
 .leaves span:nth-child(2){ left:25%; animation-duration: 12s; animation-delay: 2s; }
 .leaves span:nth-child(3){ left:40%; animation-duration: 10s; animation-delay: 4s; }
@@ -232,10 +224,8 @@ button:active { transform: scale(0.98); }
 .leaves span:nth-child(5){ left:80%; animation-duration: 11s; animation-delay: 5s; }
 .leaves span:nth-child(6){ left:95%; animation-duration: 13s; animation-delay: 3s; }
 
-/* 🔹 顯示 / 隱藏用 */
 .hidden{ display:none; }
 
-/* 🔹 狀態標籤優化 */
 .badge{
   display:inline-block;
   margin-left:6px;
@@ -248,31 +238,26 @@ button:active { transform: scale(0.98); }
 .badge.yellow{ background:#FFF7E1; color:#8A6D3B; }
 .badge.red{ background:#FBEAEA; color:#A94442; }
 
-/* Huddle 樣式微調 */
 .huddle-row{ display:flex; justify-content:space-between; align-items:center; margin-top:8px; font-size:14px; }
 .huddle-separator{ height:1px; background:var(--border); margin:12px 0; opacity:0.5; }
 .check-row{ display:flex; justify-content:space-between; align-items:flex-start; margin-top:10px; font-size:14px; }
 
-/* 角色裝飾定位 */
 .footer-character {
   position: absolute;
-  right: 60px;    /* 往右偏移，營造探頭感 */
-  bottom: 19px;   /* 往下偏移，與底部結合 */
-  width: 120px;    /* 根據圖片大小調整寬度 */
+  right: 60px;
+  bottom: 19px;
+  width: 120px;
   height: auto;
-  /* 核心調整 */
-  opacity: 0.5;         /* 調整透明度：0.1 很淡 ~ 0.9 很濃 */
-  z-index: 5;     /* 確保在文字框上方 */
-  pointer-events: none; /* 重要！這讓使用者點擊圖片時，依然能選到下方的文字框 */
-  filter: drop-shadow(2px 2px 5px rgba(0,0,0,0.1)); /* 增加輕微陰影更有立體感 */
+  opacity: 0.5;
+  z-index: 5;
+  pointer-events: none;
+  filter: drop-shadow(2px 2px 5px rgba(0,0,0,0.1));
 }
 
-/* 確保父容器不會切掉超出的角色 */
 .section:last-of-type {
   overflow: visible !important;
 }
 
-/* 針對小螢幕微調，避免擋住太多文字 */
 @media (max-width: 400px) {
   .footer-character {
     width: 90px;
@@ -280,10 +265,9 @@ button:active { transform: scale(0.98); }
     bottom: -15px;
   }
 }
-/* 專門針對日期的修改 */
 #date {
-  width: 94%; /* 你可以調整成想要的百分比或像素，如 200px */
-  display: block; /* 確保它不會跟標籤擠在同一行，或改成 inline-block 併排 */
+  width: 94%;
+  display: block;
 }
 </style>
 </head>
@@ -342,83 +326,78 @@ button:active { transform: scale(0.98); }
   </div>
 </section>
 
-<div id="report-view">
-  <div class="section">
-  <h2>基本資訊</h2>
-  <label>日期： <input type="date" id="date"></label>
-  <label>店名： <input type="text" id="store" placeholder="例：站前"></label>
-  <label>姓名：
-  <select id="name">
-    <option value="">請選擇同仁姓名</option>
-    <option>郭孟鑫</option><option>陳詩潔</option><option>游瑟焄</option>
-    <option>魏頎恩</option><option>李孟馨</option><option>劉瑋婷</option>
-    <option>周曉玄</option><option>蕭純聿</option><option>陳宛妤</option>
-    <option>林寓葳</option><option>吳欣珮</option><option>呂桂梅</option>
-    <option>李俊諺</option><option>蔡秉忻</option>
-  </select>
-  </label>
-  </div>
-
-  <section id="plan-view" class="section hidden">
+<section id="plan-view" class="section hidden">
   <h2>個人月度行動計畫</h2>
-  
   <label for="plan-name-select">請選擇姓名：</label>
   <select id="plan-name-select">
     <option value="">-- 請選擇 --</option>
-    </select>
-
+  </select>
   <div id="plan-list-container" style="margin-top: 15px;">
     <p style="text-align:center; color:#999; font-size:14px;">請選擇姓名以查看計畫</p>
   </div>
 </section>
 
+<div id="report-view">
   <div class="section">
-  <h2>1. 今日外撥</h2>
-  <label>潛客外撥通數：<input type="number" id="todayCallPotential" inputmode="numeric" oninput="recalcTotals()"></label>
-  <label>過保舊客外撥通數：<input type="number" id="todayCallOld3Y" inputmode="numeric" oninput="recalcTotals()"></label>
-  <label>今日外撥總通數：<input type="number" id="todayCallTotal" readonly></label>
-  <label>成功邀約回店人數：<input type="number" id="todayInviteReturn" inputmode="numeric"></label>
+    <h2>基本資訊</h2>
+    <label>日期： <input type="date" id="date"></label>
+    <label>店名： <input type="text" id="store" placeholder="例：站前"></label>
+    <label>姓名：
+    <select id="name">
+      <option value="">請選擇同仁姓名</option>
+      <option>郭孟鑫</option><option>陳詩潔</option><option>游瑟焄</option>
+      <option>魏頎恩</option><option>李孟馨</option><option>劉瑋婷</option>
+      <option>周曉玄</option><option>蕭純聿</option><option>陳宛妤</option>
+      <option>林寓葳</option><option>吳欣珮</option><option>呂桂梅</option>
+      <option>李俊諺</option><option>蔡秉忻</option>
+    </select>
+    </label>
   </div>
 
   <div class="section">
-  <h2>2. 今日預約</h2>
-  <label>今日預約總數：<input type="number" id="todayBookingTotal" inputmode="numeric"></label>
-  <div id="todayBookingHint" style="font-size:12px;color:#96162C;margin-top:4px;display:none;">
-    （已帶入昨日填寫的「明日已排預約」：<span id="todayBookingHintValue"></span> 位）
-  </div>
-  </div>
-
-  <div class="section">
-  <h2>3. 今日到店</h2>
-  <label>今日到店總數：<input type="number" id="todayVisitTotal" inputmode="numeric"></label>
-  <label>試用 HA：<input type="number" id="trialHA" inputmode="numeric"></label>
-  <label>試用 APAP：<input type="number" id="trialAPAP" inputmode="numeric"></label>
-  <label>成交 HA：<input type="number" id="dealHA" inputmode="numeric"></label>
-  <label>成交 APAP：<input type="number" id="dealAPAP" inputmode="numeric"></label>
+    <h2>1. 今日外撥</h2>
+    <label>潛客外撥通數：<input type="number" id="todayCallPotential" inputmode="numeric" oninput="recalcTotals()"></label>
+    <label>過保舊客外撥通數：<input type="number" id="todayCallOld3Y" inputmode="numeric" oninput="recalcTotals()"></label>
+    <label>今日外撥總通數：<input type="number" id="todayCallTotal" readonly></label>
+    <label>成功邀約回店人數：<input type="number" id="todayInviteReturn" inputmode="numeric"></label>
   </div>
 
   <div class="section">
-  <h2>4. 明日已排預約</h2>
-  <label>明日預約總數：<input type="number" id="tomorrowBookingTotal" inputmode="numeric"></label>
+    <h2>2. 今日預約</h2>
+    <label>今日預約總數：<input type="number" id="todayBookingTotal" inputmode="numeric"></label>
+    <div id="todayBookingHint" style="font-size:12px;color:#96162C;margin-top:4px;display:none;">
+      （已帶入昨日填寫的「明日已排預約」：<span id="todayBookingHintValue"></span> 位）
+    </div>
   </div>
 
   <div class="section">
-  <h2>5. 明日 KPI</h2>
-  <label>外撥目標通數：<input type="number" id="tomorrowKpiCallTotal" inputmode="numeric"></label>
-  <label>邀約回店目標數 (位)：<input type="number" id="tomorrowKpiCallOld3Y" inputmode="numeric"></label>
-  <label>完成HA/APAP試戴目標 (位)：<input type="number" id="tomorrowKpiTrial" inputmode="numeric"></label>
+    <h2>3. 今日到店</h2>
+    <label>今日到店總數：<input type="number" id="todayVisitTotal" inputmode="numeric"></label>
+    <label>試用 HA：<input type="number" id="trialHA" inputmode="numeric"></label>
+    <label>試用 APAP：<input type="number" id="trialAPAP" inputmode="numeric"></label>
+    <label>成交 HA：<input type="number" id="dealHA" inputmode="numeric"></label>
+    <label>成交 APAP：<input type="number" id="dealAPAP" inputmode="numeric"></label>
   </div>
 
   <div class="section">
-  <textarea id="output" placeholder="按下『產生訊息』後文字會出現在這裡"></textarea>
-  
-  <img src="new-year-character.png" class="footer-character" alt="decoration">
+    <h2>4. 明日已排預約</h2>
+    <label>明日預約總數：<input type="number" id="tomorrowBookingTotal" inputmode="numeric"></label>
+  </div>
+
+  <div class="section">
+    <h2>5. 明日 KPI</h2>
+    <label>外撥目標通數：<input type="number" id="tomorrowKpiCallTotal" inputmode="numeric"></label>
+    <label>邀約回店目標數 (位)：<input type="number" id="tomorrowKpiCallOld3Y" inputmode="numeric"></label>
+    <label>完成HA/APAP試戴目標 (位)：<input type="number" id="tomorrowKpiTrial" inputmode="numeric"></label>
+  </div>
+
+  <div class="section">
+    <textarea id="output" placeholder="按下『產生訊息』後文字會出現在這裡"></textarea>
+    <img src="new-year-character.png" class="footer-character" alt="decoration">
   </div>
 </div>
 
-</div>
-
-<div class="actions">
+</div> <div class="actions">
 <button class="btn-primary" onclick="generateMessage()">💰 產生訊息</button>
 <button class="btn-secondary" onclick="copyMessage()">🏮 複製文字</button>
 </div>
@@ -427,7 +406,7 @@ button:active { transform: scale(0.98); }
   <span>🧧</span><span>💰</span><span>🧧</span><span>✨</span><span>🧨</span><span>🧧</span>
 </div>
 
-<script src="app.js?v=9"></script>
+<script src="app.js?v=10"></script>
 
 </body>
 </html>

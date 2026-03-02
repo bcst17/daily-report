@@ -121,8 +121,8 @@ h1::after {
 .section::before {
   content: "";
   position: absolute;
-  top: -20px;
-  left: 10px;
+  top: -40px;
+  left: -10px;
   width: 80px;
   height: 80px;
   background-image: url("bamboo-copter.png"); /* 竹蜻蜓 */
@@ -131,7 +131,7 @@ h1::after {
   background-position: center;
   z-index: 10;
   pointer-events: none;
-  transform: rotate(45deg);
+  transform: rotate(-35deg);
 }
 
 .section h2{ margin:0 0 8px; font-size:16px; font-weight:700; color: var(--primary-dark); }
@@ -246,7 +246,7 @@ button:active { transform: scale(0.98); }
   position: absolute;
   right: 60px;
   bottom: 19px;
-  width: 120px;
+  width: 360px;
   height: auto;
   opacity: 0.5;
   z-index: 5;
@@ -260,7 +260,7 @@ button:active { transform: scale(0.98); }
 
 @media (max-width: 400px) {
   .footer-character {
-    width: 240px;
+    width: 80px;
     right: -5px;
     bottom: -15px;
   }

@@ -1,4 +1,4 @@
-console.log("✅ Jan Style app.js loaded with Monthly Plan Support");
+console.log("🌸 Mar Style app.js loaded: Sakura & Doraemon Edition");
 
 // ✅ 測試版儲存前綴
 const STORAGE_PREFIX = "daily-report-test-";
@@ -72,10 +72,10 @@ async function sendReportToSheet(payload) {
     return true;
 }
 
-// ===== 【二月更新】新年噴發：紅包與金幣 =====
-function spawnNewYearShower() {
-    const symbols = ['🧧', '🌸', '✨', '🏮', '🧨', '🍊'];
-    const count = 18; 
+// ===== 【三月更新】櫻花與鈴鐺噴發特效 =====
+function spawnSakuraShower() {
+    const symbols = ['🌸', '🔔', '💗', '🍡', '✨']; // 櫻花、鈴鐺、愛心、三色糰子
+    const count = 20; 
 
     for (let i = 0; i < count; i++) {
         const item = document.createElement('div');
@@ -83,22 +83,22 @@ function spawnNewYearShower() {
         item.style.position = 'fixed';
         item.style.bottom = '80px';
         item.style.left = (Math.random() * 80 + 10) + '%';
-        item.style.fontSize = (Math.random() * 25 + 15) + 'px';
+        item.style.fontSize = (Math.random() * 20 + 15) + 'px';
         item.style.zIndex = '100';
         item.style.pointerEvents = 'none';
-        item.style.transition = 'all 1.2s cubic-bezier(0.25, 0.46, 0.45, 0.94)';
+        item.style.transition = 'all 1.5s cubic-bezier(0.19, 1, 0.22, 1)'; // 更加輕柔的飄落感
         
         document.body.appendChild(item);
 
-        const destinationX = (Math.random() - 0.5) * 250;
-        const destinationY = -(Math.random() * 400 + 150);
+        const destinationX = (Math.random() - 0.5) * 300;
+        const destinationY = -(Math.random() * 500 + 200);
 
         requestAnimationFrame(() => {
-            item.style.transform = `translate(${destinationX}px, ${destinationY}px) rotate(${Math.random() * 720}deg)`;
+            item.style.transform = `translate(${destinationX}px, ${destinationY}px) rotate(${Math.random() * 540}deg)`;
             item.style.opacity = '0';
         });
 
-        setTimeout(() => item.remove(), 1200);
+        setTimeout(() => item.remove(), 1500);
     }
 }
 
@@ -333,7 +333,7 @@ function renderHuddle() {
 // ===== 產生訊息 =====
 function generateMessage() {
     saveToday();
-    spawnNewYearShower(); 
+    spawnSakuraShower(); 
     
     const d = collectForm();
     const title = `${d.date}｜${(d.store || "")} ${(d.name || "")}`.trim();
@@ -397,11 +397,11 @@ function buildTodayVsYesterdayKpiText(todayForm) {
 async function copyMessage() {
     const text = $("output")?.value || "";
     if (!text.trim()) return;
-    spawnNewYearShower(); 
+    spawnSakuraShower(); 
 
     try {
         await navigator.clipboard.writeText(text);
-        alert("🧧 訊息已複製！祝您業績長紅！");
+        alert("🌸 訊息已複製！祝您三月業績如櫻花盛開！");
     } catch {
         const ta = $("output");
         if (ta) { ta.select(); document.execCommand("copy"); alert("✨ 已複製到剪貼簿！"); }

@@ -230,8 +230,9 @@ function showView(view) {
     });
 
     if (view === "huddle") {
-        renderHuddle();
-        fetchAndRenderProgress(); // 🚀 關鍵：切換時自動更新進度
+        // 🚀 優先跑進度抓取，並用 try-catch 隔開
+        try { fetchAndRenderProgress(); } catch(e) { console.error(e); }
+        try { renderHuddle(); } catch(e) { console.error(e); }
     }
 }
 
@@ -343,6 +344,7 @@ function renderHuddle() {
     const { d1, d0 } = getPrevTwoDataDates(today);
     const prevData = d1 ? loadByDate(d1) : null;
 
+    // 🚀 加上安全檢查：先確認元素存在 (if ($("..."))) 再賦值
     if ($("huddleTodayBooking")) $("huddleTodayBooking").textContent = (prevData?.tomorrowBookingTotal ?? "-") || "-";
     if ($("huddleTodayTrial")) $("huddleTodayTrial").textContent = (prevData?.tomorrowKpiTrial ?? "-") || "-";
     if ($("huddleTodayCallTotal")) $("huddleTodayCallTotal").textContent = (prevData?.tomorrowKpiCallTotal ?? "-") || "-";
@@ -350,10 +352,15 @@ function renderHuddle() {
 
     const hintBox = $("todayBookingHint");
     if (hintBox && prevData?.tomorrowBookingTotal) {
-        $("todayBookingHintValue").textContent = prevData.tomorrowBookingTotal;
+        if ($("todayBookingHintValue")) $("todayBookingHintValue").textContent = prevData.tomorrowBookingTotal;
         hintBox.style.display = "block";
-        if (v("todayBookingTotal") === "") { $("todayBookingTotal").value = prevData.tomorrowBookingTotal; saveToday(); }
-    } else if (hintBox) { hintBox.style.display = "none"; }
+        if (v("todayBookingTotal") === "") { 
+            if ($("todayBookingTotal")) $("todayBookingTotal").value = prevData.tomorrowBookingTotal; 
+            saveToday(); 
+        }
+    } else if (hintBox) { 
+        hintBox.style.display = "none"; 
+    }
 
     const execData = d1 ? loadByDate(d1) : null;
     const kpiSetData = d0 ? loadByDate(d0) : null;
@@ -363,12 +370,13 @@ function renderHuddle() {
     const actualCall = num(execData.todayCallPotential) + num(execData.todayCallOld3Y);
     const actualInvite = num(execData.todayInviteReturn);
 
-    $("checkTrialText").textContent = `目標 ${num(kpiSetData.tomorrowKpiTrial)} / 執行 ${actualTrial} ${okText(actualTrial >= num(kpiSetData.tomorrowKpiTrial))}`;
-    $("checkCallText").textContent = `目標 ${num(kpiSetData.tomorrowKpiCallTotal)} / 執行 ${actualCall} ${okText(actualCall >= num(kpiSetData.tomorrowKpiCallTotal))}`;
-    $("checkInviteText").textContent = `目標 ${num(kpiSetData.tomorrowKpiCallOld3Y)} / 執行 ${actualInvite} ${okText(actualInvite >= num(kpiSetData.tomorrowKpiCallOld3Y))}`;
+    // 🚀 這裡也是安全檢查
+    if ($("checkTrialText")) $("checkTrialText").textContent = `目標 ${num(kpiSetData.tomorrowKpiTrial)} / 執行 ${actualTrial} ${okText(actualTrial >= num(kpiSetData.tomorrowKpiTrial))}`;
+    if ($("checkCallText")) $("checkCallText").textContent = `目標 ${num(kpiSetData.tomorrowKpiCallTotal)} / 執行 ${actualCall} ${okText(actualCall >= num(kpiSetData.tomorrowKpiCallTotal))}`;
+    if ($("checkInviteText")) $("checkInviteText").textContent = `目標 ${num(kpiSetData.tomorrowKpiCallOld3Y)} / 執行 ${actualInvite} ${okText(actualInvite >= num(kpiSetData.tomorrowKpiCallOld3Y))}`;
 
     const rate = actualCall > 0 ? (actualInvite / actualCall) : 0;
-    $("checkInviteRateText").textContent = Math.round(rate * 100) + "%";
+    if ($("checkInviteRateText")) $("checkInviteRateText").textContent = Math.round(rate * 100) + "%";
     const badge = $("checkInviteRateBadge");
     if (badge) {
         badge.style.display = "inline-block";

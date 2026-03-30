@@ -244,8 +244,8 @@ function initPlanTab() {
 
     if (!selectName || !container) return;
 
-    // 1. 生成姓名下拉選單 (保持原樣)
-    selectName.innerHTML = '<option value="">-- 請選擇同仁 --</option>';
+    // 1. 生成姓名下拉選單 (維持原樣，但預設值改為「全區同仁」)
+    selectName.innerHTML = '<option value="">-- 全區同仁 --</option>';
     Object.keys(monthlyData).forEach(name => {
         const opt = document.createElement("option");
         opt.value = name;
@@ -255,65 +255,83 @@ function initPlanTab() {
 
     // 核心渲染函式
     const renderPlans = () => {
-        const name = selectName.value;
+        const selectedName = selectName.value;
         const filterCust = selectCustomer.value;
         const filterItem = selectItem.value;
 
         container.innerHTML = "";
 
-        if (!name || !monthlyData[name]) {
-            container.innerHTML = '<p style="text-align:center; color:#999; font-size:14px;">請選擇同仁以查看計畫</p>';
-            return;
+        // 2. 資料彙整策略
+        let tasksToFilter = [];
+
+        if (selectedName === "") {
+            // 如果沒選姓名：彙整所有人的任務，並補上姓名標籤
+            Object.entries(monthlyData).forEach(([name, tasks]) => {
+                tasks.forEach(task => {
+                    // 過濾掉全空的空白任務
+                    if (task.content.trim() !== "" || task.target.trim() !== "") {
+                        tasksToFilter.push({ ...task, staffName: name });
+                    }
+                });
+            });
+        } else {
+            // 如果選了特定姓名：只取該同仁任務
+            const individualTasks = monthlyData[selectedName] || [];
+            tasksToFilter = individualTasks.map(task => ({ ...task, staffName: selectedName }));
         }
 
-        // 2. 執行篩選邏輯 (AND 邏輯)
-        const filteredData = monthlyData[name].filter(plan => {
+        // 3. 執行交叉篩選 (AND 邏輯)
+        const filteredData = tasksToFilter.filter(plan => {
             const matchCust = (filterCust === "all" || plan.customerType === filterCust);
             const matchItem = (filterItem === "all" || plan.itemType === filterItem);
             return matchCust && matchItem;
         });
 
         if (filteredData.length === 0) {
-            container.innerHTML = '<p style="text-align:center; color:#999; font-size:14px;">查無符合條件的任務</p>';
+            container.innerHTML = '<p style="text-align:center; color:#999; font-size:14px; margin-top:20px;">目前無符合篩選條件的計畫內容</p>';
             return;
         }
 
-        // 3. 生成任務卡片
+        // 4. 生成任務卡片
         filteredData.forEach((plan, index) => {
             const planEl = document.createElement("div");
-            planEl.style.cssText = "background: #fff; border: 1px solid var(--border); border-radius: 12px; padding: 18px; margin-bottom: 18px; border-left: 6px solid var(--primary); box-shadow: 0 4px 10px rgba(0,0,0,0.05); position:relative;";
+            planEl.style.cssText = "background: #fff; border: 1px solid var(--border); border-radius: 12px; padding: 18px; margin-bottom: 18px; border-left: 6px solid var(--primary); box-shadow: 0 4px 10px rgba(0,0,0,0.05);";
             
-            // 標籤顏色邏輯
-            const custColor = plan.customerType === '潛客' ? '#FF6B6B' : '#4D96FF';
+            // 標籤顏色定義
+            const custColor = plan.customerType === '潛客' ? '#FF6B6B' : (plan.customerType === '新客' ? '#4D96FF' : '#8B4513');
             const itemColor = plan.itemType === 'RS' ? '#6BCB77' : '#FFA41B';
 
             planEl.innerHTML = `
-                <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom: 12px; border-bottom: 1px dashed var(--border); padding-bottom: 10px;">
-                    <div style="font-weight: 800; color: var(--primary-dark); font-size: 19px; letter-spacing: 1px;">任務 ${index + 1}</div>
+                <div style="display:flex; justify-content:space-between; align-items:flex-start; margin-bottom: 12px; border-bottom: 1px dashed var(--border); padding-bottom: 10px;">
                     <div>
-                        <span style="background:${custColor}; color:#fff; padding:2px 8px; border-radius:4px; font-size:12px; margin-right:4px;">${plan.customerType || '未分類'}</span>
-                        <span style="background:${itemColor}; color:#fff; padding:2px 8px; border-radius:4px; font-size:12px;">${plan.itemType || '未分類'}</span>
+                        <div style="font-weight: 800; color: var(--primary-dark); font-size: 18px;">${plan.staffName}</div>
+                        <div style="font-size: 12px; color: #999; margin-top: 2px;">任務序號 #${index + 1}</div>
+                    </div>
+                    <div style="text-align: right;">
+                        <span style="display:inline-block; background:${custColor}; color:#fff; padding:2px 8px; border-radius:4px; font-size:11px; margin-bottom:4px;">${plan.customerType || '未分類'}</span><br>
+                        <span style="display:inline-block; background:${itemColor}; color:#fff; padding:2px 8px; border-radius:4px; font-size:11px;">${plan.itemType || '未分類'}</span>
                     </div>
                 </div>
                 
                 <div style="margin-bottom: 16px;">
-                    <div style="font-weight: bold; color: var(--primary); font-size: 14px; margin-bottom: 4px;">內容</div>
-                    <div style="font-size: 15px; line-height: 1.6; color: #333;">${plan.content}</div>
+                    <div style="font-weight: bold; color: var(--primary); font-size: 13px; margin-bottom: 4px;">行動方案</div>
+                    <div style="font-size: 15px; line-height: 1.6; color: #333; text-align: justify;">${plan.content}</div>
                 </div>
 
                 <div>
-                    <div style="font-weight: bold; color: var(--primary); font-size: 14px; margin-bottom: 4px;">目標</div>
-                    <div style="font-size: 15px; line-height: 1.6; color: #666;">${plan.target}</div>
+                    <div style="font-weight: bold; color: var(--primary); font-size: 13px; margin-bottom: 4px;">預期目標</div>
+                    <div style="font-size: 15px; line-height: 1.6; color: #666; text-align: justify;">${plan.target}</div>
                 </div>
             `;
             container.appendChild(planEl);
         });
     };
 
-    // 監聽三個選單的變化
-    selectName.addEventListener("change", renderPlans);
-    selectCustomer.addEventListener("change", renderPlans);
-    selectItem.addEventListener("change", renderPlans);
+    // 監聽變更
+    [selectName, selectCustomer, selectItem].forEach(el => el.addEventListener("change", renderPlans));
+    
+    // 初始化執行一次渲染（預設顯示全區）
+    renderPlans();
 }
 
 function renderHuddle() {

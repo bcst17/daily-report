@@ -3,6 +3,12 @@ console.log("🌸 Mar Style app.js loaded: Sakura & Doraemon Edition");
 // ✅ 測試版儲存前綴
 const STORAGE_PREFIX = "daily-report-test-";
 
+const PROGRESS_API_URL = "https://script.google.com/macros/s/AKfycbwXkfOGNoNFe1hO8idKs-IK4Q4ZixHv-IkdssDIWpSpoH2d6O2IjhKVOOmlLy-pR6BF/exec";
+const TRACKING_CONFIG = {
+  "李孟馨": { category: "台大HA潛客聯繫", target: 20 },
+
+};
+
 // ===== ↓↓↓ 當月計畫資料庫 (後台輸入區) ↓↓↓ =====
 // 這裡可以預先輸入每位同仁的計畫，數量不限
 const monthlyData = {
@@ -215,24 +221,18 @@ window.recalcTotals = recalcTotals;
 
 // ===== 分頁切換邏輯 (更新以支援新分頁) =====
 function showView(view) {
-    const views = {
-        'huddle': $('huddle-view'),
-        'report': $('report-view'),
-        'plan': $('plan-view')
-    };
-    const tabs = {
-        'huddle': $('tab-huddle'),
-        'report': $('tab-report'),
-        'plan': $('tab-plan')
-    };
+    const views = { 'huddle': $('huddle-view'), 'report': $('report-view'), 'plan': $('plan-view') };
+    const tabs = { 'huddle': $('tab-huddle'), 'report': $('tab-report'), 'plan': $('tab-plan') };
 
-    // 切換顯示狀態
     Object.keys(views).forEach(key => {
         if (views[key]) views[key].classList.toggle("hidden", key !== view);
         if (tabs[key]) tabs[key].classList.toggle("active", key === view);
     });
 
-    if (view === "huddle") renderHuddle();
+    if (view === "huddle") {
+        renderHuddle();
+        fetchAndRenderProgress(); // 🚀 關鍵：切換時自動更新進度
+    }
 }
 
 // ===== 當月計畫渲染邏輯 (移除 Emoji 版) =====
@@ -377,6 +377,58 @@ function renderHuddle() {
     }
 }
 
+// 3. 核心抓取函式
+async function fetchAndRenderProgress() {
+    const container = $("progress-dashboard");
+    if (!container) return;
+
+    try {
+        const response = await fetch(PROGRESS_API_URL);
+        if (!response.ok) throw new Error("網路請求失敗");
+        
+        const sheetData = await response.json();
+
+        container.innerHTML = ""; // 清空載入中文字
+
+        Object.keys(TRACKING_CONFIG).forEach(name => {
+            const config = TRACKING_CONFIG[name];
+            
+            // 計算完成筆數：篩選「聯繫人員」符合且「結案或核取方塊」為 true 的資料
+            // 注意：請確認 Google Sheet 的欄位名稱是否為 "聯繫人員" 與 "結案"
+            const completedCount = sheetData.filter(row => 
+                (row["聯繫人員"] === name || row["姓名"] === name) && 
+                (row["結案"] === true || row["結案"] === "TRUE" || row["完成"] === true)
+            ).length;
+
+            const percent = Math.min(Math.round((completedCount / config.target) * 100), 100);
+            
+            // 根據完成率變更進度條顏色 (80% 以上變綠色)
+            const barColor = percent >= 80 ? "#6BCB77" : (percent >= 50 ? "#FFA41B" : "var(--primary)");
+
+            const card = document.createElement("div");
+            card.style.cssText = "background:#fff; padding:15px; border-radius:12px; margin-bottom:12px; border:1px solid var(--border); box-shadow: 0 2px 5px rgba(0,0,0,0.03);";
+            card.innerHTML = `
+                <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px;">
+                    <div>
+                        <span style="font-weight:800; font-size:16px; color:var(--primary-dark);">${name}</span>
+                        <span style="font-size:12px; color:#666; margin-left:6px;">${config.category}</span>
+                    </div>
+                    <span style="font-weight:bold; color:${barColor};">${completedCount} / ${config.target} 筆</span>
+                </div>
+                <div style="background:#F0F0F0; height:10px; border-radius:5px; overflow:hidden; position:relative;">
+                    <div style="background:${barColor}; width:${percent}%; height:100%; transition:width 1s cubic-bezier(0.4, 0, 0.2, 1);"></div>
+                </div>
+                <div style="text-align:right; font-size:11px; color:#999; margin-top:4px;">當月達成率 ${percent}%</div>
+            `;
+            container.appendChild(card);
+        });
+
+    } catch (error) {
+        console.error("進度抓取失敗:", error);
+        container.innerHTML = `<p style="text-align:center; color:#FF6B6B; font-size:13px;">⚠️ 無法讀取台大表單資料<br>請確認 API 是否正常運作</p>`;
+    }
+}
+
 // ===== 產生訊息 =====
 function generateMessage() {
     saveToday();
@@ -495,5 +547,6 @@ document.addEventListener("DOMContentLoaded", () => {
     bindAutoSave();
     initDateLoad();
     renderHuddle();
-    initPlanTab(); // 初始化當月計畫分頁邏輯
+    initPlanTab();
+    fetchAndRenderProgress(); // 🚀 初始化時也跑一次
 });

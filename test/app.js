@@ -398,15 +398,27 @@ async function fetchAndRenderProgress() {
 
         container.innerHTML = ""; // 清空載入中文字
 
-        Object.keys(TRACKING_CONFIG).forEach(name => {
-            const config = TRACKING_CONFIG[name];
+        const now = new Date();
+    const currentYearMonth = now.getFullYear() + "-" + ("0" + (now.getMonth() + 1)).slice(-2);
+
+    Object.keys(TRACKING_CONFIG).forEach(name => {
+        const config = TRACKING_CONFIG[name];
+        
+        const completedCount = sheetData.filter(row => {
+            // 1. 基本條件：姓名符合 且 結案為 TRUE
+            const isNameMatch = (row["聯繫人員"] === name || row["姓名"] === name);
+            const isClosed = (row["結案"] === true || row["結案"] === "TRUE" || row["完成"] === true);
             
-            // 計算完成筆數：篩選「聯繫人員」符合且「結案或核取方塊」為 true 的資料
-            // 注意：請確認 Google Sheet 的欄位名稱是否為 "聯繫人員" 與 "結案"
-            const completedCount = sheetData.filter(row => 
-                (row["聯繫人員"] === name || row["姓名"] === name) && 
-                (row["結案"] === true || row["結案"] === "TRUE" || row["完成"] === true)
-            ).length;
+            // 2. 時間條件：判斷聯繫日期是否為本月
+            let isThisMonth = false;
+            if (row["聯繫日期"]) {
+                const rowDate = new Date(row["聯繫日期"]);
+                const rowYearMonth = rowDate.getFullYear() + "-" + ("0" + (rowDate.getMonth() + 1)).slice(-2);
+                isThisMonth = (rowYearMonth === currentYearMonth);
+            }
+
+            return isNameMatch && isClosed && isThisMonth;
+        }).length;
 
             const percent = Math.min(Math.round((completedCount / config.target) * 100), 100);
             

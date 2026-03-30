@@ -236,6 +236,7 @@ function showView(view) {
 }
 
 // ===== 當月計畫渲染邏輯 (移除 Emoji 版) =====
+// app.js 中的 initPlanTab 函式
 function initPlanTab() {
     const selectName = $("plan-name-select");
     const selectCustomer = $("filter-customer");
@@ -244,7 +245,7 @@ function initPlanTab() {
 
     if (!selectName || !container) return;
 
-    // 1. 生成姓名下拉選單 (維持原樣，但預設值改為「全區同仁」)
+    // 1. 生成姓名下拉選單 (維持原樣)
     selectName.innerHTML = '<option value="">-- 全區同仁 --</option>';
     Object.keys(monthlyData).forEach(name => {
         const opt = document.createElement("option");
@@ -261,26 +262,22 @@ function initPlanTab() {
 
         container.innerHTML = "";
 
-        // 2. 資料彙整策略
+        // 2. 資料彙整策略 (維持原樣)
         let tasksToFilter = [];
-
         if (selectedName === "") {
-            // 如果沒選姓名：彙整所有人的任務，並補上姓名標籤
             Object.entries(monthlyData).forEach(([name, tasks]) => {
                 tasks.forEach(task => {
-                    // 過濾掉全空的空白任務
                     if (task.content.trim() !== "" || task.target.trim() !== "") {
                         tasksToFilter.push({ ...task, staffName: name });
                     }
                 });
             });
         } else {
-            // 如果選了特定姓名：只取該同仁任務
             const individualTasks = monthlyData[selectedName] || [];
             tasksToFilter = individualTasks.map(task => ({ ...task, staffName: selectedName }));
         }
 
-        // 3. 執行交叉篩選 (AND 邏輯)
+        // 3. 執行交叉篩選 (維持原樣)
         const filteredData = tasksToFilter.filter(plan => {
             const matchCust = (filterCust === "all" || plan.customerType === filterCust);
             const matchItem = (filterItem === "all" || plan.itemType === filterItem);
@@ -292,24 +289,31 @@ function initPlanTab() {
             return;
         }
 
-        // 4. 生成任務卡片
+        // 4. 生成任務卡片 (更新標籤樣式)
         filteredData.forEach((plan, index) => {
             const planEl = document.createElement("div");
-            planEl.style.cssText = "background: #fff; border: 1px solid var(--border); border-radius: 12px; padding: 18px; margin-bottom: 18px; border-left: 6px solid var(--primary); box-shadow: 0 4px 10px rgba(0,0,0,0.05);";
+            planEl.style.cssText = "background: #fff; border: 1px solid var(--border); border-radius: 12px; padding: 18px; margin-bottom: 18px; border-left: 6px solid var(--primary); box-shadow: 0 4px 10px rgba(0,0,0,0.05); position:relative;";
             
-            // 標籤顏色定義
-            const custColor = plan.customerType === '潛客' ? '#FF6B6B' : (plan.customerType === '新客' ? '#4D96FF' : '#8B4513');
-            const itemColor = plan.itemType === 'RS' ? '#6BCB77' : '#FFA41B';
+            // 標籤顏色定義 (使用較明亮的顏色)
+            const custColor = plan.customerType === '潛客' ? '#FF6B6B' : (plan.customerType === '新客' ? '#4D96FF' : '#8D6E63'); // 舊客改用溫和的咖啡色
+            const itemColor = plan.itemType === 'RS' ? '#6BCB77' : '#FFA41B'; // RS綠，HA橘
+
+            // 標籤文字縮減邏輯
+            const custAbbr = plan.customerType ? plan.customerType.substring(0, 1) : '?';
+            const itemAbbr = plan.itemType ? plan.itemType.substring(0, 1) : '?';
+
+            // 定義圓形標籤的統一 CSS 樣式
+            const tagCircleStyle = "display:inline-flex; justify-content:center; align-items:center; width:26px; height:26px; border-radius:50%; color:#fff; font-size:14px; font-weight:bold; box-sizing:border-box; box-shadow: 1px 1px 3px rgba(0,0,0,0.1);";
 
             planEl.innerHTML = `
-                <div style="display:flex; justify-content:space-between; align-items:flex-start; margin-bottom: 12px; border-bottom: 1px dashed var(--border); padding-bottom: 10px;">
+                <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom: 15px; border-bottom: 1px dashed var(--border); padding-bottom: 10px;">
                     <div>
                         <div style="font-weight: 800; color: var(--primary-dark); font-size: 18px;">${plan.staffName}</div>
                         <div style="font-size: 12px; color: #999; margin-top: 2px;">任務序號 #${index + 1}</div>
                     </div>
-                    <div style="text-align: right;">
-                        <span style="display:inline-block; background:${custColor}; color:#fff; padding:2px 8px; border-radius:4px; font-size:11px; margin-bottom:4px;">${plan.customerType || '未分類'}</span><br>
-                        <span style="display:inline-block; background:${itemColor}; color:#fff; padding:2px 8px; border-radius:4px; font-size:11px;">${plan.itemType || '未分類'}</span>
+                    <div style="display:flex; gap: 6px; align-items:center;">
+                        <span style="${tagCircleStyle} background:${custColor};" title="${plan.customerType || '未分類'}">${custAbbr}</span>
+                        <span style="${tagCircleStyle} background:${itemColor};" title="${plan.itemType || '未分類'}">${itemAbbr}</span>
                     </div>
                 </div>
                 

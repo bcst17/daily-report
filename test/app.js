@@ -7,44 +7,43 @@ const STORAGE_PREFIX = "daily-report-test-";
 // 這裡可以預先輸入每位同仁的計畫，數量不限
 const monthlyData = {
   "郭孟鑫": [
-    { content: "確認 1~2 月 YTD 達標狀況與長庚 2 月成交進度落後問題", target: "確認春節暫借名單執行度及歸還時間是否需安排在 2 月" },
-    { content: "考量 3 月進度，全面確認歷年個人交貨客人，檢查是否有遺漏孤兒個案", target: "舊客進店盡量發放介紹卡" }
+    { content: "確認 1~2 月 YTD 達標狀況與長庚 2 月成交進度落後問題", target: "確認春節暫借名單執行度及歸還時間是否需安排在 2 月", customerType: "舊客", itemType: "HA" },
+    { content: "考量 3 月進度，全面確認歷年個人交貨客人，檢查是否有遺漏孤兒個案", target: "舊客進店盡量發放介紹卡", customerType: "舊客", itemType: "HA" }
   ],
   "陳詩潔": [
-    { content: "著重台大潛客追蹤（1+2 月個人績效已達標）", target: "1. 台大成交率維持 40% 以上；2. 確認近幾個月潛客追蹤狀況；3. 確認訂閱個案轉買斷機會" }
+    { content: "著重台大潛客追蹤（1+2 月個人績效已達標）", target: "1. 台大成交率維持 40% 以上；2. 確認近幾個月潛客追蹤狀況；3. 確認訂閱個案轉買斷機會", customerType: "潛客", itemType: "HA" }
   ],
   "游瑟焄": [
-    { content: "針對半年以上未進店之歷年站前舊客優先聯繫", target: "每月至少 2 位交貨，以達成林長目標" }
+    { content: "針對半年以上未進店之歷年站前舊客優先聯繫", target: "每月至少 2 位交貨，以達成林長目標", customerType: "舊客", itemType: "HA" }
   ],
   "魏頎恩": [
-    { content: "2023往前的歷年舊客名單，針對半年以上未進店者聯繫", target: "每日聯繫四位，邀約目標2位回店(依3月份平均每日預約人數計算)" },
-    { content: "2025年台大RS潛客，聯繫邀約至門市體驗Vauto", target: "不設定目標，方案一優先" }
+    { content: "2023往前的歷年舊客名單，針對半年以上未進店者聯繫", target: "每日聯繫四位，邀約目標2位回店(依3月份平均每日預約人數計算)", customerType: "舊客", itemType: "HA" },
+    { content: "2025年台大RS潛客，聯繫邀約至門市體驗Vauto", target: "不設定目標，方案一優先", customerType: "潛客", itemType: "RS" }
   ],
   "李孟馨": [
-    { content: "確認近三個月台大潛客名單", target: "不另撈名單，由本人於門市系統自行確認" },
-    { content: "聯繫台大歷年舊客（有效、高階、過保），優先邀約回站前店", target: "共 60 位名單，3 月底前完成（日均致電約 4 位）" }
+    { content: "確認近三個月台大潛客名單", target: "不另撈名單，由本人於門市系統自行確認", customerType: "潛客", itemType: "HA" },
+    { content: "聯繫台大歷年舊客（有效、高階、過保），優先邀約回站前店", target: "共 60 位名單，3 月底前完成（日均致電約 4 位）", customerType: "舊客", itemType: "HA" }
   ],
   "劉瑋婷": [
-    { content: "HA0368693李素卿、HA0107324郭寶玉，多找幾個舊客新舊機比較的case，確認Intent展示比較差異", target: "2/4討論完，整理討論後的回饋給秉忻" },
-    { content: "金山南潛客名單，跟俊諺討論潛客邀約成功率，並設定每日五通名單", target: "每日五通，邀約成功率至少20%" }
+    { content: "HA0368693李素卿、HA0107324郭寶玉，多找幾個舊客新舊機比較的case，確認Intent展示比較差異", target: "2/4討論完，整理討論後的回饋給秉忻", customerType: "舊客", itemType: "HA" },
+    { content: "金山南潛客名單，跟俊諺討論潛客邀約成功率，並設定每日五通名單", target: "每日五通，邀約成功率至少20%", customerType: "潛客", itemType: "HA" }
   ],
-  "周曉玄": [{ content: " ", target: " " }],
+  "周曉玄": [{ content: " ", target: " ", customerType: "舊客", itemType: "HA" }],
   "蕭純聿": [
-    { content: "1.2月忠孝試聽來源，集中在新客(第一季HA目標24萬，忠孝成交23萬) 考量現有2+3月預約量，暫不用額外有外撥名單", target: "年初先持續把雲端表單新增，備好今年忠孝HA舊客換機目標名單" }
+    { content: "1.2月忠孝試聽來源，集中在新客(第一季HA目標24萬，忠孝成交23萬) 考量現有2+3月預約量，暫不用額外有外撥名單", target: "年初先持續把雲端表單新增，備好今年忠孝HA舊客換機目標名單", customerType: "舊客", itemType: "HA" }
   ],
-  "陳宛妤": [{ content: " ", target: " " }],
+  "陳宛妤": [{ content: " ", target: " ", customerType: "舊客", itemType: "HA" }],
   "林寓葳": [
-    { content: "天母1月份HST相較於12月少一半 1. 秉忻跟Leo確認近期轉介狀況 2. 寓葳抓9~11月區間的HST，確認是否有暫借APAP需求", target: "AHI > 15的個案皆有邀約暫借" },
-    { content: "目前春節暫借名單進度OK，可以先為3~4月目標做準備。先把2015~2018HA舊客名單看完(填寫用戶類別、用戶狀況)，同步確認可邀約回店服務名單", target: "2月底前完成 預計3月起開始針對歷年潛客聯繫。" }
+    { content: "天母1月份HST相較於12月少一半 1. 秉忻跟Leo確認近期轉介狀況 2. 寓葳抓9~11月區間的HST，確認是否有暫借APAP需求", target: "AHI > 15的個案皆有邀約暫借", customerType: "潛客", itemType: "RS" },
+    { content: "目前春節暫借名單進度OK，可以先為3~4月目標做準備。先把2015~2018HA舊客名單看完(填寫用戶類別、用戶狀況)，同步確認可邀約回店服務名單", target: "2月底前完成 預計3月起開始針對歷年潛客聯繫。", customerType: "舊客", itemType: "HA" }
   ],
   "吳欣珮": [
-    { content: "八德歷年交貨(工讀生已篩選完畢)，2/5.6這兩天盡可能先聯繫近半年未進店的名單聯繫完(2023往前)", target: "2月份多四位舊客進店" }
+    { content: "八德歷年交貨(工讀生已篩選完畢)，2/5.6這兩天盡可能先聯繫近半年未進店的名單聯繫完(2023往前)", target: "2月份多四位舊客進店", customerType: "舊客", itemType: "HA" }
   ],
   "呂桂梅": [
-    { content: "八德歷年交貨「半年未進店」「半年有回電但無NS」，與欣珮合力完成2023~2018的名單", target: "安排過年前回店" },
-    { content: "APAP訂閱中名單，待秉忻確認優惠後聯繫鼓勵轉買斷", target: "N" }
+    { content: "八德歷年交貨「半年未進店」「半年有回電但無NS」，與欣珮合力完成2023~2018的名單", target: "安排過年前回店", customerType: "舊客", itemType: "HA" },
+    { content: "APAP訂閱中名單，待秉忻確認優惠後聯繫鼓勵轉買斷", target: "N", customerType: "舊客", itemType: "RS" }
   ],
-  "李俊諺": [{ content: " ", target: " " }],
   "蔡秉忻": [{ content: " ", target: " " }]
 };
 
@@ -238,57 +237,83 @@ function showView(view) {
 
 // ===== 當月計畫渲染邏輯 (移除 Emoji 版) =====
 function initPlanTab() {
-    const select = $("plan-name-select");
+    const selectName = $("plan-name-select");
+    const selectCustomer = $("filter-customer");
+    const selectItem = $("filter-item");
     const container = $("plan-list-container");
-    if (!select || !container) return;
 
-    // 清空並重新生成下拉選單選項
-    select.innerHTML = '<option value="">-- 請選擇 --</option>';
+    if (!selectName || !container) return;
+
+    // 1. 生成姓名下拉選單 (保持原樣)
+    selectName.innerHTML = '<option value="">-- 請選擇同仁 --</option>';
     Object.keys(monthlyData).forEach(name => {
         const opt = document.createElement("option");
         opt.value = name;
         opt.textContent = name;
-        select.appendChild(opt);
+        selectName.appendChild(opt);
     });
 
-    select.addEventListener("change", () => {
-        const name = select.value;
+    // 核心渲染函式
+    const renderPlans = () => {
+        const name = selectName.value;
+        const filterCust = selectCustomer.value;
+        const filterItem = selectItem.value;
+
         container.innerHTML = "";
 
         if (!name || !monthlyData[name]) {
-            container.innerHTML = '<p style="text-align:center; color:#999; font-size:14px;">請選擇姓名以查看計畫</p>';
+            container.innerHTML = '<p style="text-align:center; color:#999; font-size:14px;">請選擇同仁以查看計畫</p>';
             return;
         }
 
-        // 生成任務卡片
-        monthlyData[name].forEach((plan, index) => {
+        // 2. 執行篩選邏輯 (AND 邏輯)
+        const filteredData = monthlyData[name].filter(plan => {
+            const matchCust = (filterCust === "all" || plan.customerType === filterCust);
+            const matchItem = (filterItem === "all" || plan.itemType === filterItem);
+            return matchCust && matchItem;
+        });
+
+        if (filteredData.length === 0) {
+            container.innerHTML = '<p style="text-align:center; color:#999; font-size:14px;">查無符合條件的任務</p>';
+            return;
+        }
+
+        // 3. 生成任務卡片
+        filteredData.forEach((plan, index) => {
             const planEl = document.createElement("div");
-            planEl.style.cssText = "background: #fff; border: 1px solid var(--border); border-radius: 12px; padding: 18px; margin-bottom: 18px; border-left: 6px solid var(--primary); box-shadow: 0 4px 10px rgba(0,0,0,0.05);";
+            planEl.style.cssText = "background: #fff; border: 1px solid var(--border); border-radius: 12px; padding: 18px; margin-bottom: 18px; border-left: 6px solid var(--primary); box-shadow: 0 4px 10px rgba(0,0,0,0.05); position:relative;";
             
+            // 標籤顏色邏輯
+            const custColor = plan.customerType === '潛客' ? '#FF6B6B' : '#4D96FF';
+            const itemColor = plan.itemType === 'RS' ? '#6BCB77' : '#FFA41B';
+
             planEl.innerHTML = `
-                <div style="font-weight: 800; color: var(--primary-dark); font-size: 19px; margin-bottom: 12px; border-bottom: 1px dashed var(--border); padding-bottom: 10px; letter-spacing: 1px;">任務 ${index + 1}</div>
+                <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom: 12px; border-bottom: 1px dashed var(--border); padding-bottom: 10px;">
+                    <div style="font-weight: 800; color: var(--primary-dark); font-size: 19px; letter-spacing: 1px;">任務 ${index + 1}</div>
+                    <div>
+                        <span style="background:${custColor}; color:#fff; padding:2px 8px; border-radius:4px; font-size:12px; margin-right:4px;">${plan.customerType || '未分類'}</span>
+                        <span style="background:${itemColor}; color:#fff; padding:2px 8px; border-radius:4px; font-size:12px;">${plan.itemType || '未分類'}</span>
+                    </div>
+                </div>
                 
                 <div style="margin-bottom: 16px;">
-                    <div style="font-weight: bold; color: var(--primary); font-size: 14px; margin-bottom: 8px;">
-                        內容
-                    </div>
-                    <div style="font-size: 15px; line-height: 1.8; color: #333; padding-left: 2px; text-align: justify; word-break: break-all;">
-                        ${plan.content}
-                    </div>
+                    <div style="font-weight: bold; color: var(--primary); font-size: 14px; margin-bottom: 4px;">內容</div>
+                    <div style="font-size: 15px; line-height: 1.6; color: #333;">${plan.content}</div>
                 </div>
 
                 <div>
-                    <div style="font-weight: bold; color: var(--primary); font-size: 14px; margin-bottom: 8px;">
-                        目標
-                    </div>
-                    <div style="font-size: 15px; line-height: 1.8; color: #444; padding-left: 2px; text-align: justify; word-break: break-all;">
-                        ${plan.target}
-                    </div>
+                    <div style="font-weight: bold; color: var(--primary); font-size: 14px; margin-bottom: 4px;">目標</div>
+                    <div style="font-size: 15px; line-height: 1.6; color: #666;">${plan.target}</div>
                 </div>
             `;
             container.appendChild(planEl);
         });
-    });
+    };
+
+    // 監聽三個選單的變化
+    selectName.addEventListener("change", renderPlans);
+    selectCustomer.addEventListener("change", renderPlans);
+    selectItem.addEventListener("change", renderPlans);
 }
 
 function renderHuddle() {

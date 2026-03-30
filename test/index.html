@@ -278,47 +278,22 @@ button:active { transform: scale(0.98); }
 </header>
 
 <section id="huddle-view" class="section hidden">
-  <h2>今日目標</h2>
-  <div class="huddle-row">
-    <span class="huddle-label">今日預約數</span>
-    <span class="huddle-value"><span id="huddleTodayBooking">-</span> 位</span>
-  </div>
-  <div class="huddle-row">
-    <span class="huddle-label">邀約試戴目標數</span>
-    <span class="huddle-value"><span id="huddleTodayTrial">-</span> 位</span>
-  </div>
+  <h2>今日戰情看板</h2>
+  <div id="huddle-goals-container">
+    <div class="huddle-row">
+      <span class="huddle-label">今日預約數</span>
+      <span class="huddle-value"><span id="huddleTodayBooking">-</span> 位</span>
+    </div>
+    </div>
+
   <div class="huddle-separator"></div>
-  <div class="huddle-row">
-    <span class="huddle-label">今日外撥目標數</span>
-    <span class="huddle-value"><span id="huddleTodayCallTotal">-</span> 通</span>
-  </div>
-  <div class="huddle-row">
-    <span class="huddle-label">邀約回店目標數</span>
-    <span class="huddle-value"><span id="huddleTodayOld3Y">-</span> 位</span>
-  </div>
-  <div class="huddle-separator"></div>
-  <h2>昨日執行檢視</h2>
-  <div class="check-row">
-    <span class="check-label">試戴數</span>
-    <span class="check-value" id="checkTrialText">-</span>
-  </div>
-  <div class="check-row">
-    <span class="check-label">外撥通數</span>
-    <span class="check-value" id="checkCallText">-</span>
-  </div>
-  <div class="check-row">
-    <span class="check-label">邀約回店數</span>
-    <span class="check-value" id="checkInviteText">-</span>
-  </div>
-  <div class="check-row">
-    <span class="check-label">邀約成功率</span>
-    <span class="check-value">
-      <span id="checkInviteRateText">-</span>
-      <span class="badge" id="checkInviteRateBadge" style="display:none;"></span>
-    </span>
+
+  <h2>當月行動方案完成度</h2>
+  <div id="progress-dashboard">
+    <p style="text-align:center; color:#999; font-size:14px;">資料載入中...</p>
   </div>
 </section>
-
+  
 <section id="plan-view" class="section hidden">
   <h2>個人月度行動計畫</h2>
   

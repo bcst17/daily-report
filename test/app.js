@@ -5,8 +5,6 @@ const STORAGE_PREFIX = "daily-report-test-";
 
 const PROGRESS_API_URL = "https://script.google.com/macros/s/AKfycbwqpw_lNJO5XUDx3D31DJmGN-zjC3EY981fYzWtkbtUATmLlER3bt_A4Cy7ztXcB84tdA/exec";
 
-};
-
 // ===== ↓↓↓ 當月計畫資料庫 (後台輸入區) ↓↓↓ =====
 // 這裡可以預先輸入每位同仁的計畫，數量不限
 const monthlyData = {

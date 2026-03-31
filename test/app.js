@@ -390,159 +390,66 @@ async function fetchAndRenderProgress() {
         const response = await fetch(PROGRESS_API_URL);
         if (!response.ok) throw new Error("網路請求失敗");
         
-        const tasks = await response.json(); // GAS 現在回傳的是一個陣列
+        const tasks = await response.json();
         container.innerHTML = ""; 
 
-        if (tasks.length === 0) {
-            container.innerHTML = "<p style='text-align:center; color:#999;'>Task_Config 中尚無任務設定</p>";
-            return;
-        }
+        // 🚀 第一步：根據同仁姓名進行群組化
+        const groupedTasks = tasks.reduce((acc, task) => {
+            if (!acc[task.staffName]) acc[task.staffName] = [];
+            acc[task.staffName].push(task);
+            return acc;
+        }, {});
 
-        tasks.forEach(task => {
-            const barColor = task.percent >= 80 ? "#6BCB77" : (task.percent >= 50 ? "#FFA41B" : "var(--primary)");
-
+        // 🚀 第二步：渲染群組化後的卡片
+        Object.keys(groupedTasks).forEach(staffName => {
+            const staffTasks = groupedTasks[staffName];
+            
             const card = document.createElement("div");
-            card.style.cssText = "background:#fff; padding:15px; border-radius:12px; margin-bottom:12px; border:1px solid var(--border); box-shadow: 0 2px 5px rgba(0,0,0,0.03);";
-            card.innerHTML = `
-                <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px;">
-                    <div>
-                        <span style="font-weight:800; font-size:16px; color:var(--primary-dark);">${task.staffName}</span>
-                        <span style="font-size:12px; color:#666; margin-left:6px;">${task.taskName}</span>
-                    </div>
-                    <span style="font-weight:bold; color:${barColor};">${task.completed} / ${task.target} 筆</span>
+            card.style.cssText = "background:#fff; padding:20px; border-radius:16px; margin-bottom:18px; border:1px solid var(--border); box-shadow: 0 4px 12px rgba(0,0,0,0.05);";
+            
+            // 建立卡片頭部 (只顯示一次姓名)
+            let cardHTML = `
+                <div style="font-weight:800; font-size:19px; color:var(--primary-dark); margin-bottom:15px; display:flex; align-items:center; gap:8px;">
+                    <span style="background:var(--primary); width:4px; height:18px; border-radius:2px;"></span>
+                    ${staffName}
                 </div>
-                <div style="background:#F0F0F0; height:10px; border-radius:5px; overflow:hidden; position:relative;">
-                    <div style="background:${barColor}; width:${task.percent}%; height:100%; transition:width 1s ease-out;"></div>
-                </div>
-                <div style="text-align:right; font-size:11px; color:#999; margin-top:4px;">當月達成率 ${task.percent}%</div>
             `;
+
+            // 遍歷該位同仁的所有任務進度條
+            staffTasks.forEach(task => {
+                const barColor = task.percent >= 80 ? "#6BCB77" : (task.percent >= 50 ? "#FFA41B" : "var(--primary)");
+                
+                cardHTML += `
+                    <div style="margin-bottom:16px; border-top:1px solid #f9f9f9; pt:12px;">
+                        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:6px;">
+                            <span style="font-size:14px; color:#555; font-weight:600;">${task.taskName}</span>
+                            <span style="font-weight:bold; color:${barColor}; font-size:14px;">${task.completed} / ${task.target} 筆</span>
+                        </div>
+                        <div style="background:#F0F0F0; height:12px; border-radius:6px; overflow:hidden; position:relative;">
+                            <div style="background:${barColor}; width:${task.percent}%; height:100%; transition:width 1s ease-out;"></div>
+                        </div>
+                        <div style="text-align:right; font-size:11px; color:#aaa; margin-top:4px;">達成率 ${task.percent}%</div>
+                    </div>
+                `;
+            });
+
+            card.innerHTML = cardHTML;
             container.appendChild(card);
         });
 
     } catch (error) {
-        console.error("進度抓取失敗:", error);
-        container.innerHTML = `<p style="text-align:center; color:#FF6B6B; font-size:13px;">⚠️ 無法連線至中控表系統</p>`;
+        container.innerHTML = `<p style="text-align:center; color:#FF6B6B; font-size:13px;">⚠️ 無法載入最新進度，請確認網路連線</p>`;
     }
 }
 
-// ===== 產生訊息 =====
-function generateMessage() {
-    saveToday();
-    spawnSakuraShower(); 
-    
-    const d = collectForm();
-    const title = `${d.date}｜${(d.store || "")} ${(d.name || "")}`.trim();
-    const todayCallTotal = num(d.todayCallPotential) + num(d.todayCallOld3Y);
 
-    const msg = `${title}
-1. 今日外撥：${todayCallTotal} 通（潛客 ${num(d.todayCallPotential)} 通、過保舊客 ${num(d.todayCallOld3Y)} 通）
-2. 今日預約：${num(d.todayBookingTotal)} 位
-3. 今日到店：${num(d.todayVisitTotal)} 位
-   試用：HA ${num(d.trialHA)} 位、APAP ${num(d.trialAPAP)} 位
-   成交：HA ${num(d.dealHA)} 位、APAP ${num(d.dealAPAP)} 位
-4. 明日已排預約：${num(d.tomorrowBookingTotal)} 位
-5. 明日KPI：
-   完成試戴 ${num(d.tomorrowKpiTrial)} 位
-   外撥 ${num(d.tomorrowKpiCallTotal)} 通
-   舊客預約 ${num(d.tomorrowKpiCallOld3Y)} 位
-
-📊 今日執行檢視（對照昨日 KPI）
-${buildTodayVsYesterdayKpiText(d)}`;
-
-    if ($("output")) $("output").value = msg;
-
-    try {
-        const hash = simpleHash(msg);
-        if (localStorage.getItem(sheetSentKey(d.date)) !== hash) {
-            sendReportToSheet({
-                date: d.date, store: d.store, name: d.name,
-                calls_total: todayCallTotal, calls_potential: num(d.todayCallPotential),
-                calls_old: num(d.todayCallOld3Y), appt_today: num(d.todayBookingTotal),
-                visit_today: num(d.todayVisitTotal), trial_ha: num(d.trialHA),
-                trial_apap: num(d.trialAPAP), deal_ha: num(d.dealHA),
-                deal_apap: num(d.dealAPAP), appt_tomorrow: num(d.tomorrowBookingTotal),
-                kpi_call_tomorrow: num(d.tomorrowKpiCallTotal),
-                kpi_old_appt_tomorrow: num(d.tomorrowKpiCallOld3Y),
-                kpi_trial_tomorrow: num(d.tomorrowKpiTrial), message_text: msg
-            });
-            localStorage.setItem(sheetSentKey(d.date), hash);
-        }
-    } catch (err) { console.error("send to sheet failed:", err); }
-}
-window.generateMessage = generateMessage;
-
-function buildTodayVsYesterdayKpiText(todayForm) {
-    const kpiSourceDate = getKpiSourceDateForToday(todayForm.date);
-    const kpiSourceData = kpiSourceDate ? loadByDate(kpiSourceDate) : null;
-    if (!kpiSourceData) return "•（找不到昨日 KPI）";
-
-    const actualTrial = num(todayForm.trialHA) + num(todayForm.trialAPAP);
-    const actualCall = num(todayForm.todayCallPotential) + num(todayForm.todayCallOld3Y);
-    const actualInvite = num(todayForm.todayInviteReturn);
-    const rate = actualCall > 0 ? (actualInvite / actualCall) : 0;
-
-    return [
-        `• 試戴數：目標 ${num(kpiSourceData.tomorrowKpiTrial)} / 執行 ${actualTrial}  ${okText(actualTrial >= num(kpiSourceData.tomorrowKpiTrial))}`,
-        `• 外撥通數：目標 ${num(kpiSourceData.tomorrowKpiCallTotal)} / 執行 ${actualCall}  ${okText(actualCall >= num(kpiSourceData.tomorrowKpiCallTotal))}`,
-        `• 邀約回店數：目標 ${num(kpiSourceData.tomorrowKpiCallOld3Y)} / 執行 ${actualInvite}  ${okText(actualInvite >= num(kpiSourceData.tomorrowKpiCallOld3Y))}`,
-        `• 邀約成功率：${Math.round(rate * 100)}%`.trim(),
-    ].join("\n");
-}
-
-async function copyMessage() {
-    const text = $("output")?.value || "";
-    if (!text.trim()) return;
-    spawnSakuraShower(); 
-
-    try {
-        await navigator.clipboard.writeText(text);
-        alert("🌸 訊息已複製！祝您三月業績如櫻花盛開！");
-    } catch {
-        const ta = $("output");
-        if (ta) { ta.select(); document.execCommand("copy"); alert("✨ 已複製到剪貼簿！"); }
-    }
-}
-window.copyMessage = copyMessage;
-
-// ===== 初始化邏輯 =====
-function bindAutoSave() {
-    [ "store","name","todayCallPotential","todayCallOld3Y","todayInviteReturn",
-      "todayBookingTotal","todayVisitTotal","trialHA","trialAPAP","dealHA","dealAPAP",
-      "tomorrowBookingTotal","tomorrowKpiCallTotal","tomorrowKpiCallOld3Y","tomorrowKpiTrial"
-    ].forEach(id => {
-        const el = $(id);
-        if (el) { el.addEventListener("input", saveToday); el.addEventListener("change", saveToday); }
-    });
-}
-
-function initDateLoad() {
-    const dateInput = $("date");
-    if (!dateInput) return;
-    const today = getCurrentDateStr();
-    const data = loadByDate(today);
-    if (data) fillForm(data);
-    recalcTotals(false);
-
-    dateInput.addEventListener("change", () => {
-        document.querySelectorAll("input[type='number'], input[type='text'], select").forEach(el => {
-            if (el.id !== "date") el.value = "";
-        });
-        const d = loadByDate(getCurrentDateStr());
-        if (d) fillForm(d);
-        recalcTotals(false);
-        renderHuddle();
-    });
-}
 
 document.addEventListener("DOMContentLoaded", () => {
-    // 綁定分頁按鈕
+    // 1. 只保留分頁切換監聽
     if($("tab-huddle")) $("tab-huddle").addEventListener("click", () => showView("huddle"));
-    if($("tab-report")) $("tab-report").addEventListener("click", () => showView("report"));
     if($("tab-plan")) $("tab-plan").addEventListener("click", () => showView("plan"));
 
-    bindAutoSave();
-    initDateLoad();
-    renderHuddle();
+    // 2. 初始化渲染 (預設顯示今日檢視)
+    showView("huddle");
     initPlanTab();
-    fetchAndRenderProgress(); // 🚀 初始化時也跑一次
-});
+});;

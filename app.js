@@ -7,8 +7,8 @@ const STORAGE_PREFIX = "daily-report-test-";
 // 這裡可以預先輸入每位同仁的計畫，數量不限
 const monthlyData = {
   "郭孟鑫": [
-    { content: "確認 1~2 月 YTD 達標狀況與長庚 2 月成交進度落後問題", target: "確認春節暫借名單執行度及歸還時間是否需安排在 2 月", customerType: "舊客", itemType: "HA" },
-    { content: "考量 3 月進度，全面確認歷年個人交貨客人，檢查是否有遺漏孤兒個案", target: "舊客進店盡量發放介紹卡", customerType: "舊客", itemType: "HA" }
+    { content: "優先聯繫 2014-2024 站前歷年成交且掛名之有效名單", target: "推估 70 筆，於月底前完成，並提供介紹卡", customerType: "舊客", itemType: "HA" },
+    { content: "癌醫駐點陳醫師轉介流程溝通", target: "聽損新客 100% 回聽檢室進行聽力衛教，創造進店", customerType: "新客", itemType: "HA" }
   ],
   "陳詩潔": [
     { content: "每個月固定要追蹤前一個月的台大潛客 (例如每周一1300~1330)", target: "自己的雲端紀錄聯繫狀況(下次面談確認)", customerType: "潛客", itemType: "HA" }

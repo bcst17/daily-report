@@ -3,7 +3,7 @@ console.log("🌸 Mar Style app.js loaded: Sakura & Doraemon Edition");
 // ✅ 測試版儲存前綴
 const STORAGE_PREFIX = "daily-report-test-";
 
-const PROGRESS_API_URL = "https://script.google.com/macros/s/AKfycbwXkfOGNoNFe1hO8idKs-IK4Q4ZixHv-IkdssDIWpSpoH2d6O2IjhKVOOmlLy-pR6BF/exec";
+const PROGRESS_API_URL = "https://script.google.com/macros/s/AKfycbwqpw_lNJO5XUDx3D31DJmGN-zjC3EY981fYzWtkbtUATmLlER3bt_A4Cy7ztXcB84tdA/exec";
 const TRACKING_CONFIG = {
   "李孟馨": { category: "台大HA潛客聯繫", target: 20 },
 
@@ -385,7 +385,7 @@ function renderHuddle() {
     }
 }
 
-// 3. 核心抓取函式
+// 🚀 修改後的 fetchAndRenderProgress：全自動感應中控表任務
 async function fetchAndRenderProgress() {
     const container = $("progress-dashboard");
     if (!container) return;
@@ -394,58 +394,38 @@ async function fetchAndRenderProgress() {
         const response = await fetch(PROGRESS_API_URL);
         if (!response.ok) throw new Error("網路請求失敗");
         
-        const sheetData = await response.json();
+        const tasks = await response.json(); // GAS 現在回傳的是一個陣列
+        container.innerHTML = ""; 
 
-        container.innerHTML = ""; // 清空載入中文字
+        if (tasks.length === 0) {
+            container.innerHTML = "<p style='text-align:center; color:#999;'>Task_Config 中尚無任務設定</p>";
+            return;
+        }
 
-        const now = new Date();
-    const currentYearMonth = now.getFullYear() + "-" + ("0" + (now.getMonth() + 1)).slice(-2);
-
-    Object.keys(TRACKING_CONFIG).forEach(name => {
-        const config = TRACKING_CONFIG[name];
-        
-        const completedCount = sheetData.filter(row => {
-            // 1. 基本條件：姓名符合 且 結案為 TRUE
-            const isNameMatch = (row["聯繫人員"] === name || row["姓名"] === name);
-            const isClosed = (row["結案"] === true || row["結案"] === "TRUE" || row["完成"] === true);
-            
-            // 2. 時間條件：判斷聯繫日期是否為本月
-            let isThisMonth = false;
-            if (row["聯繫日期"]) {
-                const rowDate = new Date(row["聯繫日期"]);
-                const rowYearMonth = rowDate.getFullYear() + "-" + ("0" + (rowDate.getMonth() + 1)).slice(-2);
-                isThisMonth = (rowYearMonth === currentYearMonth);
-            }
-
-            return isNameMatch && isClosed && isThisMonth;
-        }).length;
-
-            const percent = Math.min(Math.round((completedCount / config.target) * 100), 100);
-            
-            // 根據完成率變更進度條顏色 (80% 以上變綠色)
-            const barColor = percent >= 80 ? "#6BCB77" : (percent >= 50 ? "#FFA41B" : "var(--primary)");
+        tasks.forEach(task => {
+            const barColor = task.percent >= 80 ? "#6BCB77" : (task.percent >= 50 ? "#FFA41B" : "var(--primary)");
 
             const card = document.createElement("div");
             card.style.cssText = "background:#fff; padding:15px; border-radius:12px; margin-bottom:12px; border:1px solid var(--border); box-shadow: 0 2px 5px rgba(0,0,0,0.03);";
             card.innerHTML = `
                 <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px;">
                     <div>
-                        <span style="font-weight:800; font-size:16px; color:var(--primary-dark);">${name}</span>
-                        <span style="font-size:12px; color:#666; margin-left:6px;">${config.category}</span>
+                        <span style="font-weight:800; font-size:16px; color:var(--primary-dark);">${task.staffName}</span>
+                        <span style="font-size:12px; color:#666; margin-left:6px;">${task.taskName}</span>
                     </div>
-                    <span style="font-weight:bold; color:${barColor};">${completedCount} / ${config.target} 筆</span>
+                    <span style="font-weight:bold; color:${barColor};">${task.completed} / ${task.target} 筆</span>
                 </div>
                 <div style="background:#F0F0F0; height:10px; border-radius:5px; overflow:hidden; position:relative;">
-                    <div style="background:${barColor}; width:${percent}%; height:100%; transition:width 1s cubic-bezier(0.4, 0, 0.2, 1);"></div>
+                    <div style="background:${barColor}; width:${task.percent}%; height:100%; transition:width 1s ease-out;"></div>
                 </div>
-                <div style="text-align:right; font-size:11px; color:#999; margin-top:4px;">當月達成率 ${percent}%</div>
+                <div style="text-align:right; font-size:11px; color:#999; margin-top:4px;">當月達成率 ${task.percent}%</div>
             `;
             container.appendChild(card);
         });
 
     } catch (error) {
         console.error("進度抓取失敗:", error);
-        container.innerHTML = `<p style="text-align:center; color:#FF6B6B; font-size:13px;">⚠️ 無法讀取台大表單資料<br>請確認 API 是否正常運作</p>`;
+        container.innerHTML = `<p style="text-align:center; color:#FF6B6B; font-size:13px;">⚠️ 無法連線至中控表系統</p>`;
     }
 }
 

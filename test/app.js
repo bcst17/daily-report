@@ -381,7 +381,7 @@ function renderHuddle() {
     }
 }
 
-// 🚀 修改後的 fetchAndRenderProgress：全自動感應中控表任務
+// 🚀 修改後的 fetchAndRenderProgress：一人一個圖卡，內部顯示多個進度條
 async function fetchAndRenderProgress() {
     const container = $("progress-dashboard");
     if (!container) return;
@@ -390,7 +390,7 @@ async function fetchAndRenderProgress() {
         const response = await fetch(PROGRESS_API_URL);
         if (!response.ok) throw new Error("網路請求失敗");
         
-        const tasks = await response.json(); // GAS 現在回傳的是一個陣列
+        const tasks = await response.json(); 
         container.innerHTML = ""; 
 
         if (tasks.length === 0) {
@@ -398,24 +398,46 @@ async function fetchAndRenderProgress() {
             return;
         }
 
-        tasks.forEach(task => {
-            const barColor = task.percent >= 80 ? "#6BCB77" : (task.percent >= 50 ? "#FFA41B" : "var(--primary)");
+        // --- 1. 資料分組邏輯：將同仁姓名作為 Key，把任務塞進對應陣列 ---
+        const groupedTasks = tasks.reduce((acc, task) => {
+            if (!acc[task.staffName]) {
+                acc[task.staffName] = [];
+            }
+            acc[task.staffName].push(task);
+            return acc;
+        }, {});
 
-            const card = document.createElement("div");
-            card.style.cssText = "background:#fff; padding:15px; border-radius:12px; margin-bottom:12px; border:1px solid var(--border); box-shadow: 0 2px 5px rgba(0,0,0,0.03);";
-            card.innerHTML = `
-                <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px;">
-                    <div>
-                        <span style="font-weight:800; font-size:16px; color:var(--primary-dark);">${task.staffName}</span>
-                        <span style="font-size:12px; color:#666; margin-left:6px;">${task.taskName}</span>
+        // --- 2. 渲染邏輯：遍歷每個「同仁」生成一個大圖卡 ---
+        Object.entries(groupedTasks).forEach(([staffName, staffTasks]) => {
+            
+            // 生成該同仁內部的所有進度條 HTML
+            const taskRowsHtml = staffTasks.map(task => {
+                const barColor = task.percent >= 80 ? "#6BCB77" : (task.percent >= 50 ? "#FFA41B" : "var(--primary)");
+                return `
+                    <div style="margin-bottom: 15px;">
+                        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:5px;">
+                            <span style="font-size:13px; color:#666;">${task.taskName}</span>
+                            <span style="font-weight:bold; color:${barColor}; font-size:14px;">${task.completed} / ${task.target} 筆</span>
+                        </div>
+                        <div style="background:#F0F0F0; height:10px; border-radius:5px; overflow:hidden; position:relative;">
+                            <div style="background:${barColor}; width:${task.percent}%; height:100%; transition:width 1s ease-out;"></div>
+                        </div>
+                        <div style="text-align:right; font-size:11px; color:#999; margin-top:4px;">當月達成率 ${task.percent}%</div>
                     </div>
-                    <span style="font-weight:bold; color:${barColor};">${task.completed} / ${task.target} 筆</span>
+                `;
+            }).join("");
+
+            // 生成外層的大圖卡容器
+            const card = document.createElement("div");
+            card.style.cssText = "background:#fff; padding:18px; border-radius:14px; margin-bottom:16px; border:1px solid var(--border); box-shadow: 0 4px 12px rgba(0,0,0,0.05);";
+            
+            card.innerHTML = `
+                <div style="font-weight:800; font-size:18px; color:var(--primary-dark); margin-bottom:15px; border-bottom: 1px solid #F0F0F0; padding-bottom:8px; display:flex; align-items:center; gap:8px;">
+                    <span>👤</span> ${staffName}
                 </div>
-                <div style="background:#F0F0F0; height:10px; border-radius:5px; overflow:hidden; position:relative;">
-                    <div style="background:${barColor}; width:${task.percent}%; height:100%; transition:width 1s ease-out;"></div>
-                </div>
-                <div style="text-align:right; font-size:11px; color:#999; margin-top:4px;">當月達成率 ${task.percent}%</div>
+                ${taskRowsHtml}
             `;
+            
             container.appendChild(card);
         });
 

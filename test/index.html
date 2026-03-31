@@ -269,30 +269,19 @@ button:active { transform: scale(0.98); }
 <div class="container">
 
 <h1>台北一區上班小助手</h1>
-<p class="subtitle">輸入數字 → 產生訊息 → 複製貼到企業微信群組</p>
-
 <header class="tab-header">
-  <button id="tab-huddle" type="button">今日檢視</button>
-  <button id="tab-report" type="button" class="active">每日回報</button>
+  <button id="tab-huddle" type="button" class="active">今日檢視</button>
   <button id="tab-plan" type="button">當月計畫</button>
-</header>
+  </header>
 
-<section id="huddle-view" class="section hidden">
-  <h2>今日戰情看板</h2>
-  <div id="huddle-goals-container">
-    <div class="huddle-row">
-      <span class="huddle-label">今日預約數</span>
-      <span class="huddle-value"><span id="huddleTodayBooking">-</span> 位</span>
-    </div>
-    </div>
-
-  <div class="huddle-separator"></div>
-
+<section id="huddle-view" class="section">
   <h2>當月行動方案完成度</h2>
   <div id="progress-dashboard">
     <p style="text-align:center; color:#999; font-size:14px;">資料載入中...</p>
   </div>
 </section>
+
+</div>
   
 <section id="plan-view" class="section hidden">
   <h2>個人月度行動計畫</h2>
@@ -327,70 +316,7 @@ button:active { transform: scale(0.98); }
   </div>
 </section>
 
-<div id="report-view">
-  <div class="section">
-    <h2>基本資訊</h2>
-    <label>日期： <input type="date" id="date"></label>
-    <label>店名： <input type="text" id="store" placeholder="例：站前"></label>
-    <label>姓名：
-    <select id="name">
-      <option value="">請選擇同仁姓名</option>
-      <option>郭孟鑫</option><option>陳詩潔</option><option>游瑟焄</option>
-      <option>魏頎恩</option><option>李孟馨</option><option>劉瑋婷</option>
-      <option>周曉玄</option><option>蕭純聿</option><option>陳宛妤</option>
-      <option>林寓葳</option><option>吳欣珮</option><option>呂桂梅</option>
-      <option>蔡秉忻</option>
-    </select>
-    </label>
-  </div>
 
-  <div class="section">
-    <h2>1. 今日外撥</h2>
-    <label>潛客外撥通數：<input type="number" id="todayCallPotential" inputmode="numeric" oninput="recalcTotals()"></label>
-    <label>過保舊客外撥通數：<input type="number" id="todayCallOld3Y" inputmode="numeric" oninput="recalcTotals()"></label>
-    <label>今日外撥總通數：<input type="number" id="todayCallTotal" readonly></label>
-    <label>成功邀約回店人數：<input type="number" id="todayInviteReturn" inputmode="numeric"></label>
-  </div>
-
-  <div class="section">
-    <h2>2. 今日預約</h2>
-    <label>今日預約總數：<input type="number" id="todayBookingTotal" inputmode="numeric"></label>
-    <div id="todayBookingHint" style="font-size:12px;color:#96162C;margin-top:4px;display:none;">
-      （已帶入昨日填寫的「明日已排預約」：<span id="todayBookingHintValue"></span> 位）
-    </div>
-  </div>
-
-  <div class="section">
-    <h2>3. 今日到店</h2>
-    <label>今日到店總數：<input type="number" id="todayVisitTotal" inputmode="numeric"></label>
-    <label>試用 HA：<input type="number" id="trialHA" inputmode="numeric"></label>
-    <label>試用 APAP：<input type="number" id="trialAPAP" inputmode="numeric"></label>
-    <label>成交 HA：<input type="number" id="dealHA" inputmode="numeric"></label>
-    <label>成交 APAP：<input type="number" id="dealAPAP" inputmode="numeric"></label>
-  </div>
-
-  <div class="section">
-    <h2>4. 明日已排預約</h2>
-    <label>明日預約總數：<input type="number" id="tomorrowBookingTotal" inputmode="numeric"></label>
-  </div>
-
-  <div class="section">
-    <h2>5. 明日 KPI</h2>
-    <label>外撥目標通數：<input type="number" id="tomorrowKpiCallTotal" inputmode="numeric"></label>
-    <label>邀約回店目標數 (位)：<input type="number" id="tomorrowKpiCallOld3Y" inputmode="numeric"></label>
-    <label>完成HA/APAP試戴目標 (位)：<input type="number" id="tomorrowKpiTrial" inputmode="numeric"></label>
-  </div>
-
-  <div class="section">
-    <textarea id="output" placeholder="按下『產生訊息』後文字會出現在這裡"></textarea>
-    <img src="dora-sakura-1.png" class="footer-character" alt="decoration">
-  </div>
-</div>
-
-</div> <div class="actions">
-<button class="btn-primary" onclick="generateMessage()">🍡 產生訊息</button>
-<button class="btn-secondary" onclick="copyMessage()">🌸 複製文字</button>
-</div>
 
 <div class="leaves">
   <span>🌸</span><span>🌸</span><span>🌸</span><span>🌸</span><span>🌸</span><span>🌸</span>

@@ -7,19 +7,57 @@ const monthlyData = {
     { content: "確認 1~2 月 YTD 達標狀況與長庚 2 月成交進度落後問題", target: "確認春節暫借名單執行度及歸還時間是否需安排在 2 月", customerType: "舊客", itemType: "HA" },
     { content: "考量 3 月進度，全面確認歷年個人交貨客人，檢查是否有遺漏孤兒個案", target: "舊客進店盡量發放介紹卡", customerType: "舊客", itemType: "HA" }
   ],
+  
   "陳詩潔": [
-    { content: "著重台大潛客追蹤", target: "1. 台大成交率維持 40% 以上", customerType: "潛客", itemType: "HA" }
+    { content: "著重台大潛客追蹤（1+2 月個人績效已達標）", target: "1. 台大成交率維持 40% 以上；2. 確認近幾個月潛客追蹤狀況；3. 確認訂閱個案轉買斷機會", customerType: "潛客", itemType: "HA" }
   ],
+  
+  "游瑟焄": [
+    { content: "針對半年以上未進店之歷年站前舊客優先聯繫", target: "每月至少 2 位交貨，以達成林長目標", customerType: "舊客", itemType: "HA" }
+  ],
+  
   "魏頎恩": [
-    { content: "2023往前的歷年舊客名單", target: "每日聯繫四位", customerType: "舊客", itemType: "HA" },
-    { content: "2025年台大RS潛客", target: "方案一優先", customerType: "潛客", itemType: "RS" }
+    { content: "2023往前的歷年舊客名單，針對半年以上未進店者聯繫", target: "每日聯繫四位，邀約目標2位回店(依3月份平均每日預約人數計算)", customerType: "舊客", itemType: "HA" },
+    { content: "2025年台大RS潛客，聯繫邀約至門市體驗Vauto", target: "不設定目標，方案一優先", customerType: "潛客", itemType: "RS" }
   ],
+
   "李孟馨": [
-    { content: "確認近三個月台大潛客名單", target: "由本人於門市系統自行確認", customerType: "潛客", itemType: "HA" },
-    { content: "聯繫台大歷年舊客", target: "共 60 位名單", customerType: "舊客", itemType: "HA" }
+    { content: "確認近三個月台大潛客名單", target: "不另撈名單，由本人於門市系統自行確認", customerType: "潛客", itemType: "HA" },
+    { content: "聯繫台大歷年舊客（有效、高階、過保），優先邀約回站前店", target: "共 60 位名單，3 月底前完成（日均致電約 4 位）", customerType: "舊客", itemType: "HA" }
   ],
-  // ... 其餘同仁請依此類推補齊
+
+  "劉瑋婷": [
+    { content: "HA0368693李素卿、HA0107324郭寶玉，多找幾個舊客新舊機比較的case，確認Intent展示比較差異", target: "2/4討論完，整理討論後的回饋給秉忻", customerType: "舊客", itemType: "HA" },
+    { content: "金山南潛客名單，跟俊諺討論潛客邀約成功率，並設定每日五通名單", target: "每日五通，邀約成功率至少20%", customerType: "潛客", itemType: "HA" }
+  ],
+
+  "周曉玄": [{ content: " ", target: " ", customerType: "舊客", itemType: "HA" }],
+
+  "蕭純聿": [
+    { content: "1.2月忠孝試聽來源，集中在新客(第一季HA目標24萬，忠孝成交23萬) 考量現有2+3月預約量，暫不用額外有外撥名單", target: "年初先持續把雲端表單新增，備好今年忠孝HA舊客換機目標名單", customerType: "舊客", itemType: "HA" }
+  ],
+
+  "陳宛妤": [{ content: " ", target: " ", customerType: "舊客", itemType: "HA" }],
+
+  "林寓葳": [
+    { content: "天母1月份HST相較於12月少一半 1. 秉忻跟Leo確認近期轉介狀況 2. 寓葳抓9~11月區間的HST，確認是否有暫借APAP需求", target: "AHI > 15的個案皆有邀約暫借", customerType: "潛客", itemType: "RS" },
+    { content: "目前春節暫借名單進度OK，可以先為3~4月目標做準備。先把2015~2018HA舊客名單看完(填寫用戶類別、用戶狀況)，同步確認可邀約回店服務名單", target: "2月底前完成 預計3月起開始針對歷年潛客聯繫。", customerType: "舊客", itemType: "HA" }
+  ],
+
+  "吳欣珮": [
+    { content: "八德歷年交貨(工讀生已篩選完畢)，2/5.6這兩天盡可能先聯繫近半年未進店的名單聯繫完(2023往前)", target: "2月份多四位舊客進店", customerType: "舊客", itemType: "HA" }
+  ],
+
+  "呂桂梅": [
+    { content: "八德歷年交貨「半年未進店」「半年有回電但無NS」，與欣珮合力完成2023~2018的名單", target: "安排過年前回店", customerType: "舊客", itemType: "HA" },
+    { content: "APAP訂閱中名單，待秉忻確認優惠後聯繫鼓勵轉買斷", target: "N", customerType: "舊客", itemType: "RS" }
+  ],
+
+  "蔡秉忻": [{ content: " ", target: " " }]
+
 };
+
+
 
 // 工具函式
 const $ = (id) => document.getElementById(id);

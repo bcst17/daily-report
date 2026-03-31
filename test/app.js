@@ -439,7 +439,7 @@ async function fetchAndRenderProgress() {
             
             card.innerHTML = `
                 <div style="font-weight:800; font-size:18px; color:var(--primary-dark); margin-bottom:15px; border-bottom: 1px solid #F0F0F0; padding-bottom:8px; display:flex; align-items:center; gap:8px;">
-                    <span>👤</span> ${staffName}
+                     ${staffName}
                 </div>
                 ${taskRowsHtml}
             `;

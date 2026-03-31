@@ -4,8 +4,6 @@ console.log("🌸 Mar Style app.js loaded: Sakura & Doraemon Edition");
 const STORAGE_PREFIX = "daily-report-test-";
 
 const PROGRESS_API_URL = "https://script.google.com/macros/s/AKfycbwqpw_lNJO5XUDx3D31DJmGN-zjC3EY981fYzWtkbtUATmLlER3bt_A4Cy7ztXcB84tdA/exec";
-const TRACKING_CONFIG = {
-  "李孟馨": { category: "台大HA潛客聯繫", target: 20 },
 
 };
 

@@ -428,7 +428,7 @@ async function fetchAndRenderProgress() {
                         <div style="background:#F0F0F0; height:10px; border-radius:5px; overflow:hidden; position:relative;">
                             <div style="background:${barColor}; width:${task.percent}%; height:100%; transition:width 1s ease-out;"></div>
                         </div>
-                        <div style="text-align:right; font-size:11px; color:#999; margin-top:4px;">當月達成率 ${task.percent}%</div>
+                        <div style="text-align:right; font-size:11px; color:#999; margin-top:4px;">任務週期達成率 ${task.percent}%</div>
                     </div>
                 `;
             }).join("");

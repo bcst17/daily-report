@@ -38,6 +38,12 @@ body{
   justify-content:center;
   color:#333;
   overflow-x:hidden;
+
+  background-image: url("bg.png"); /* 圖片路徑 */
+  background-size: cover;               /* 讓圖片填滿整個螢幕 */
+  background-position: center;          /* 圖片置中 */
+  background-repeat: no-repeat;         /* 不重複顯示 */
+  background-attachment: fixed;         /* 捲動時背景固定 (部分手機瀏覽器支援有限) */
 }
 
 .container{
@@ -62,12 +68,12 @@ h1 {
 }
 
 h1::before {
-  content: "🖍️"; /* 可換成 shin-chan.png */
+  content: "shiro.png"; /* 可換成 shin-chan.png */
   font-size: 28px;
 }
 
 h1::after {
-  content: "🛡️"; /* 動感之盾 */
+  content: "Chocobi.png"; /* 動感之盾 */
   font-size: 28px;
 }
 

@@ -124,18 +124,18 @@ h1::after {
   position: absolute; 
   
   /* 🛠️ 關鍵修改 2：設定位置 (數值可以根據你的圖檔微調) */
-  top: -82px;    /* 向上偏移，數值越負，小新就飛得越高 */
+  top: -84px;    /* 向上偏移，數值越負，小新就飛得越高 */
   right: 20px;   /* 距離右邊的距離 */
   
   /* 原有的尺寸設定 */
-  width: 80px;   /* 如果覺得小新太小，可以把 40 換成 80 或更大 */
+  width: 90px;   /* 如果覺得小新太小，可以把 40 換成 80 或更大 */
   height: 80px; 
   background: url("shinchan.png") no-repeat center;
   background-size: contain;
   
   /* 🛠️ 關鍵修改 3：確保它在最上層，不被遮住 */
   z-index: 10;
-  
+}  
 
 /* 設定第二個角色（例如肥嘟嘟左衛門） */
 .section::after {

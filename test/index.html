@@ -39,11 +39,11 @@ body{
   color:#333;
   overflow-x:hidden;
 
-  background-image: url("bg.png"); /* 圖片路徑 */
-  background-size: cover;               /* 讓圖片填滿整個螢幕 */
-  background-position: center;          /* 圖片置中 */
-  background-repeat: no-repeat;         /* 不重複顯示 */
-  background-attachment: fixed;         /* 捲動時背景固定 (部分手機瀏覽器支援有限) */
+background-image: url("bg.jpg");
+  /* 🛠️ 修改：不要用 cover，改用固定像素大小讓它重複 */
+  background-size: 300px; /* 這裡數值越小，圖案越細緻、重複次數越多 */
+  background-repeat: repeat;
+  background-attachment: fixed;
 }
 
 .container{
@@ -68,13 +68,23 @@ h1 {
 }
 
 h1::before {
-  content: "shiro.png"; /* 可換成 shin-chan.png */
-  font-size: 28px;
+  content: "shiro.png";
+  display: block;
+  width: 40px;  /* 調整圖片寬度 */
+  height: 40px; /* 調整圖片高度 */
+  background: url("shiro.png") no-repeat center;
+  background-size: contain;
+  flex-shrink: 0;
 }
 
 h1::after {
-  content: "Chocobi.png"; /* 動感之盾 */
-  font-size: 28px;
+  content: "Chocobi.png";
+  display: block;
+  width: 40px;
+  height: 40px;
+  background: url("Chocobi.png") no-repeat center;
+  background-size: contain;
+  flex-shrink: 0;
 }
 
 .subtitle{ text-align:center; font-size:13px; color:#555; margin-bottom:8px; font-weight: bold; }

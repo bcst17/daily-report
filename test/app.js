@@ -79,10 +79,11 @@ async function sendReportToSheet(payload) {
     return true;
 }
 
-// ===== 【三月更新】櫻花與鈴鐺噴發特效 =====
-function spawnSakuraShower() {
-    const symbols = ['🌸', '🔔', '💗', '🍡', '✨']; // 櫻花、鈴鐺、愛心、三色糰子
-    const count = 20; 
+// 修改特效函數：從櫻花改為巧克比小餅乾元素
+function spawnChocobiShower() {
+    // 元素包含：星星、餅乾、恐龍、棒棒糖
+    const symbols = ['🌟', '🍪', '🦖', '🍭', '✨']; 
+    const count = 25; 
 
     for (let i = 0; i < count; i++) {
         const item = document.createElement('div');
@@ -90,22 +91,23 @@ function spawnSakuraShower() {
         item.style.position = 'fixed';
         item.style.bottom = '80px';
         item.style.left = (Math.random() * 80 + 10) + '%';
-        item.style.fontSize = (Math.random() * 20 + 15) + 'px';
+        item.style.fontSize = (Math.random() * 25 + 15) + 'px';
         item.style.zIndex = '100';
         item.style.pointerEvents = 'none';
-        item.style.transition = 'all 1.5s cubic-bezier(0.19, 1, 0.22, 1)'; // 更加輕柔的飄落感
+        // 使用更具彈性的動畫曲線，模擬小新調皮的感覺
+        item.style.transition = 'all 1.8s cubic-bezier(0.68, -0.55, 0.27, 1.55)'; 
         
         document.body.appendChild(item);
 
-        const destinationX = (Math.random() - 0.5) * 300;
-        const destinationY = -(Math.random() * 500 + 200);
+        const destinationX = (Math.random() - 0.5) * 400;
+        const destinationY = -(Math.random() * 600 + 300);
 
         requestAnimationFrame(() => {
-            item.style.transform = `translate(${destinationX}px, ${destinationY}px) rotate(${Math.random() * 540}deg)`;
+            item.style.transform = `translate(${destinationX}px, ${destinationY}px) rotate(${Math.random() * 720}deg)`;
             item.style.opacity = '0';
         });
 
-        setTimeout(() => item.remove(), 1500);
+        setTimeout(() => item.remove(), 1800);
     }
 }
 

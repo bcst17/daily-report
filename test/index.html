@@ -156,20 +156,37 @@ button{
 .btn-secondary{ flex:1; background:var(--btn-copy); color:#fff; }
 
 /* =============== 🌟 Action Animation =============== */
+.leaves {
+  pointer-events: none;
+  position: fixed;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  overflow: hidden;
+  z-index: 30;
+}
+
 .leaves span {
-  position:absolute;
-  top:-20px;
-  display:block;
-  font-size: 20px;
-  animation: leafFall 8s linear infinite;
+  position: absolute;
+  top: -30px;
+  display: block;
+  font-size: 24px;
+  animation: leafFall 12s linear infinite; /* 放慢速度，更悠閒 */
   opacity: 0;
 }
 
+/* 🎨 讓 6 個 Emoji 分散在螢幕各處 */
+.leaves span:nth-child(1) { left: 5%;  animation-delay: 0s;   animation-duration: 10s; }
+.leaves span:nth-child(2) { left: 20%; animation-delay: 3s;   animation-duration: 14s; }
+.leaves span:nth-child(3) { left: 40%; animation-delay: 1.5s; animation-duration: 12s; }
+.leaves span:nth-child(4) { left: 65%; animation-delay: 5s;   animation-duration: 15s; }
+.leaves span:nth-child(5) { left: 80%; animation-delay: 0.5s; animation-duration: 11s; }
+.leaves span:nth-child(6) { left: 92%; animation-delay: 4s;   animation-duration: 13s; }
+
 @keyframes leafFall {
   0%   { transform: translate(0, 0) rotate(0deg); opacity: 0; }
-  10%  { opacity: 1; }
-  90%  { opacity: 1; }
-  100% { transform: translate(50px, 105vh) rotate(720deg); opacity: 0; }
+  10%  { opacity: 0.7; }
+  90%  { opacity: 0.7; }
+  100% { transform: translate(80px, 105vh) rotate(360deg); opacity: 0; }
 }
 
 .badge.green{ background:#D4EDDA; color:#155724; border: 1px solid; }

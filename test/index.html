@@ -117,49 +117,44 @@ h1::after {
   box-shadow: 4px 4px 0px rgba(0, 91, 172, 0.1);
 }
 
-/* 將原本的小白位置換成小新，並設定為絕對定位 */
+/* 2. 右上角角色：小新 (Before) */
 .section::before {
   content: ""; 
-  /* 🛠️ 關鍵修改 1：設定為絕對定位，讓它漂浮起來不佔空間 */
   position: absolute; 
+  z-index: 10;
   
-  /* 🛠️ 關鍵修改 2：設定位置 (數值可以根據你的圖檔微調) */
-  top: -84px;    /* 向上偏移，數值越負，小新就飛得越高 */
-  right: 20px;   /* 距離右邊的距離 */
+  /* 位置設定：飛出頂部 */
+  top: -84px;    
+  right: 20px;   
   
-  /* 原有的尺寸設定 */
-  width: 90px;   /* 如果覺得小新太小，可以把 40 換成 80 或更大 */
-  height: 80px; 
+  /* 尺寸與圖片 */
+  width: 90px;   
+  height: 90px; 
   background: url("shinchan.png") no-repeat center;
   background-size: contain;
   
-  /* 🛠️ 關鍵修改 3：確保它在最上層，不被遮住 */
-  z-index: 10;
-}  
+  /* 避免擋住滑鼠點擊 */
+  pointer-events: none;
+}
 
-/* 設定第二個角色（例如肥嘟嘟左衛門） */
+/* 3. 左上角角色：小白 (After) */
 .section::after {
   content: ""; 
-  /* 🛠️ 同樣設定為絕對定位，讓它漂浮 */
   position: absolute; 
+  z-index: 10;
   
-  /* 🛠️ 改成設定左邊 (left)，讓它跟右邊的小新分開 */
-  top: -45px;    
-  left: 10px;    /* 距離圖卡左邊 10px */
+  /* 位置設定：建議也飛高一點，才不會壓到標題文字 */
+  top: -80px;    /* 這裡原本是 -45px，改深一點可以讓它飛出邊框 */
+  left: 10px;    
   
-  /* 尺寸設定 */
-  width: 70px;   
-  height: 70px; 
-  
-  /* 🛠️ 換成你的第二個圖片檔名，例如 buriburi.png */
+  /* 尺寸與圖片 */
+  width: 85px;   
+  height: 85px; 
   background: url("shiro.png") no-repeat center;
   background-size: contain;
   
-  /* 確保層級正確 */
-  z-index: 10;
-
-}
-
+  /* 避免擋住滑鼠點擊 */
+  pointer-events: none;
 }
 
 .section h2{ margin:0 0 10px; font-size:18px; font-weight:900; color: var(--primary); border-left: 5px solid var(--secondary); padding-left: 8px; }

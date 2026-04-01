@@ -3,6 +3,8 @@ console.log("🌸 Mar Style app.js loaded: Sakura & Doraemon Edition");
 // ✅ 測試版儲存前綴
 const STORAGE_PREFIX = "daily-report-test-";
 
+const PROGRESS_API_URL = "https://script.google.com/macros/s/AKfycbwqpw_lNJO5XUDx3D31DJmGN-zjC3EY981fYzWtkbtUATmLlER3bt_A4Cy7ztXcB84tdA/exec";
+
 // ===== ↓↓↓ 當月計畫資料庫 (後台輸入區) ↓↓↓ =====
 // 這裡可以預先輸入每位同仁的計畫，數量不限
 const monthlyData = {
@@ -221,27 +223,23 @@ window.recalcTotals = recalcTotals;
 
 // ===== 分頁切換邏輯 (更新以支援新分頁) =====
 function showView(view) {
-    const views = {
-        'huddle': $('huddle-view'),
-        'report': $('report-view'),
-        'plan': $('plan-view')
-    };
-    const tabs = {
-        'huddle': $('tab-huddle'),
-        'report': $('tab-report'),
-        'plan': $('tab-plan')
-    };
+    const views = { 'huddle': $('huddle-view'), 'report': $('report-view'), 'plan': $('plan-view') };
+    const tabs = { 'huddle': $('tab-huddle'), 'report': $('tab-report'), 'plan': $('tab-plan') };
 
-    // 切換顯示狀態
     Object.keys(views).forEach(key => {
         if (views[key]) views[key].classList.toggle("hidden", key !== view);
         if (tabs[key]) tabs[key].classList.toggle("active", key === view);
     });
 
-    if (view === "huddle") renderHuddle();
+    if (view === "huddle") {
+        // 🚀 優先跑進度抓取，並用 try-catch 隔開
+        try { fetchAndRenderProgress(); } catch(e) { console.error(e); }
+        try { renderHuddle(); } catch(e) { console.error(e); }
+    }
 }
 
 // ===== 當月計畫渲染邏輯 (移除 Emoji 版) =====
+// app.js 中的 initPlanTab 函式
 function initPlanTab() {
     const selectName = $("plan-name-select");
     const selectCustomer = $("filter-customer");
@@ -343,12 +341,12 @@ function initPlanTab() {
     renderPlans();
 }
 
-
 function renderHuddle() {
     const today = getCurrentDateStr();
     const { d1, d0 } = getPrevTwoDataDates(today);
     const prevData = d1 ? loadByDate(d1) : null;
 
+    // 🚀 加上安全檢查：先確認元素存在 (if ($("..."))) 再賦值
     if ($("huddleTodayBooking")) $("huddleTodayBooking").textContent = (prevData?.tomorrowBookingTotal ?? "-") || "-";
     if ($("huddleTodayTrial")) $("huddleTodayTrial").textContent = (prevData?.tomorrowKpiTrial ?? "-") || "-";
     if ($("huddleTodayCallTotal")) $("huddleTodayCallTotal").textContent = (prevData?.tomorrowKpiCallTotal ?? "-") || "-";
@@ -356,10 +354,15 @@ function renderHuddle() {
 
     const hintBox = $("todayBookingHint");
     if (hintBox && prevData?.tomorrowBookingTotal) {
-        $("todayBookingHintValue").textContent = prevData.tomorrowBookingTotal;
+        if ($("todayBookingHintValue")) $("todayBookingHintValue").textContent = prevData.tomorrowBookingTotal;
         hintBox.style.display = "block";
-        if (v("todayBookingTotal") === "") { $("todayBookingTotal").value = prevData.tomorrowBookingTotal; saveToday(); }
-    } else if (hintBox) { hintBox.style.display = "none"; }
+        if (v("todayBookingTotal") === "") { 
+            if ($("todayBookingTotal")) $("todayBookingTotal").value = prevData.tomorrowBookingTotal; 
+            saveToday(); 
+        }
+    } else if (hintBox) { 
+        hintBox.style.display = "none"; 
+    }
 
     const execData = d1 ? loadByDate(d1) : null;
     const kpiSetData = d0 ? loadByDate(d0) : null;
@@ -369,17 +372,84 @@ function renderHuddle() {
     const actualCall = num(execData.todayCallPotential) + num(execData.todayCallOld3Y);
     const actualInvite = num(execData.todayInviteReturn);
 
-    $("checkTrialText").textContent = `目標 ${num(kpiSetData.tomorrowKpiTrial)} / 執行 ${actualTrial} ${okText(actualTrial >= num(kpiSetData.tomorrowKpiTrial))}`;
-    $("checkCallText").textContent = `目標 ${num(kpiSetData.tomorrowKpiCallTotal)} / 執行 ${actualCall} ${okText(actualCall >= num(kpiSetData.tomorrowKpiCallTotal))}`;
-    $("checkInviteText").textContent = `目標 ${num(kpiSetData.tomorrowKpiCallOld3Y)} / 執行 ${actualInvite} ${okText(actualInvite >= num(kpiSetData.tomorrowKpiCallOld3Y))}`;
+    // 🚀 這裡也是安全檢查
+    if ($("checkTrialText")) $("checkTrialText").textContent = `目標 ${num(kpiSetData.tomorrowKpiTrial)} / 執行 ${actualTrial} ${okText(actualTrial >= num(kpiSetData.tomorrowKpiTrial))}`;
+    if ($("checkCallText")) $("checkCallText").textContent = `目標 ${num(kpiSetData.tomorrowKpiCallTotal)} / 執行 ${actualCall} ${okText(actualCall >= num(kpiSetData.tomorrowKpiCallTotal))}`;
+    if ($("checkInviteText")) $("checkInviteText").textContent = `目標 ${num(kpiSetData.tomorrowKpiCallOld3Y)} / 執行 ${actualInvite} ${okText(actualInvite >= num(kpiSetData.tomorrowKpiCallOld3Y))}`;
 
     const rate = actualCall > 0 ? (actualInvite / actualCall) : 0;
-    $("checkInviteRateText").textContent = Math.round(rate * 100) + "%";
+    if ($("checkInviteRateText")) $("checkInviteRateText").textContent = Math.round(rate * 100) + "%";
     const badge = $("checkInviteRateBadge");
     if (badge) {
         badge.style.display = "inline-block";
         badge.className = "badge " + (rate >= 0.3 ? "green" : rate >= 0.15 ? "yellow" : "red");
         badge.textContent = rate >= 0.3 ? "高" : rate >= 0.15 ? "中" : "低";
+    }
+}
+
+// 🚀 修改後的 fetchAndRenderProgress：一人一個圖卡，內部顯示多個進度條
+async function fetchAndRenderProgress() {
+    const container = $("progress-dashboard");
+    if (!container) return;
+
+    try {
+        const response = await fetch(PROGRESS_API_URL);
+        if (!response.ok) throw new Error("網路請求失敗");
+        
+        const tasks = await response.json(); 
+        container.innerHTML = ""; 
+
+        if (tasks.length === 0) {
+            container.innerHTML = "<p style='text-align:center; color:#999;'>Task_Config 中尚無任務設定</p>";
+            return;
+        }
+
+        // --- 1. 資料分組邏輯：將同仁姓名作為 Key，把任務塞進對應陣列 ---
+        const groupedTasks = tasks.reduce((acc, task) => {
+            if (!acc[task.staffName]) {
+                acc[task.staffName] = [];
+            }
+            acc[task.staffName].push(task);
+            return acc;
+        }, {});
+
+        // --- 2. 渲染邏輯：遍歷每個「同仁」生成一個大圖卡 ---
+        Object.entries(groupedTasks).forEach(([staffName, staffTasks]) => {
+            
+            // 生成該同仁內部的所有進度條 HTML
+            const taskRowsHtml = staffTasks.map(task => {
+                const barColor = task.percent >= 80 ? "#6BCB77" : (task.percent >= 50 ? "#FFA41B" : "var(--primary)");
+                return `
+                    <div style="margin-bottom: 15px;">
+                        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:5px;">
+                            <span style="font-size:13px; color:#666;">${task.taskName}</span>
+                            <span style="font-weight:bold; color:${barColor}; font-size:14px;">${task.completed} / ${task.target} 筆</span>
+                        </div>
+                        <div style="background:#F0F0F0; height:10px; border-radius:5px; overflow:hidden; position:relative;">
+                            <div style="background:${barColor}; width:${task.percent}%; height:100%; transition:width 1s ease-out;"></div>
+                        </div>
+                        <div style="text-align:right; font-size:11px; color:#999; margin-top:4px;">當月達成率 ${task.percent}%</div>
+                    </div>
+                `;
+            }).join("");
+
+            // 生成外層的大圖卡容器
+            const card = document.createElement("div");
+            card.style.cssText = "background:#fff; padding:18px; border-radius:14px; margin-bottom:16px; border:1px solid var(--border); box-shadow: 0 4px 12px rgba(0,0,0,0.05);";
+            
+            card.innerHTML = `
+                <div style="font-weight:800; font-size:18px; color:var(--primary-dark); margin-bottom:15px; border-bottom: 1px solid #F0F0F0; padding-bottom:8px; display:flex; align-items:center; gap:8px;">
+                     ${staffName}
+                </div>
+                ${taskRowsHtml}
+            `;
+            
+            container.appendChild(card);
+        });
+
+    } catch (error) {
+        console.error("進度抓取失敗:", error);
+        container.innerHTML = `<p style="text-align:center; color:#FF6B6B; font-size:13px;">⚠️ 無法連線至中控表系統</p>`;
     }
 }
 
@@ -501,5 +571,6 @@ document.addEventListener("DOMContentLoaded", () => {
     bindAutoSave();
     initDateLoad();
     renderHuddle();
-    initPlanTab(); // 初始化當月計畫分頁邏輯
+    initPlanTab();
+    fetchAndRenderProgress(); // 🚀 初始化時也跑一次
 });

@@ -117,15 +117,26 @@ h1::after {
   box-shadow: 4px 4px 0px rgba(0, 91, 172, 0.1);
 }
 
-/* 將原本的竹蜻蜓位置換成小白 */
+/* 將原本的小白位置換成小新，並設定為絕對定位 */
 .section::before {
   content: ""; 
-  display: block;
-  width: 40px;  /* 調整圖片寬度 */
-  height: 40px; /* 調整圖片高度 */
+  /* 🛠️ 關鍵修改 1：設定為絕對定位，讓它漂浮起來不佔空間 */
+  position: absolute; 
+  
+  /* 🛠️ 關鍵修改 2：設定位置 (數值可以根據你的圖檔微調) */
+  top: -45px;    /* 向上偏移，數值越負，小新就飛得越高 */
+  right: 10px;   /* 距離右邊的距離 */
+  
+  /* 原有的尺寸設定 */
+  width: 80px;   /* 如果覺得小新太小，可以把 40 換成 80 或更大 */
+  height: 80px; 
   background: url("shinchan.png") no-repeat center;
   background-size: contain;
-  flex-shrink: 0;
+  
+  /* 🛠️ 關鍵修改 3：確保它在最上層，不被遮住 */
+  z-index: 10;
+  
+  /* 提示：原本的 display: block 和 flex-shrink 就不需要了，因為 absolute 會自動處理 */
 }
 
 .section h2{ margin:0 0 10px; font-size:18px; font-weight:900; color: var(--primary); border-left: 5px solid var(--secondary); padding-left: 8px; }

@@ -136,7 +136,28 @@ h1::after {
   /* 🛠️ 關鍵修改 3：確保它在最上層，不被遮住 */
   z-index: 10;
   
-  /* 提示：原本的 display: block 和 flex-shrink 就不需要了，因為 absolute 會自動處理 */
+
+/* 設定第二個角色（例如肥嘟嘟左衛門） */
+.section::after {
+  content: ""; 
+  /* 🛠️ 同樣設定為絕對定位，讓它漂浮 */
+  position: absolute; 
+  
+  /* 🛠️ 改成設定左邊 (left)，讓它跟右邊的小新分開 */
+  top: -45px;    
+  left: 10px;    /* 距離圖卡左邊 10px */
+  
+  /* 尺寸設定 */
+  width: 70px;   
+  height: 70px; 
+  
+  /* 🛠️ 換成你的第二個圖片檔名，例如 buriburi.png */
+  background: url("shiro.png") no-repeat center;
+  background-size: contain;
+  
+  /* 確保層級正確 */
+  z-index: 10;
+
 }
 
 .section h2{ margin:0 0 10px; font-size:18px; font-weight:900; color: var(--primary); border-left: 5px solid var(--secondary); padding-left: 8px; }

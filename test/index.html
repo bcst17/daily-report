@@ -15,81 +15,254 @@
 <meta name="apple-mobile-web-app-title" content="台北一區上班小助手">
 
 <style>
-:root {
-  --primary: #E50012;      /* 小新紅 */
-  --primary-dark: #0076BE; /* 動感超人藍 */
-  --secondary: #FFF100;    /* 小新黃 */
-  --border: #BCE2F7;       /* 淺藍邊框 */
-  --bg: #F0FAFF;           /* 極淺藍底色 */
-  
-  --btn-generate: #E50012; /* 紅色按鈕 */
-  --btn-copy: #0076BE;     /* 藍色按鈕 */
-  --card-bg: rgba(255, 255, 255, 0.95);
+:root{
+  --primary: #FFB7C5;      /* 浪漫櫻粉 */
+  --primary-dark: #00A0E9; /* 哆啦藍 */
+  --secondary: #FFF5F7;    /* 極淺粉背景 */
+  --border: #EFC1C9;       /* 柔粉邊框 */
+  --bg: #FFFBFC;           /* 溫暖粉白底色 */
+
+  --btn-generate: #FFB7C5; /* 粉色按鈕 */
+  --btn-copy: #F9D01B;     /* 鈴鐺金按鈕 */
+  --card-bg: #FFFFFF;      /* 純白卡片 */
 }
 
-body {
-  background-color: var(--bg);
-  /* 實作小新睡衣幾何圖騰背景 */
-  background-image: 
-    radial-gradient(circle, #FFF100 10%, transparent 11%), /* 黃色圓形 */
-    linear-gradient(45deg, #FF99CC 12%, transparent 13%),  /* 粉紅正方形 (模擬) */
-    conic-gradient(from 0deg at 50% 50%, #76CA43 0deg 30deg, transparent 31deg); /* 綠色三角形 (模擬) */
-  background-size: 80px 80px;
-  background-position: 0 0, 40px 40px, 20px 20px;
+*,*::before,*::after{ box-sizing:border-box; }
+
+body{
+  font-family:-apple-system,BlinkMacSystemFont,system-ui,sans-serif;
+  margin:0;
+  padding:14px 14px 90px;
+  background: var(--bg);
+  display:flex;
+  justify-content:center;
+  color:#003366; /* 哆啦深藍墨色文字 */
+  overflow-x:hidden;
 }
 
-/* 🦸‍♂️ 標題配置：動感超人與小白 */
-h1 {
+
+.container{
+  width:100%;
+  max-width:520px;
+  margin-left:auto;
+  margin-right:auto;
+}
+
+/* 🧧 標題配置 */
+h1 { 
+  text-align: center; 
+  margin: 10px 0 5px; 
+  font-size: 24px; 
+  font-weight: 700;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 12px; 
   color: var(--primary-dark);
-  gap: 15px;
 }
 
 h1::before {
-  background: url("action-mask.png") no-repeat center;
-  background-size: contain;
-  width: 45px; height: 45px;
+  content: "";
+  display: block;
+  width: 35px;
+  height: 35px;
+  background: url("bell.png") no-repeat center; /* 任意門 */
+  background-size: contain;;
+  flex-shrink: 0;
 }
 
 h1::after {
-  background: url("shiro.png") no-repeat center;
+  content: "";
+  display: block;
+  width: 35px;
+  height: 35px;
+  background: url("bell.png") no-repeat center; /* 鈴鐺 */
   background-size: contain;
-  width: 40px; height: 40px;
+  flex-shrink: 0;
 }
 
-/* 🍪 卡片裝飾：巧克比小餅乾 */
+.subtitle{ text-align:center; font-size:13px; color:#3D1B1B; margin-bottom:8px; }
+
+/* 🔹 分頁標籤 */
+.tab-header{
+  display:flex;
+  gap:8px;
+  margin-bottom:10px;
+}
+
+.tab-header button{
+  flex:1;
+  padding:8px 0;
+  border-radius:20px;
+  border:1px solid var(--border);
+  background:#fff;
+  font-size:14px;
+  color: #8B4513;
+  cursor: pointer;
+}
+
+.tab-header button.active{
+  background:var(--primary);
+  color:#fff;
+  border-color:var(--primary);
+}
+
+.section{
+  background: var(--card-bg);
+  border-radius:14px;
+  border:1px solid var(--border);
+  padding:14px;
+  margin-bottom:12px;
+  overflow:visible;
+  position:relative;
+  box-shadow: 0 2px 8px rgba(138, 154, 91, 0.1);
+}
+
 .section::before {
   content: "";
   position: absolute;
-  top: -30px;
-  left: -15px;
-  width: 55px;
-  height: 55px;
-  background-image: url("chocobi.png");
+  top: -44px;
+  left: -20px;
+  width: 60px;
+  height: 60px;
+  background-image: url("bamboo-copter.png"); /* 竹蜻蜓 */
   background-size: contain;
   background-repeat: no-repeat;
-  transform: rotate(45deg); /* 傾斜 45 度 */
+  background-position: center;
   z-index: 10;
+  pointer-events: none;
+  transform: rotate(-13deg);
 }
 
-/* 😴 右下角浮水印：睡衣小新 */
+.section h2{ margin:0 0 8px; font-size:16px; font-weight:700; color: var(--primary-dark); }
+
+label{ display:block;font-size:14px;margin-top:4px; color: #4A5A3B; }
+
+input,select{
+  width:100%;
+  padding:10px; font-size:16px;
+  margin-top:4px; margin-bottom:10px;
+  border-radius:10px; border:1px solid var(--border);
+  background:#fff;
+  color: #333;
+}
+
+input:focus, select:focus{
+  outline: none;
+  border-color: var(--primary);
+  box-shadow: 0 0 0 2px rgba(138, 154, 91, 0.2);
+}
+
+textarea{
+  width:100%; height:200px; padding:10px;
+  font-size:15px; border-radius:10px;
+  border:1px solid var(--border);
+  background: #fff;
+}
+
+.actions{
+  position:fixed;left:0;right:0;bottom:0;
+  padding:10px 14px 12px;background:rgba(255,255,255,0.9);
+  display:flex;gap:10px;border-top:1px solid var(--border);
+  backdrop-filter:blur(10px);
+  z-index:50;
+}
+
+button{
+  padding:12px 0;
+  border-radius:26px;
+  border:none;
+  font-size:16px;
+  font-weight:600;
+  cursor: pointer;
+  transition: transform 0.1s;
+}
+button:active { transform: scale(0.98); }
+
+.btn-primary{
+  flex:1;
+  background:var(--btn-generate);
+  color:#fff;
+}
+
+.btn-secondary{
+  flex:1;
+  background:var(--btn-copy);
+  color:#fff;
+}
+
+/* =============== 🍃 Leaf Animation =============== */
+.leaves {
+  pointer-events:none;
+  position:fixed;
+  top:0; left:0;
+  width:100%; height:100%;
+  overflow:hidden;
+  z-index:30;
+}
+
+.leaves span {
+  position:absolute;
+  top:-20px;
+  display:block;
+  font-size: 14px;
+  animation: leafFall 10s linear infinite;
+  opacity: 0;
+}
+
+@keyframes leafFall {
+  0%   { transform: translate(0, 0) rotate(0deg); opacity: 0; }
+  10%  { opacity: 0.8; }
+  90%  { opacity: 0.8; }
+  100% { transform: translate(100px, 105vh) rotate(360deg); opacity: 0; }
+}
+
+.leaves span:nth-child(1){ left:10%; animation-duration: 8s; animation-delay: 0s; }
+.leaves span:nth-child(2){ left:25%; animation-duration: 12s; animation-delay: 2s; }
+.leaves span:nth-child(3){ left:40%; animation-duration: 10s; animation-delay: 4s; }
+.leaves span:nth-child(4){ left:60%; animation-duration: 9s; animation-delay: 1s; }
+.leaves span:nth-child(5){ left:80%; animation-duration: 11s; animation-delay: 5s; }
+.leaves span:nth-child(6){ left:95%; animation-duration: 13s; animation-delay: 3s; }
+
+.hidden{ display:none; }
+
+.badge{
+  display:inline-block;
+  margin-left:6px;
+  padding:2px 8px;
+  border-radius:999px;
+  font-size:12px;
+  font-weight:700;
+}
+.badge.green{ background:#E8F0E3; color:#4F6F41; }
+.badge.yellow{ background:#FFF7E1; color:#8A6D3B; }
+.badge.red{ background:#FBEAEA; color:#A94442; }
+
+.huddle-row{ display:flex; justify-content:space-between; align-items:center; margin-top:8px; font-size:14px; }
+.huddle-separator{ height:1px; background:var(--border); margin:12px 0; opacity:0.5; }
+.check-row{ display:flex; justify-content:space-between; align-items:flex-start; margin-top:10px; font-size:14px; }
+
 .footer-character {
-  position: fixed; /* 統一固定位置 */
-  right: -20px;
-  bottom: -20px;
-  width: 180px;    /* 統一尺寸，刪除 RWD 斷點差異 */
+  position: absolute;
+  right: -15px;
+  bottom: -40px;
+  width: 320px;
   height: auto;
-  content: url("shin-chan-sleeping.png");
-  opacity: 0.6;
+  opacity: 0.4;
   z-index: 5;
   pointer-events: none;
+  filter: drop-shadow(2px 2px 5px rgba(0,0,0,0.1));
 }
 
-.tab-header button.active {
-  background: var(--primary);
-  border-color: var(--primary);
+.section:last-of-type {
+  overflow: visible !important;
+}
+
+#date {
+  width: 94%;
+  display: block;
 }
 </style>
-  
 </head>
 
 <body>

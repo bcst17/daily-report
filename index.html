@@ -15,16 +15,18 @@
 <meta name="apple-mobile-web-app-title" content="台北一區上班小助手">
 
 <style>
-:root{
-  --primary: #FFB7C5;      /* 浪漫櫻粉 */
-  --primary-dark: #00A0E9; /* 哆啦藍 */
-  --secondary: #FFF5F7;    /* 極淺粉背景 */
-  --border: #EFC1C9;       /* 柔粉邊框 */
-  --bg: #FFFBFC;           /* 溫暖粉白底色 */
-
-  --btn-generate: #FFB7C5; /* 粉色按鈕 */
-  --btn-copy: #F9D01B;     /* 鈴鐺金按鈕 */
-  --card-bg: #FFFFFF;      /* 純白卡片 */
+:root {
+  /* 睡衣薄荷綠底色 */
+  --bg: #E0F7EF;           
+  
+  /* 核心動感藍 (對應進度條、姓名、選中按鈕) */
+  --primary-dark: #248EB3;  
+  
+  /* 輔助色 */
+  --primary: #248EB3;      /* 讓未滿 50% 的進度條也統一成藍色 */
+  --secondary: #F4D03F;    /* 小新睡衣黃 */
+  --border: #A5D6A7;       /* 邊框改用淺綠，更和諧 */
+  --card-bg: #FFFFFF;
 }
 
 *,*::before,*::after{ box-sizing:border-box; }
@@ -36,10 +38,9 @@ body{
   background: var(--bg);
   display:flex;
   justify-content:center;
-  color:#003366; /* 哆啦深藍墨色文字 */
+  color:#333;
   overflow-x:hidden;
 }
-
 
 .container{
   width:100%;
@@ -48,279 +49,220 @@ body{
   margin-right:auto;
 }
 
-/* 🧧 標題配置 */
+/* 🖍️ 標題配置 */
 h1 { 
   text-align: center; 
-  margin: 10px 0 5px; 
+  margin: 10px 0 30px; 
   font-size: 24px; 
-  font-weight: 700;
+  font-weight: 900;
   display: flex;
   justify-content: center;
   align-items: center;
   gap: 12px; 
-  color: var(--primary-dark);
+  color: var(--primary);
+  text-shadow: 2px 2px 0px var(--secondary);
 }
 
 h1::before {
   content: "";
   display: block;
-  width: 35px;
-  height: 35px;
-  background: url("bell.png") no-repeat center; /* 任意門 */
-  background-size: contain;;
+  width: 40px;  /* 調整圖片寬度 */
+  height: 40px; /* 調整圖片高度 */
+  background: url("Chocobi_r.png") no-repeat center;
+  background-size: contain;
   flex-shrink: 0;
 }
 
 h1::after {
   content: "";
   display: block;
-  width: 35px;
-  height: 35px;
-  background: url("bell.png") no-repeat center; /* 鈴鐺 */
+  width: 40px;
+  height: 40px;
+  background: url("Chocobi.png") no-repeat center;
   background-size: contain;
   flex-shrink: 0;
 }
 
-.subtitle{ text-align:center; font-size:13px; color:#3D1B1B; margin-bottom:8px; }
+.subtitle{ text-align:center; font-size:13px; color:#555; margin-bottom:8px; font-weight: bold; }
 
 /* 🔹 分頁標籤 */
 .tab-header{
   display:flex;
   gap:8px;
-  margin-bottom:10px;
+  margin-bottom:60px;
 }
 
 .tab-header button{
   flex:1;
-  padding:8px 0;
-  border-radius:20px;
-  border:1px solid var(--border);
+  padding:10px 0;
+  border-radius:15px;
+  border:2px solid var(--primary-dark);
   background:#fff;
   font-size:14px;
-  color: #8B4513;
+  font-weight: bold;
+  color: var(--primary-dark);
   cursor: pointer;
 }
 
-.tab-header button.active{
-  background:var(--primary);
-  color:#fff;
-  border-color:var(--primary);
+.tab-header button.active {
+  background: var(--primary-dark) !important;
+  color: #FFFFFF !important;
+  border-color: var(--primary-dark);
 }
 
 .section{
   background: var(--card-bg);
-  border-radius:14px;
-  border:1px solid var(--border);
-  padding:14px;
+  border-radius:15px;
+  border:3px solid var(--primary-dark);
+  padding:16px;
   margin-bottom:12px;
-  overflow:visible;
   position:relative;
-  box-shadow: 0 2px 8px rgba(138, 154, 91, 0.1);
+  overflow: visible !important; /* 確保角色可以飛出邊框 */
+  box-shadow: 4px 4px 0px rgba(0, 91, 172, 0.1);
 }
 
+/* 2. 右上角角色：小新 (Before) */
 .section::before {
-  content: "";
-  position: absolute;
-  top: -44px;
-  left: -20px;
-  width: 60px;
-  height: 60px;
-  background-image: url("bamboo-copter.png"); /* 竹蜻蜓 */
-  background-size: contain;
-  background-repeat: no-repeat;
-  background-position: center;
+  content: ""; 
+  position: absolute; 
   z-index: 10;
+  
+  /* 位置設定：飛出頂部 */
+  top: -97px;    
+  right: 15px;   
+  
+  /* 尺寸與圖片 */
+  width: 94px;   
+  height: 94px; 
+  background: url("shinchan.png") no-repeat center;
+  background-size: contain;
+  
+  /* 避免擋住滑鼠點擊 */
   pointer-events: none;
-  transform: rotate(-13deg);
 }
 
-.section h2{ margin:0 0 8px; font-size:16px; font-weight:700; color: var(--primary-dark); }
+/* 3. 左上角角色：小白 (After) */
+.section::after {
+  content: ""; 
+  position: absolute; 
+  z-index: 10;
+  
+  /* 位置設定：建議也飛高一點，才不會壓到標題文字 */
+  top: -74px;    /* 這裡原本是 -45px，改深一點可以讓它飛出邊框 */
+  left: 10px;    
+  
+  /* 尺寸與圖片 */
+  width: 71px;   
+  height: 71px; 
+  background: url("shiro.png") no-repeat center;
+  background-size: contain;
+  
+  /* 避免擋住滑鼠點擊 */
+  pointer-events: none;
+}
 
-label{ display:block;font-size:14px;margin-top:4px; color: #4A5A3B; }
+.section h2{ margin:0 0 10px; font-size:18px; font-weight:900; color: var(--primary); border-left: 5px solid var(--secondary); padding-left: 8px; }
+
+label{ display:block;font-size:14px;margin-top:4px; color: #333; font-weight: bold; }
 
 input,select{
   width:100%;
   padding:10px; font-size:16px;
   margin-top:4px; margin-bottom:10px;
-  border-radius:10px; border:1px solid var(--border);
+  border-radius:12px; border:2px solid #ccc;
   background:#fff;
-  color: #333;
 }
 
 input:focus, select:focus{
   outline: none;
-  border-color: var(--primary);
-  box-shadow: 0 0 0 2px rgba(138, 154, 91, 0.2);
-}
-
-textarea{
-  width:100%; height:200px; padding:10px;
-  font-size:15px; border-radius:10px;
-  border:1px solid var(--border);
-  background: #fff;
+  border-color: var(--primary-dark);
+  box-shadow: 0 0 0 3px rgba(0, 91, 172, 0.1);
 }
 
 .actions{
   position:fixed;left:0;right:0;bottom:0;
-  padding:10px 14px 12px;background:rgba(255,255,255,0.9);
-  display:flex;gap:10px;border-top:1px solid var(--border);
+  padding:12px 14px 15px;background:rgba(255,255,255,0.95);
+  display:flex;gap:12px;border-top:3px solid var(--primary-dark);
   backdrop-filter:blur(10px);
   z-index:50;
 }
 
 button{
-  padding:12px 0;
-  border-radius:26px;
+  padding:14px 0;
+  border-radius:50px;
   border:none;
   font-size:16px;
-  font-weight:600;
+  font-weight:900;
   cursor: pointer;
-  transition: transform 0.1s;
-}
-button:active { transform: scale(0.98); }
-
-.btn-primary{
-  flex:1;
-  background:var(--btn-generate);
-  color:#fff;
+  box-shadow: 0 4px 0px rgba(0,0,0,0.1);
 }
 
-.btn-secondary{
-  flex:1;
-  background:var(--btn-copy);
-  color:#fff;
-}
+.btn-primary{ flex:1; background:var(--btn-generate); color:#fff; }
+.btn-secondary{ flex:1; background:var(--btn-copy); color:#fff; }
 
-/* =============== 🍃 Leaf Animation =============== */
-.leaves {
-  pointer-events:none;
-  position:fixed;
-  top:0; left:0;
-  width:100%; height:100%;
-  overflow:hidden;
-  z-index:30;
-}
-
+/* =============== 🌟 Action Animation =============== */
 .leaves span {
   position:absolute;
   top:-20px;
   display:block;
-  font-size: 14px;
-  animation: leafFall 10s linear infinite;
+  font-size: 20px;
+  animation: leafFall 8s linear infinite;
   opacity: 0;
 }
 
+/* 🎨 讓 6 個 Emoji 分散在螢幕各處 */
+.leaves span:nth-child(1) { left: 5%;  animation-delay: 0s;   animation-duration: 10s; }
+.leaves span:nth-child(2) { left: 20%; animation-delay: 3s;   animation-duration: 14s; }
+.leaves span:nth-child(3) { left: 40%; animation-delay: 1.5s; animation-duration: 12s; }
+.leaves span:nth-child(4) { left: 65%; animation-delay: 5s;   animation-duration: 15s; }
+.leaves span:nth-child(5) { left: 80%; animation-delay: 0.5s; animation-duration: 11s; }
+.leaves span:nth-child(6) { left: 92%; animation-delay: 4s;   animation-duration: 13s; }
+
 @keyframes leafFall {
   0%   { transform: translate(0, 0) rotate(0deg); opacity: 0; }
-  10%  { opacity: 0.8; }
-  90%  { opacity: 0.8; }
-  100% { transform: translate(100px, 105vh) rotate(360deg); opacity: 0; }
+  10%  { opacity: 0.7; }
+  90%  { opacity: 0.7; }
+  100% { transform: translate(80px, 105vh) rotate(360deg); opacity: 0; }
 }
 
-.leaves span:nth-child(1){ left:10%; animation-duration: 8s; animation-delay: 0s; }
-.leaves span:nth-child(2){ left:25%; animation-duration: 12s; animation-delay: 2s; }
-.leaves span:nth-child(3){ left:40%; animation-duration: 10s; animation-delay: 4s; }
-.leaves span:nth-child(4){ left:60%; animation-duration: 9s; animation-delay: 1s; }
-.leaves span:nth-child(5){ left:80%; animation-duration: 11s; animation-delay: 5s; }
-.leaves span:nth-child(6){ left:95%; animation-duration: 13s; animation-delay: 3s; }
+.badge.green{ background:#D4EDDA; color:#155724; border: 1px solid; }
+.badge.yellow{ background:#FFF3CD; color:#856404; border: 1px solid; }
+.badge.red{ background:#F8D7DA; color:#721C24; border: 1px solid; }
 
-.hidden{ display:none; }
-
-.badge{
-  display:inline-block;
-  margin-left:6px;
-  padding:2px 8px;
-  border-radius:999px;
-  font-size:12px;
-  font-weight:700;
-}
-.badge.green{ background:#E8F0E3; color:#4F6F41; }
-.badge.yellow{ background:#FFF7E1; color:#8A6D3B; }
-.badge.red{ background:#FBEAEA; color:#A94442; }
-
-.huddle-row{ display:flex; justify-content:space-between; align-items:center; margin-top:8px; font-size:14px; }
-.huddle-separator{ height:1px; background:var(--border); margin:12px 0; opacity:0.5; }
-.check-row{ display:flex; justify-content:space-between; align-items:flex-start; margin-top:10px; font-size:14px; }
-
-.footer-character {
-  position: absolute;
-  right: -15px;
-  bottom: -40px;
-  width: 320px;
-  height: auto;
-  opacity: 0.4;
-  z-index: 5;
-  pointer-events: none;
-  filter: drop-shadow(2px 2px 5px rgba(0,0,0,0.1));
+.hidden {
+  display: none !important;
 }
 
-.section:last-of-type {
-  overflow: visible !important;
+/* 🎯 專門針對三角形 (🔺) 更改大小 */
+/* 3n+1 代表：每 3 個循環一次，選取當中的第 1 個 */
+.leaves span:nth-child(3n+1) {
+  font-size: 40px; /* 👈 在這裡輸入你要的大小，例如 40px 或更大 */
+  filter: drop-shadow(0 0 5px rgba(255, 107, 107, 0.3)); /* 選用：幫紅色三角形加點光暈感 */
 }
 
-#date {
-  width: 94%;
-  display: block;
-}
 </style>
 </head>
 
 <body>
 <div class="container">
 
-<h1>台北一區上班小助手</h1>
-<p class="subtitle">輸入數字 → 產生訊息 → 複製貼到企業微信群組</p>
+  <h1>台北一區上班小助手</h1>
+  <header class="tab-header">
+    <button id="tab-huddle" type="button" class="active">今日檢視</button>
+    <button id="tab-plan" type="button">當月計畫</button>
+  </header>
 
-<header class="tab-header">
-  <button id="tab-huddle" type="button">今日檢視</button>
-  <button id="tab-report" type="button" class="active">每日回報</button>
-  <button id="tab-plan" type="button">當月計畫</button>
-</header>
+  <section id="huddle-view" class="section">
+    <h2>當月行動方案完成度</h2>
+    <div id="progress-dashboard">
+      <p style="text-align:center; color:#999; font-size:14px;">資料載入中...</p>
+    </div>
+  </section>
 
-<section id="huddle-view" class="section hidden">
-  <h2>今日目標</h2>
-  <div class="huddle-row">
-    <span class="huddle-label">今日預約數</span>
-    <span class="huddle-value"><span id="huddleTodayBooking">-</span> 位</span>
-  </div>
-  <div class="huddle-row">
-    <span class="huddle-label">邀約試戴目標數</span>
-    <span class="huddle-value"><span id="huddleTodayTrial">-</span> 位</span>
-  </div>
-  <div class="huddle-separator"></div>
-  <div class="huddle-row">
-    <span class="huddle-label">今日外撥目標數</span>
-    <span class="huddle-value"><span id="huddleTodayCallTotal">-</span> 通</span>
-  </div>
-  <div class="huddle-row">
-    <span class="huddle-label">邀約回店目標數</span>
-    <span class="huddle-value"><span id="huddleTodayOld3Y">-</span> 位</span>
-  </div>
-  <div class="huddle-separator"></div>
-  <h2>昨日執行檢視</h2>
-  <div class="check-row">
-    <span class="check-label">試戴數</span>
-    <span class="check-value" id="checkTrialText">-</span>
-  </div>
-  <div class="check-row">
-    <span class="check-label">外撥通數</span>
-    <span class="check-value" id="checkCallText">-</span>
-  </div>
-  <div class="check-row">
-    <span class="check-label">邀約回店數</span>
-    <span class="check-value" id="checkInviteText">-</span>
-  </div>
-  <div class="check-row">
-    <span class="check-label">邀約成功率</span>
-    <span class="check-value">
-      <span id="checkInviteRateText">-</span>
-      <span class="badge" id="checkInviteRateBadge" style="display:none;"></span>
-    </span>
-  </div>
-</section>
-
+  
 <section id="plan-view" class="section hidden">
   <h2>個人月度行動計畫</h2>
+
   
   <label for="plan-name-select">1. 選擇姓名：</label>
   <select id="plan-name-select">
@@ -352,76 +294,15 @@ button:active { transform: scale(0.98); }
   </div>
 </section>
 
-<div id="report-view">
-  <div class="section">
-    <h2>基本資訊</h2>
-    <label>日期： <input type="date" id="date"></label>
-    <label>店名： <input type="text" id="store" placeholder="例：站前"></label>
-    <label>姓名：
-    <select id="name">
-      <option value="">請選擇同仁姓名</option>
-      <option>郭孟鑫</option><option>陳詩潔</option><option>游瑟焄</option>
-      <option>魏頎恩</option><option>李孟馨</option><option>劉瑋婷</option>
-      <option>周曉玄</option><option>蕭純聿</option><option>陳宛妤</option>
-      <option>林寓葳</option><option>吳欣珮</option><option>呂桂梅</option>
-      <option>蔡秉忻</option>
-    </select>
-    </label>
-  </div>
 
-  <div class="section">
-    <h2>1. 今日外撥</h2>
-    <label>潛客外撥通數：<input type="number" id="todayCallPotential" inputmode="numeric" oninput="recalcTotals()"></label>
-    <label>過保舊客外撥通數：<input type="number" id="todayCallOld3Y" inputmode="numeric" oninput="recalcTotals()"></label>
-    <label>今日外撥總通數：<input type="number" id="todayCallTotal" readonly></label>
-    <label>成功邀約回店人數：<input type="number" id="todayInviteReturn" inputmode="numeric"></label>
-  </div>
-
-  <div class="section">
-    <h2>2. 今日預約</h2>
-    <label>今日預約總數：<input type="number" id="todayBookingTotal" inputmode="numeric"></label>
-    <div id="todayBookingHint" style="font-size:12px;color:#96162C;margin-top:4px;display:none;">
-      （已帶入昨日填寫的「明日已排預約」：<span id="todayBookingHintValue"></span> 位）
-    </div>
-  </div>
-
-  <div class="section">
-    <h2>3. 今日到店</h2>
-    <label>今日到店總數：<input type="number" id="todayVisitTotal" inputmode="numeric"></label>
-    <label>試用 HA：<input type="number" id="trialHA" inputmode="numeric"></label>
-    <label>試用 APAP：<input type="number" id="trialAPAP" inputmode="numeric"></label>
-    <label>成交 HA：<input type="number" id="dealHA" inputmode="numeric"></label>
-    <label>成交 APAP：<input type="number" id="dealAPAP" inputmode="numeric"></label>
-  </div>
-
-  <div class="section">
-    <h2>4. 明日已排預約</h2>
-    <label>明日預約總數：<input type="number" id="tomorrowBookingTotal" inputmode="numeric"></label>
-  </div>
-
-  <div class="section">
-    <h2>5. 明日 KPI</h2>
-    <label>外撥目標通數：<input type="number" id="tomorrowKpiCallTotal" inputmode="numeric"></label>
-    <label>邀約回店目標數 (位)：<input type="number" id="tomorrowKpiCallOld3Y" inputmode="numeric"></label>
-    <label>完成HA/APAP試戴目標 (位)：<input type="number" id="tomorrowKpiTrial" inputmode="numeric"></label>
-  </div>
-
-  <div class="section">
-    <textarea id="output" placeholder="按下『產生訊息』後文字會出現在這裡"></textarea>
-    <img src="dora-sakura-1.png" class="footer-character" alt="decoration">
-  </div>
-</div>
-
-</div> <div class="actions">
-<button class="btn-primary" onclick="generateMessage()">🍡 產生訊息</button>
-<button class="btn-secondary" onclick="copyMessage()">🌸 複製文字</button>
-</div>
 
 <div class="leaves">
-  <span>🌸</span><span>🌸</span><span>🌸</span><span>🌸</span><span>🌸</span><span>🌸</span>
+  <span>🔺</span> <span>🟢</span> <span>🟨</span> <span>🔺</span>
+  <span>🟢</span>
+  <span>🟨</span>
 </div>
 
-<script src="app.js?v=20"></script>
+<script src="app.js?v=12"></script>
 
 </body>
 </html>

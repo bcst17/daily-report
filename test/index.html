@@ -14,16 +14,17 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
 <meta name="apple-mobile-web-app-title" content="台北一區上班小助手">
 
-:root {
-  --primary: #FF8E8E;      /* 柔和珊瑚紅 (小新上衣) */
-  --primary-dark: #7FB3D5; /* 輕柔粉藍 (動感超人色) */
-  --secondary: #FFF59D;    /* 淺檸檬黃 (小新短褲) */
-  --border: #D1D5DB;       /* 淺灰色邊框，減少割裂感 */
-  --bg: #FFFAF0;           /* 溫暖象牙白 (護眼底色) */
+<style>
+:root{
+  --primary: #E60012;      /* 小新上衣紅 */
+  --primary-dark: #005BAC; /* 動感超人藍 */
+  --secondary: #FFF100;    /* 小新短褲黃 */
+  --border: #FFD700;       /* 金黃邊框 */
+  --bg: #FFF9E1;           /* 溫暖奶油底色 */
 
-  --btn-generate: #FF8E8E; /* 柔和紅 */
-  --btn-copy: #82E0AA;     /* 柔和綠 */
-  --card-bg: #FFFFFF;
+  --btn-generate: #E60012; /* 紅色按鈕 */
+  --btn-copy: #009E96;     /* 動感綠按鈕 */
+  --card-bg: #FFFFFF;      /* 純白卡片 */
 }
 
 *,*::before,*::after{ box-sizing:border-box; }
@@ -156,21 +157,12 @@ button{
 .btn-secondary{ flex:1; background:var(--btn-copy); color:#fff; }
 
 /* =============== 🌟 Action Animation =============== */
-.leaves {
-  pointer-events: none;
-  position: fixed;
-  top: 0; left: 0;
-  width: 100%; height: 100%;
-  overflow: hidden;
-  z-index: 30;
-}
-
 .leaves span {
-  position: absolute;
-  top: -30px;
-  display: block;
-  font-size: 24px;
-  animation: leafFall 12s linear infinite; /* 放慢速度，更悠閒 */
+  position:absolute;
+  top:-20px;
+  display:block;
+  font-size: 20px;
+  animation: leafFall 8s linear infinite;
   opacity: 0;
 }
 

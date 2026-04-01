@@ -16,17 +16,17 @@
 
 <style>
 :root {
-  /* 睡衣主色調 */
-  --bg: #E0F7EF;           /* 薄荷粉綠背景 */
-  --primary: #FF6B6B;      /* 幾何紅 */
-  --primary-dark: #3498DB; /* 經典藍（按鈕用） */
-  --secondary: #F4D03F;    /* 幾何黃 */
+  /* 睡衣薄荷綠底色 */
+  --bg: #E0F7EF;           
   
-  /* 其他元件配色 */
-  --card-bg: rgba(255, 255, 255, 0.85); /* 半透明白，讓背景隱約透出來 */
-  --border: #B2DFDB;       /* 邊框改用深一點的薄荷色 */
-  --btn-generate: #3498DB; /* 改用藍色按鈕比較醒目 */
-  --btn-copy: #2ECC71;     /* 綠色按鈕 */
+  /* 核心動感藍 (對應進度條、姓名、選中按鈕) */
+  --primary-dark: #248EB3;  
+  
+  /* 輔助色 */
+  --primary: #248EB3;      /* 讓未滿 50% 的進度條也統一成藍色 */
+  --secondary: #F4D03F;    /* 小新睡衣黃 */
+  --border: #A5D6A7;       /* 邊框改用淺綠，更和諧 */
+  --card-bg: #FFFFFF;
 }
 
 *,*::before,*::after{ box-sizing:border-box; }
@@ -104,9 +104,10 @@ h1::after {
   cursor: pointer;
 }
 
-.tab-header button.active{
-  background:var(--primary-dark);
-  color:#fff;
+.tab-header button.active {
+  background: var(--primary-dark) !important;
+  color: #FFFFFF !important;
+  border-color: var(--primary-dark);
 }
 
 .section{

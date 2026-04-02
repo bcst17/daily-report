@@ -464,45 +464,52 @@ async function renderStarryMap() {
     const container = $("starry-map-container");
     if (!container) return;
     
-    container.innerHTML = ""; // 清空舊內容
+    container.innerHTML = "<p style='text-align:center; color:#999;'>正在讀取星圖資料...</p>";
 
-    // 從您原有的 monthlyData 取得所有同仁姓名
-    const staffNames = Object.keys(monthlyData);
+    try {
+        // 🚀 重點：在網址後面加上 ?action=getHistory
+        const response = await fetch(`${PROGRESS_API_URL}?action=getHistory`);
+        const historyRecords = await response.json(); 
 
-    staffNames.forEach(name => {
-        const card = document.createElement("div");
-        card.style.cssText = "background:#fff; padding:15px; border-radius:15px; margin-bottom:12px; border:1px solid var(--border); box-shadow: 2px 2px 8px rgba(0,0,0,0.05);";
-        
-        // 建立 1~12 月的星星容器
-        let starsHtml = "";
-        for (let i = 1; i <= 12; i++) {
-            const monthKey = `${i}月`;
-            // 判斷狀態：如果有紀錄就顯示星星，沒有就顯示灰色圓圈
-            const status = (historyRecords[name] && historyRecords[name][monthKey]) || "○";
-            const isActive = status !== "○";
+        container.innerHTML = ""; 
+        const staffNames = Object.keys(monthlyData);
 
-            starsHtml += `
-                <div onclick="openHistoryDetail('${name}', '${monthKey}')" style="text-align:center; cursor:pointer;">
-                    <div style="font-size:10px; color:#999; margin-bottom:2px;">${i}月</div>
-                    <div style="font-size:20px; filter:${isActive ? 'none' : 'grayscale(1)'}; opacity:${isActive ? '1' : '0.2'};">
-                        ${status === "○" ? "⭐️" : status}
+        staffNames.forEach(name => {
+            const card = document.createElement("div");
+            card.style.cssText = "background:#fff; padding:15px; border-radius:15px; margin-bottom:12px; border:1px solid var(--border); box-shadow: 2px 2px 8px rgba(0,0,0,0.05);";
+            
+            let starsHtml = "";
+            for (let i = 1; i <= 12; i++) {
+                const monthKey = `${i}月`;
+                const status = (historyRecords[name] && historyRecords[name][monthKey]) || "○";
+                const isActive = status !== "○";
+
+                starsHtml += `
+                    <div onclick="openHistoryDetail('${name}', '${monthKey}')" style="text-align:center; cursor:pointer;">
+                        <div style="font-size:10px; color:#999; margin-bottom:2px;">${i}月</div>
+                        <div style="font-size:20px; filter:${isActive ? 'none' : 'grayscale(1)'}; opacity:${isActive ? '1' : '0.2'};">
+                            ${status === "○" ? "⭐️" : status}
+                        </div>
                     </div>
+                `;
+            }
+
+            card.innerHTML = `
+                <div style="font-weight:800; color:var(--primary-dark); margin-bottom:10px; display:flex; justify-content:space-between; align-items:center;">
+                    <span>${name}</span>
+                </div>
+                <div style="display:grid; grid-template-columns: repeat(6, 1fr); gap:8px;">
+                    ${starsHtml}
                 </div>
             `;
-        }
-
-        card.innerHTML = `
-            <div style="font-weight:800; color:var(--primary-dark); margin-bottom:10px; display:flex; justify-content:space-between; align-items:center;">
-                <span>${name}</span>
-                <span style="font-size:12px; background:#E0F7EF; padding:2px 8px; border-radius:10px; color:#248EB3;">🔥 連擊中</span>
-            </div>
-            <div style="display:grid; grid-template-columns: repeat(6, 1fr); gap:8px;">
-                ${starsHtml}
-            </div>
-        `;
-        container.appendChild(card);
-    });
+            container.appendChild(card);
+        });
+    } catch (error) {
+        console.error("讀取星圖失敗:", error);
+        container.innerHTML = "<p style='text-align:center; color:red;'>星圖載入失敗，請檢查網路</p>";
+    }
 }
+
 
 function openHistoryDetail(name, month) {
     const modal = $("history-modal");

@@ -2,8 +2,10 @@ console.log("🌸 Mar Style app.js loaded: Sakura & Doraemon Edition");
 
 // ✅ 測試版儲存前綴
 const STORAGE_PREFIX = "daily-report-test-";
-
 const PROGRESS_API_URL = "https://script.google.com/macros/s/AKfycbyrm3inO0h3qQf3hpKGCuQrNk68clolrYTXo5ncwEblDghytWB29dMIKA1LenjyIAr0qw/exec";
+
+// 💡 請在 app.js 的最上方（或 PROGRESS_API_URL 下方）新增這行，用來存放抓回來的歷史資料
+let globalHistoryData = {};
 
 // ===== ↓↓↓ 當月計畫資料庫 (後台輸入區) ↓↓↓ =====
 // 這裡可以預先輸入每位同仁的計畫，數量不限
@@ -455,7 +457,6 @@ async function fetchAndRenderProgress() {
 }
 
 
-
 async function renderStarryMap() {
     const container = $("starry-map-container");
     if (!container) return;
@@ -463,9 +464,12 @@ async function renderStarryMap() {
     container.innerHTML = "<p style='text-align:center; color:#999;'>正在讀取星圖資料...</p>";
 
     try {
-        // 🚀 重點：在網址後面加上 ?action=getHistory
+        // 🚀 發送請求抓取資料
         const response = await fetch(`${PROGRESS_API_URL}?action=getHistory`);
-        const historyRecords = await response.json(); 
+        
+        // 💡 關鍵修改 1：把抓到的結果存進「全域變數」globalHistoryData，
+        // 這樣等等點擊星星觸發 openHistoryDetail 時，它才知道這顆星是亮還是暗。
+        globalHistoryData = await response.json(); 
 
         container.innerHTML = ""; 
         const staffNames = Object.keys(monthlyData);
@@ -477,7 +481,9 @@ async function renderStarryMap() {
             let starsHtml = "";
             for (let i = 1; i <= 12; i++) {
                 const monthKey = `${i}月`;
-                const status = (historyRecords[name] && historyRecords[name][monthKey]) || "○";
+                
+                // 💡 關鍵修改 2：這裡改用 globalHistoryData 讀取狀態
+                const status = (globalHistoryData[name] && globalHistoryData[name][monthKey]) || "○";
                 const isActive = status !== "○";
 
                 starsHtml += `
@@ -553,8 +559,47 @@ function submitRCA(name, month) {
 
 // 點擊星星的詳細視窗邏輯
 window.openHistoryDetail = function(name, month) {
-    // 這裡可以串接您之前的 Modal 邏輯，或是簡單的 alert 測試
-    alert(`正在查看 ${name} 在 ${month} 的行動方案紀錄...`);
+    const modal = $("history-modal");
+    const content = $("modal-content");
+    
+    // 💡 關鍵：從剛才存好的全域變數中抓取該位同仁在該月份的狀態
+    const status = (globalHistoryData[name] && globalHistoryData[name][month]) || "○";
+    
+    // 顯示彈窗容器
+    if (modal) modal.classList.remove("hidden");
+
+    if (status !== "○") {
+        // 【達成 ⭐️ 的情況】：顯示鼓勵回顧
+        content.innerHTML = `
+            <div style="text-align:center;">
+                <div style="font-size:50px; margin-bottom:10px;">🌟</div>
+                <h3 style="color:var(--primary-dark); margin:0;">${month} 達成英雄！</h3>
+                <p style="color:#666; font-size:14px; margin-top:10px;">恭喜 ${name} 摘下這顆星！<br>當時的努力成就了現在的進度。</p>
+            </div>
+        `;
+    } else {
+        // 【未達成 ○ 的情況】：顯示 PDCA 根因分析選單 (這就是你要的選項！)
+        content.innerHTML = `
+            <h3 style="color:#FF6B6B; text-align:center; margin-top:0;">${month} 補給站 💡</h3>
+            <p style="font-size:14px; color:#555; text-align:center;">這顆星星還在等著被點亮，<br>你覺得主要的挑戰是什麼？</p>
+            
+            <label style="font-size:12px; color:#999; font-weight:bold;">選擇失敗原因：</label>
+            <select id="rca-reason" style="width:100%; padding:12px; border-radius:10px; margin-top:5px; border:2px solid #eee; font-size:16px;">
+                <option value="時間分配不足">⏳ 時間分配不足</option>
+                <option value="突發外務過多">🏃 突發外務過多</option>
+                <option value="目標設定太難">🏔️ 目標設定太難</option>
+                <option value="缺乏相關工具/支援">🛠️ 缺乏資源支援</option>
+                <option value="其他">📝 其他（請見面談）</option>
+            </select>
+            
+            <button onclick="submitRCA('${name}', '${month}')" style="width:100%; background:var(--primary-dark); color:white; padding:14px; border-radius:50px; margin-top:20px; border:none; font-weight:bold; cursor:pointer;">送出分析回饋</button>
+        `;
+    }
+};
+
+// 關閉彈窗的功能
+window.closeModal = function() {
+    if ($("history-modal")) $("history-modal").classList.add("hidden");
 };
 
 // ===== 產生訊息 =====

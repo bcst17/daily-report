@@ -706,20 +706,7 @@ function buildTodayVsYesterdayKpiText(todayForm) {
     ].join("\n");
 }
 
-async function copyMessage() {
-    const text = $("output")?.value || "";
-    if (!text.trim()) return;
-    spawnSakuraShower(); 
 
-    try {
-        await navigator.clipboard.writeText(text);
-        alert("🌸 訊息已複製！祝您三月業績如櫻花盛開！");
-    } catch {
-        const ta = $("output");
-        if (ta) { ta.select(); document.execCommand("copy"); alert("✨ 已複製到剪貼簿！"); }
-    }
-}
-window.copyMessage = copyMessage;
 
 // ===== 初始化邏輯 =====
 function bindAutoSave() {

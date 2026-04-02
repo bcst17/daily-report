@@ -475,7 +475,7 @@ async function renderStarryMap() {
     const container = $("starry-map-container");
     if (!container) return;
     
-    container.innerHTML = "<p style='text-align:center; color:#999;'>正在讀取星圖資料...</p>";
+    container.innerHTML = "<p style='text-align:center; color:#999; font-size:14px;'>正在讀取星圖資料...</p>";
 
     try {
         // 🚀 發送請求抓取資料

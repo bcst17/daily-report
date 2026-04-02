@@ -576,20 +576,20 @@ window.openHistoryDetail = function(name, month) {
     const modal = $("history-modal");
     const content = $("modal-content");
     
-    // 💡 關鍵：從剛才存好的全域變數中抓取該位同仁在該月份的狀態
-    const status = (globalHistoryData[name] && globalHistoryData[name][month]) || "○";
+    // 1. 從全域變數抓取該月份的完整資料物件
+    const monthData = (globalHistoryData[name] && globalHistoryData[name][month]) || { status: "○", plan: "尚無存檔紀錄", target: "-" };
     
-    // 顯示彈窗容器
     if (modal) modal.classList.remove("hidden");
 
-    if (status !== "○") {
-        // 【達成 ⭐️ 的情況】：顯示鼓勵回顧
+    if (monthData.status !== "○") {
+        // 【達成 ⭐️】：顯示歷史計畫內容
         content.innerHTML = `
-            <div style="text-align:center;">
-                <div style="font-size:50px; margin-bottom:10px;">🌟</div>
-                <h3 style="color:var(--primary-dark); margin:0;">${month} 達成！</h3>
-                <p style="color:#666; font-size:14px; margin-top:10px;">恭喜 ${name} 摘星成功！<br>一起追尋下一顆星吧！</p>
+            <h3 style="color:var(--primary-dark); text-align:center;">${month} 的行動回顧 ⭐️</h3>
+            <div style="background:#f9f9f9; padding:15px; border-radius:12px; margin-top:10px; font-size:14px; line-height:1.6;">
+                <p><strong>🎯 行動方案：</strong><br>${monthData.plan}</p>
+                <p><strong>🏁 預期目標：</strong><br>${monthData.target}</p>
             </div>
+            <p style="text-align:center; color:#248EB3; font-weight:bold; margin-top:15px;">🎉 任務已達成！</p>
         `;
     } else {
         // 【未達成 ○ 的情況】：顯示 PDCA 根因分析選單 (這就是你要的選項！)

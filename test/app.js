@@ -657,50 +657,7 @@ window.closeModal = function() {
 };
 
 // ===== 產生訊息 =====
-function generateMessage() {
-    saveToday();
-    spawnSakuraShower(); 
-    
-    const d = collectForm();
-    const title = `${d.date}｜${(d.store || "")} ${(d.name || "")}`.trim();
-    const todayCallTotal = num(d.todayCallPotential) + num(d.todayCallOld3Y);
 
-    const msg = `${title}
-1. 今日外撥：${todayCallTotal} 通（潛客 ${num(d.todayCallPotential)} 通、過保舊客 ${num(d.todayCallOld3Y)} 通）
-2. 今日預約：${num(d.todayBookingTotal)} 位
-3. 今日到店：${num(d.todayVisitTotal)} 位
-   試用：HA ${num(d.trialHA)} 位、APAP ${num(d.trialAPAP)} 位
-   成交：HA ${num(d.dealHA)} 位、APAP ${num(d.dealAPAP)} 位
-4. 明日已排預約：${num(d.tomorrowBookingTotal)} 位
-5. 明日KPI：
-   完成試戴 ${num(d.tomorrowKpiTrial)} 位
-   外撥 ${num(d.tomorrowKpiCallTotal)} 通
-   舊客預約 ${num(d.tomorrowKpiCallOld3Y)} 位
-
-📊 今日執行檢視（對照昨日 KPI）
-${buildTodayVsYesterdayKpiText(d)}`;
-
-    if ($("output")) $("output").value = msg;
-
-    try {
-        const hash = simpleHash(msg);
-        if (localStorage.getItem(sheetSentKey(d.date)) !== hash) {
-            sendReportToSheet({
-                date: d.date, store: d.store, name: d.name,
-                calls_total: todayCallTotal, calls_potential: num(d.todayCallPotential),
-                calls_old: num(d.todayCallOld3Y), appt_today: num(d.todayBookingTotal),
-                visit_today: num(d.todayVisitTotal), trial_ha: num(d.trialHA),
-                trial_apap: num(d.trialAPAP), deal_ha: num(d.dealHA),
-                deal_apap: num(d.dealAPAP), appt_tomorrow: num(d.tomorrowBookingTotal),
-                kpi_call_tomorrow: num(d.tomorrowKpiCallTotal),
-                kpi_old_appt_tomorrow: num(d.tomorrowKpiCallOld3Y),
-                kpi_trial_tomorrow: num(d.tomorrowKpiTrial), message_text: msg
-            });
-            localStorage.setItem(sheetSentKey(d.date), hash);
-        }
-    } catch (err) { console.error("send to sheet failed:", err); }
-}
-window.generateMessage = generateMessage;
 
 function buildTodayVsYesterdayKpiText(todayForm) {
     const kpiSourceDate = getKpiSourceDateForToday(todayForm.date);

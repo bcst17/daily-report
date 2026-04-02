@@ -739,13 +739,14 @@ function initDateLoad() {
 }
 
 document.addEventListener("DOMContentLoaded", () => {
-    // 綁定原有按鈕
+    // 綁定分頁按鈕監聽 (維持原樣)
     if($("tab-huddle")) $("tab-huddle").addEventListener("click", () => showView("huddle"));
     if($("tab-report")) $("tab-report").addEventListener("click", () => showView("report"));
     if($("tab-plan")) $("tab-plan").addEventListener("click", () => showView("plan"));
-    
-    // 🚀 新增：歷史回溯按鈕監聽
     if($("tab-history")) $("tab-history").addEventListener("click", () => showView("history"));
+  
+  // 🚀 關鍵修正：確保網頁開啟後，主動執行一次「今日檢視」的切換與渲染
+    showView("huddle");
 
     bindAutoSave();
     initDateLoad();

@@ -79,35 +79,7 @@ async function sendReportToSheet(payload) {
     return true;
 }
 
-// ===== 【三月更新】櫻花與鈴鐺噴發特效 =====
-function spawnSakuraShower() {
-    const symbols = ['🌸', '🔔', '💗', '🍡', '✨']; // 櫻花、鈴鐺、愛心、三色糰子
-    const count = 20; 
 
-    for (let i = 0; i < count; i++) {
-        const item = document.createElement('div');
-        item.innerText = symbols[Math.floor(Math.random() * symbols.length)];
-        item.style.position = 'fixed';
-        item.style.bottom = '80px';
-        item.style.left = (Math.random() * 80 + 10) + '%';
-        item.style.fontSize = (Math.random() * 20 + 15) + 'px';
-        item.style.zIndex = '100';
-        item.style.pointerEvents = 'none';
-        item.style.transition = 'all 1.5s cubic-bezier(0.19, 1, 0.22, 1)'; // 更加輕柔的飄落感
-        
-        document.body.appendChild(item);
-
-        const destinationX = (Math.random() - 0.5) * 300;
-        const destinationY = -(Math.random() * 500 + 200);
-
-        requestAnimationFrame(() => {
-            item.style.transform = `translate(${destinationX}px, ${destinationY}px) rotate(${Math.random() * 540}deg)`;
-            item.style.opacity = '0';
-        });
-
-        setTimeout(() => item.remove(), 1500);
-    }
-}
 
 // ===== 日期工具 =====
 function getCurrentDateStr() {
@@ -141,7 +113,7 @@ function num(val) {
     const x = Number(s);
     return Number.isFinite(x) ? x : 0;
 }
-function okText(ok) { return ok ? "✔️ 達成" : "✖️ 未達成"; }
+
 
 // ===== 儲存/讀取邏輯 =====
 function saveToday() {
@@ -157,69 +129,10 @@ function loadByDate(dateStr) {
     try { return JSON.parse(raw); } catch { return null; }
 }
 
-function hasDataOnDate(dateStr) { return localStorage.getItem(storageKey(dateStr)) != null; }
 
-function findPrevDateWithData(fromDateStr, maxLookbackDays = 60) {
-    let cursor = addDaysToDateStr(fromDateStr, -1);
-    for (let i = 0; i < maxLookbackDays; i++) {
-        if (hasDataOnDate(cursor)) return cursor;
-        cursor = addDaysToDateStr(cursor, -1);
-    }
-    return null;
-}
 
-function getPrevTwoDataDates(todayStr) {
-    const d1 = findPrevDateWithData(todayStr);
-    const d0 = d1 ? findPrevDateWithData(d1) : null;
-    return { d1, d0 };
-}
 
-function getKpiSourceDateForToday(todayStr) {
-    const yesterday = addDaysToDateStr(todayStr, -1);
-    return hasDataOnDate(yesterday) ? yesterday : findPrevDateWithData(todayStr);
-}
 
-function collectForm() {
-    const date = getCurrentDateStr();
-    const obj = {
-        date, store: v("store"), name: v("name"),
-        todayCallPotential: v("todayCallPotential"),
-        todayCallOld3Y: v("todayCallOld3Y"),
-        todayCallTotal: v("todayCallTotal"),
-        todayInviteReturn: v("todayInviteReturn"),
-        todayBookingTotal: v("todayBookingTotal"),
-        todayVisitTotal: v("todayVisitTotal"),
-        trialHA: v("trialHA"), trialAPAP: v("trialAPAP"),
-        dealHA: v("dealHA"), dealAPAP: v("dealAPAP"),
-        tomorrowBookingTotal: v("tomorrowBookingTotal"),
-        tomorrowKpiCallTotal: v("tomorrowKpiCallTotal"),
-        tomorrowKpiCallOld3Y: v("tomorrowKpiCallOld3Y"),
-        tomorrowKpiTrial: v("tomorrowKpiTrial"),
-        updatedAt: new Date().toISOString(),
-    };
-    const pRaw = obj.todayCallPotential;
-    const oRaw = obj.todayCallOld3Y;
-    obj.todayCallTotal = (pRaw === "" && oRaw === "") ? "" : String(num(pRaw) + num(oRaw));
-    return obj;
-}
-
-function fillForm(data) {
-    if (!data) return;
-    ["store", "name", "todayCallPotential", "todayCallOld3Y", "todayInviteReturn",
-     "todayBookingTotal", "todayVisitTotal", "trialHA", "trialAPAP", "dealHA", "dealAPAP",
-     "tomorrowBookingTotal", "tomorrowKpiCallTotal", "tomorrowKpiCallOld3Y", "tomorrowKpiTrial"
-    ].forEach(id => { if($(id)) $(id).value = data[id] ?? ""; });
-    recalcTotals(false);
-}
-
-function recalcTotals(doSave = true) {
-    const pRaw = v("todayCallPotential");
-    const oRaw = v("todayCallOld3Y");
-    if (!$("todayCallTotal")) return;
-    $("todayCallTotal").value = (pRaw === "" && oRaw === "") ? "" : String(num(pRaw) + num(oRaw));
-    if (doSave) saveToday();
-}
-window.recalcTotals = recalcTotals;
 
 // ===== 分頁切換邏輯 (更新以支援新分頁) =====
 function showView(view) {
@@ -453,84 +366,7 @@ async function fetchAndRenderProgress() {
     }
 }
 
-// ===== 產生訊息 =====
-function generateMessage() {
-    saveToday();
-    spawnSakuraShower(); 
-    
-    const d = collectForm();
-    const title = `${d.date}｜${(d.store || "")} ${(d.name || "")}`.trim();
-    const todayCallTotal = num(d.todayCallPotential) + num(d.todayCallOld3Y);
 
-    const msg = `${title}
-1. 今日外撥：${todayCallTotal} 通（潛客 ${num(d.todayCallPotential)} 通、過保舊客 ${num(d.todayCallOld3Y)} 通）
-2. 今日預約：${num(d.todayBookingTotal)} 位
-3. 今日到店：${num(d.todayVisitTotal)} 位
-   試用：HA ${num(d.trialHA)} 位、APAP ${num(d.trialAPAP)} 位
-   成交：HA ${num(d.dealHA)} 位、APAP ${num(d.dealAPAP)} 位
-4. 明日已排預約：${num(d.tomorrowBookingTotal)} 位
-5. 明日KPI：
-   完成試戴 ${num(d.tomorrowKpiTrial)} 位
-   外撥 ${num(d.tomorrowKpiCallTotal)} 通
-   舊客預約 ${num(d.tomorrowKpiCallOld3Y)} 位
-
-📊 今日執行檢視（對照昨日 KPI）
-${buildTodayVsYesterdayKpiText(d)}`;
-
-    if ($("output")) $("output").value = msg;
-
-    try {
-        const hash = simpleHash(msg);
-        if (localStorage.getItem(sheetSentKey(d.date)) !== hash) {
-            sendReportToSheet({
-                date: d.date, store: d.store, name: d.name,
-                calls_total: todayCallTotal, calls_potential: num(d.todayCallPotential),
-                calls_old: num(d.todayCallOld3Y), appt_today: num(d.todayBookingTotal),
-                visit_today: num(d.todayVisitTotal), trial_ha: num(d.trialHA),
-                trial_apap: num(d.trialAPAP), deal_ha: num(d.dealHA),
-                deal_apap: num(d.dealAPAP), appt_tomorrow: num(d.tomorrowBookingTotal),
-                kpi_call_tomorrow: num(d.tomorrowKpiCallTotal),
-                kpi_old_appt_tomorrow: num(d.tomorrowKpiCallOld3Y),
-                kpi_trial_tomorrow: num(d.tomorrowKpiTrial), message_text: msg
-            });
-            localStorage.setItem(sheetSentKey(d.date), hash);
-        }
-    } catch (err) { console.error("send to sheet failed:", err); }
-}
-window.generateMessage = generateMessage;
-
-function buildTodayVsYesterdayKpiText(todayForm) {
-    const kpiSourceDate = getKpiSourceDateForToday(todayForm.date);
-    const kpiSourceData = kpiSourceDate ? loadByDate(kpiSourceDate) : null;
-    if (!kpiSourceData) return "•（找不到昨日 KPI）";
-
-    const actualTrial = num(todayForm.trialHA) + num(todayForm.trialAPAP);
-    const actualCall = num(todayForm.todayCallPotential) + num(todayForm.todayCallOld3Y);
-    const actualInvite = num(todayForm.todayInviteReturn);
-    const rate = actualCall > 0 ? (actualInvite / actualCall) : 0;
-
-    return [
-        `• 試戴數：目標 ${num(kpiSourceData.tomorrowKpiTrial)} / 執行 ${actualTrial}  ${okText(actualTrial >= num(kpiSourceData.tomorrowKpiTrial))}`,
-        `• 外撥通數：目標 ${num(kpiSourceData.tomorrowKpiCallTotal)} / 執行 ${actualCall}  ${okText(actualCall >= num(kpiSourceData.tomorrowKpiCallTotal))}`,
-        `• 邀約回店數：目標 ${num(kpiSourceData.tomorrowKpiCallOld3Y)} / 執行 ${actualInvite}  ${okText(actualInvite >= num(kpiSourceData.tomorrowKpiCallOld3Y))}`,
-        `• 邀約成功率：${Math.round(rate * 100)}%`.trim(),
-    ].join("\n");
-}
-
-async function copyMessage() {
-    const text = $("output")?.value || "";
-    if (!text.trim()) return;
-    spawnSakuraShower(); 
-
-    try {
-        await navigator.clipboard.writeText(text);
-        alert("🌸 訊息已複製！祝您三月業績如櫻花盛開！");
-    } catch {
-        const ta = $("output");
-        if (ta) { ta.select(); document.execCommand("copy"); alert("✨ 已複製到剪貼簿！"); }
-    }
-}
-window.copyMessage = copyMessage;
 
 // ===== 初始化邏輯 =====
 function bindAutoSave() {

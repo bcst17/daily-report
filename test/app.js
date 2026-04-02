@@ -225,19 +225,33 @@ window.recalcTotals = recalcTotals;
 
 // ===== 分頁切換邏輯 (更新以支援新分頁) =====
 function showView(view) {
-    const views = { 'huddle': $('huddle-view'), 'report': $('report-view'), 'plan': $('plan-view'), 'history': $('history-view') };
-    const tabs = { 'huddle': $('tab-huddle'), 'report': $('tab-report'), 'plan': $('tab-plan'), 'history': $('tab-history') };
+    // 確保這裡的 ID 與 HTML 中的 ID 一一對應
+    const views = { 
+        'huddle': $('huddle-view'), 
+        'plan': $('plan-view'), 
+        'history': $('history-view') 
+    };
+    
+    const tabs = { 
+        'huddle': $('tab-huddle'), 
+        'plan': $('tab-plan'), 
+        'history': $('tab-history') 
+    };
 
     Object.keys(views).forEach(key => {
-        if (views[key]) views[key].classList.toggle("hidden", key !== view);
-        if (tabs[key]) tabs[key].classList.toggle("active", key === view);
+        if (views[key]) {
+            views[key].classList.toggle("hidden", key !== view);
+        }
+        if (tabs[key]) {
+            tabs[key].classList.toggle("active", key === view);
+        }
     });
 
     if (view === "huddle") {
         try { fetchAndRenderProgress(); } catch(e) { console.error(e); }
         try { renderHuddle(); } catch(e) { console.error(e); }
     } else if (view === "history") {
-        try { renderStarryMap(); } catch(e) { console.error(e); } // 新增這行
+        try { renderStarryMap(); } catch(e) { console.error(e); }
     }
 }
 

@@ -546,8 +546,8 @@ function openHistoryDetail(name, month) {
     } else {
         // 未達成：開啟根因分析 (Check)
         content.innerHTML = `
-            <h3 style="color:#FF6B6B; text-align:center;">${month} 補給站 💡</h3>
-            <p style="font-size:13px; color:#666; text-align:center;">主觀分析<br>你覺得主要的挑戰是什麼？</p>
+            <h3 style="color:#FF6B6B; text-align:center;">${month} 分析 💡</h3>
+            <p style="font-size:13px; color:#666; text-align:center;">你覺得主要的挑戰是什麼？</p>
             <select id="rca-select" style="margin-top:10px;">
                 <option value="多一點時間">⏳ 多一點時間</option>
                 <option value="同事的支援">🏃 同事的支援</option>
@@ -588,14 +588,14 @@ window.openHistoryDetail = function(name, month) {
             <div style="text-align:center;">
                 <div style="font-size:50px; margin-bottom:10px;">🌟</div>
                 <h3 style="color:var(--primary-dark); margin:0;">${month} 達成！</h3>
-                <p style="color:#666; font-size:14px; margin-top:10px;">恭喜 ${name} 摘下這顆星！<br>一起追尋下一顆星吧！</p>
+                <p style="color:#666; font-size:14px; margin-top:10px;">恭喜 ${name} 摘星成功！<br>一起追尋下一顆星吧！</p>
             </div>
         `;
     } else {
         // 【未達成 ○ 的情況】：顯示 PDCA 根因分析選單 (這就是你要的選項！)
         content.innerHTML = `
             <h3 style="color:#FF6B6B; text-align:center; margin-top:0;">${month} 補給站 💡</h3>
-            <p style="font-size:14px; color:#555; text-align:center;">主觀分析<br>你覺得主要的挑戰是什麼？</p>
+            <p style="font-size:14px; color:#555; text-align:center;">你覺得主要的挑戰是什麼？</p>
             
             <label style="font-size:12px; color:#999; font-weight:bold;">選擇原因：</label>
             <select id="rca-reason" style="width:100%; padding:12px; border-radius:10px; margin-top:5px; border:2px solid #eee; font-size:16px;">
@@ -606,7 +606,7 @@ window.openHistoryDetail = function(name, month) {
                 <option value="其他">📝 其他（面談討論）</option>
             </select>
             
-            <button onclick="submitRCA('${name}', '${month}')" style="width:100%; background:var(--primary-dark); color:white; padding:14px; border-radius:50px; margin-top:20px; border:none; font-weight:bold; cursor:pointer;">送出分析回饋</button>
+            <button onclick="submitRCA('${name}', '${month}')" style="width:100%; background:var(--primary-dark); color:white; padding:14px; border-radius:50px; margin-top:20px; border:none; font-weight:bold; cursor:pointer;">送出回饋</button>
         `;
     }
 };

@@ -454,11 +454,7 @@ async function fetchAndRenderProgress() {
     }
 }
 
-// 可以先定義一個暫時的 mock 資料，未來再改為從 API 抓取
-const historyRecords = {
-    "郭孟鑫": { "1月": "⭐️", "2月": "⭐️", "3月": "⭐️" },
-    "陳宛妤": { "1月": "🌟", "2月": "⭐️", "3月": "⭐️" }
-};
+
 
 async function renderStarryMap() {
     const container = $("starry-map-container");

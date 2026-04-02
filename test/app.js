@@ -478,11 +478,7 @@ async function renderStarryMap() {
     container.innerHTML = "<p style='text-align:center; color:#999; font-size:14px;'>正在讀取星圖資料...</p>";
 
     try {
-        // 🚀 發送請求抓取資料
         const response = await fetch(`${PROGRESS_API_URL}?action=getHistory`);
-        
-        // 💡 關鍵修改 1：把抓到的結果存進「全域變數」globalHistoryData，
-        // 這樣等等點擊星星觸發 openHistoryDetail 時，它才知道這顆星是亮還是暗。
         globalHistoryData = await response.json(); 
 
         container.innerHTML = ""; 
@@ -496,8 +492,10 @@ async function renderStarryMap() {
             for (let i = 1; i <= 12; i++) {
                 const monthKey = `${i}月`;
                 
-                // 💡 關鍵修改 2：這裡改用 globalHistoryData 讀取狀態
-                const status = (globalHistoryData[name] && globalHistoryData[name][monthKey]) || "○";
+                // 💡 關鍵修正：相容物件格式與字串格式
+                const monthData = (globalHistoryData[name] && globalHistoryData[name][monthKey]) || "○";
+                const status = typeof monthData === 'object' ? monthData.status : monthData;
+                
                 const isActive = status !== "○";
 
                 starsHtml += `
@@ -526,50 +524,6 @@ async function renderStarryMap() {
     }
 }
 
-
-function openHistoryDetail(name, month) {
-    const modal = $("history-modal");
-    const content = $("modal-content");
-    const data = (mockHistoryData[name] && mockHistoryData[name][month]) || { status: "○", plan: "尚無紀錄" };
-    
-    modal.classList.remove("hidden");
-    
-    if (data.status !== "○") {
-        // 成功達成：顯示歷史計畫
-        content.innerHTML = `
-            <h3 style="color:var(--primary-dark); text-align:center;">${month} 的榮耀時刻 ⭐️</h3>
-            <p style="font-size:14px; background:#f9f9f9; padding:10px; border-radius:10px;">
-                <strong>當時方案：</strong><br>${data.plan || "此月份為手動點亮達成"}
-            </p>
-            <div style="text-align:center; font-size:40px;">🎉</div>
-        `;
-    } else {
-        // 未達成：開啟根因分析 (Check)
-        content.innerHTML = `
-            <h3 style="color:#FF6B6B; text-align:center;">${month} 分析 💡</h3>
-            <p style="font-size:13px; color:#666; text-align:center;">你覺得主要的挑戰是什麼？</p>
-            <select id="rca-select" style="margin-top:10px;">
-                <option value="多一點時間">⏳ 多一點時間</option>
-                <option value="同事的支援">🏃 同事的支援</option>
-                <option value="外部資源協助">🏔️ 外部資源協助</option>
-                <option value="更好的工具">🛠️ 更好的工具</option>
-                <option value="其他">📝 其他（面談討論）</option>
-            </select>
-            <button onclick="submitRCA('${name}', '${month}')" style="width:100%; background:var(--primary-dark); color:white; padding:10px; border-radius:10px; margin-top:15px; border:none; font-weight:bold;">送出分析</button>
-        `;
-    }
-}
-
-function closeModal() {
-    $("history-modal").classList.add("hidden");
-}
-
-function submitRCA(name, month) {
-    const reason = $("rca-select").value;
-    alert(`已記錄 ${name} 在 ${month} 的原因：${reason}\n這將同步至 Google Sheet 後台。`);
-    // 這裡實作 fetch POST 到您的 API 的邏輯
-    closeModal();
-}
 
 // 點擊星星的詳細視窗邏輯
 window.openHistoryDetail = function(name, month) {

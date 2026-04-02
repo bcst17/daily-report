@@ -3,7 +3,7 @@ console.log("🌸 Mar Style app.js loaded: Sakura & Doraemon Edition");
 // ✅ 測試版儲存前綴
 const STORAGE_PREFIX = "daily-report-test-";
 
-const PROGRESS_API_URL = "https://script.google.com/macros/s/AKfycbwqpw_lNJO5XUDx3D31DJmGN-zjC3EY981fYzWtkbtUATmLlER3bt_A4Cy7ztXcB84tdA/exec";
+const PROGRESS_API_URL = "https://script.google.com/macros/s/AKfycbyrm3inO0h3qQf3hpKGCuQrNk68clolrYTXo5ncwEblDghytWB29dMIKA1LenjyIAr0qw/exec";
 
 // ===== ↓↓↓ 當月計畫資料庫 (後台輸入區) ↓↓↓ =====
 // 這裡可以預先輸入每位同仁的計畫，數量不限

@@ -592,11 +592,10 @@ window.openHistoryDetail = function(name, month) {
             <p style="text-align:center; color:#248EB3; font-weight:bold; margin-top:15px;">🎉 任務已達成！</p>
         `;
     } else {
-        // 【未達成 ○ 的情況】：顯示 PDCA 根因分析選單 (這就是你要的選項！)
+        // 【未達成 ○】：顯示 RCA 根因分析 (維持您之前的邏輯)
         content.innerHTML = `
-            <h3 style="color:#FF6B6B; text-align:center; margin-top:0;">${month} 補給站 💡</h3>
+            <h3 style="color:#FF6B6B; text-align:center;">${month} 補給站 💡</h3>
             <p style="font-size:14px; color:#555; text-align:center;">你覺得主要的挑戰是什麼？</p>
-            
             <label style="font-size:12px; color:#999; font-weight:bold;">選擇原因：</label>
             <select id="rca-reason" style="width:100%; padding:12px; border-radius:10px; margin-top:5px; border:2px solid #eee; font-size:16px;">
                 <option value="多一點時間">⏳ 多一點時間</option>
@@ -605,8 +604,7 @@ window.openHistoryDetail = function(name, month) {
                 <option value="更好的工具">🛠️ 更好的工具</option>
                 <option value="其他">📝 其他（面談討論）</option>
             </select>
-            
-            <button onclick="submitRCA('${name}', '${month}')" style="width:100%; background:var(--primary-dark); color:white; padding:14px; border-radius:50px; margin-top:20px; border:none; font-weight:bold; cursor:pointer;">送出回饋</button>
+            <button onclick="submitRCA('${name}', '${month}')" style="width:100%; background:var(--primary-dark); color:white; padding:12px; border-radius:50px; margin-top:20px; border:none; font-weight:bold;">送出分析</button>
         `;
     }
 };

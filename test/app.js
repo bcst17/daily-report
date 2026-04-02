@@ -573,8 +573,8 @@ window.openHistoryDetail = function(name, month) {
         content.innerHTML = `
             <div style="text-align:center;">
                 <div style="font-size:50px; margin-bottom:10px;">🌟</div>
-                <h3 style="color:var(--primary-dark); margin:0;">${month} 達成英雄！</h3>
-                <p style="color:#666; font-size:14px; margin-top:10px;">恭喜 ${name} 摘下這顆星！<br>當時的努力成就了現在的進度。</p>
+                <h3 style="color:var(--primary-dark); margin:0;">${month} 達成！</h3>
+                <p style="color:#666; font-size:14px; margin-top:10px;">恭喜 ${name} 摘下這顆星！<br>努力追尋下一顆星吧！</p>
             </div>
         `;
     } else {
@@ -583,17 +583,57 @@ window.openHistoryDetail = function(name, month) {
             <h3 style="color:#FF6B6B; text-align:center; margin-top:0;">${month} 補給站 💡</h3>
             <p style="font-size:14px; color:#555; text-align:center;">這顆星星還在等著被點亮，<br>你覺得主要的挑戰是什麼？</p>
             
-            <label style="font-size:12px; color:#999; font-weight:bold;">選擇失敗原因：</label>
+            <label style="font-size:12px; color:#999; font-weight:bold;">選擇原因：</label>
             <select id="rca-reason" style="width:100%; padding:12px; border-radius:10px; margin-top:5px; border:2px solid #eee; font-size:16px;">
-                <option value="時間分配不足">⏳ 時間分配不足</option>
-                <option value="突發外務過多">🏃 突發外務過多</option>
-                <option value="目標設定太難">🏔️ 目標設定太難</option>
-                <option value="缺乏相關工具/支援">🛠️ 缺乏資源支援</option>
-                <option value="其他">📝 其他（請見面談）</option>
+                <option value="多一點時間">⏳ 多一點時間</option>
+                <option value="同事的支援">🏃 同事的支援</option>
+                <option value="外部資源協助">🏔️ 外部資源協助</option>
+                <option value="更好的工具">🛠️ 更好的工具</option>
+                <option value="其他">📝 其他（面談討論）</option>
             </select>
             
             <button onclick="submitRCA('${name}', '${month}')" style="width:100%; background:var(--primary-dark); color:white; padding:14px; border-radius:50px; margin-top:20px; border:none; font-weight:bold; cursor:pointer;">送出分析回饋</button>
         `;
+    }
+};
+
+// 🚀 送出 RCA 根因分析到 Google Sheets
+window.submitRCA = async function(name, month) {
+    const reasonEl = document.getElementById("rca-reason");
+    if (!reasonEl) return;
+    
+    const reason = reasonEl.value;
+    const submitBtn = event.target; // 取得目前的按鈕
+
+    // 1. 防止重複點擊
+    submitBtn.disabled = true;
+    submitBtn.innerText = "傳送中...";
+
+    try {
+        // 2. 發送 POST 請求到您的 GAS
+        // 注意：這裡必須使用 JSON.stringify 打包資料
+        await fetch(PROGRESS_API_URL, {
+            method: "POST",
+            mode: "no-cors", // 避免瀏覽器跨網域攔截
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ 
+                action: "submitRCA", 
+                name: name, 
+                month: month, 
+                reason: reason 
+            })
+        });
+
+        // 3. 成功後的回饋
+        alert(`🌸 紀錄成功！\n已將「${month} / ${name}」的分析原因送出：\n${reason}`);
+        closeModal(); // 關閉彈窗
+        
+    } catch (e) {
+        console.error("RCA 送出失敗:", e);
+        alert("❌ 傳送失敗，請檢查網路連線或 GAS 部署狀態");
+    } finally {
+        submitBtn.disabled = false;
+        submitBtn.innerText = "送出回饋";
     }
 };
 

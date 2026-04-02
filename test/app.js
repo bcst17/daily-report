@@ -488,25 +488,34 @@ async function renderStarryMap() {
             const card = document.createElement("div");
             card.style.cssText = "background:#fff; padding:15px; border-radius:15px; margin-bottom:12px; border:1px solid var(--border); box-shadow: 2px 2px 8px rgba(0,0,0,0.05);";
             
-            let starsHtml = "";
-            for (let i = 1; i <= 12; i++) {
-                const monthKey = `${i}月`;
-                
-                // 💡 關鍵修正：相容物件格式與字串格式
-                const monthData = (globalHistoryData[name] && globalHistoryData[name][monthKey]) || "○";
-                const status = typeof monthData === 'object' ? monthData.status : monthData;
-                
-                const isActive = status !== "○";
+let starsHtml = "";
+for (let i = 1; i <= 12; i++) {
+    const monthKey = `${i}月`;
+    const monthPlans = globalHistoryData[name]?.[monthKey]; // 取得該月計畫陣列
+    
+    let displayContent = ""; // 預設：完全空白 (未來月份)
 
-                starsHtml += `
-                    <div onclick="openHistoryDetail('${name}', '${monthKey}')" style="text-align:center; cursor:pointer;">
-                        <div style="font-size:10px; color:#999; margin-bottom:2px;">${i}月</div>
-                        <div style="font-size:20px; filter:${isActive ? 'none' : 'grayscale(1)'}; opacity:${isActive ? '1' : '0.2'};">
-                            ${status === "○" ? "⭐️" : status}
-                        </div>
-                    </div>
-                `;
-            }
+    // 檢查該月是否有資料
+    if (monthPlans && monthPlans.length > 0) {
+        // 🚀 判斷邏輯：檢查陣列中是否「所有方案」的 status 都是 "⭐"
+        const isAllDone = monthPlans.every(p => p.status === "⭐" || p.status === "⭐️");
+        
+        if (isAllDone) {
+            // 狀態 A：全數完成 -> 顯示亮起的金星
+            displayContent = `<div style="font-size:20px;">⭐</div>`;
+        } else {
+            // 狀態 B：有資料但未全完成 -> 顯示「原本沒亮起的⭐」(灰色)
+            displayContent = `<div style="font-size:20px; filter:grayscale(1); opacity:0.3;">⭐</div>`;
+        }
+    }
+
+    starsHtml += `
+        <div onclick="openHistoryDetail('${name}', '${monthKey}')" style="text-align:center; cursor:pointer; min-height:40px;">
+            <div style="font-size:10px; color:#999; margin-bottom:2px;">${i}月</div>
+            ${displayContent}
+        </div>
+    `;
+}
 
             card.innerHTML = `
                 <div style="font-weight:800; color:var(--primary-dark); margin-bottom:10px; display:flex; justify-content:space-between; align-items:center;">
@@ -529,38 +538,50 @@ async function renderStarryMap() {
 window.openHistoryDetail = function(name, month) {
     const modal = $("history-modal");
     const content = $("modal-content");
-    
-    // 1. 從全域變數抓取該月份的完整資料物件
-    const monthData = (globalHistoryData[name] && globalHistoryData[name][month]) || { status: "○", plan: "尚無存檔紀錄", target: "-" };
+    const monthPlans = globalHistoryData[name]?.[month] || []; //
     
     if (modal) modal.classList.remove("hidden");
 
-    if (monthData.status !== "○") {
-        // 【達成 ⭐️】：顯示歷史計畫內容
-        content.innerHTML = `
-            <h3 style="color:var(--primary-dark); text-align:center;">${month} 的行動回顧 ⭐️</h3>
-            <div style="background:#f9f9f9; padding:15px; border-radius:12px; margin-top:10px; font-size:14px; line-height:1.6;">
-                <p><strong>🎯 行動方案：</strong><br>${monthData.plan}</p>
-                <p><strong>🏁 預期目標：</strong><br>${monthData.target}</p>
+    // 若完全沒資料 (點擊到空白月份)，顯示提示並結束
+    if (monthPlans.length === 0) {
+        content.innerHTML = `<h3 style="text-align:center; color:#999;">${month} 尚無計畫紀錄</h3>`;
+        return;
+    }
+
+    // 1. 產生所有計畫清單
+    let plansListHtml = monthPlans.map((p, idx) => `
+        <div style="background:#f9f9f9; padding:12px; border-radius:10px; margin-bottom:10px; border-left:4px solid ${p.status === '⭐' || p.status === '⭐️' ? '#248EB3' : '#FF6B6B'};">
+            <div style="font-size:12px; color:#999;">方案 ${idx + 1} [${p.status === '⭐' || p.status === '⭐️' ? '達成' : '未達標'}]</div>
+            <div style="font-size:14px; color:#333; margin:4px 0;"><strong>計畫：</strong>${p.plan}</div>
+            <div style="font-size:13px; color:#666;"><strong>目標：</strong>${p.target}</div>
+        </div>
+    `).join("");
+
+    // 2. 判斷是否顯示回饋選單 (只要有一個沒達成，就顯示)
+    const hasFailedTask = monthPlans.some(p => !(p.status === "⭐" || p.status === "⭐️"));
+    let rcaHtml = "";
+    
+    if (hasFailedTask) {
+        rcaHtml = `
+            <div style="border-top:1px dashed #ccc; margin-top:15px; padding-top:15px;">
+                <h3 style="color:#FF6B6B; text-align:center; font-size:16px; margin-bottom:10px;">未達標原因回饋 💡</h3>
+                <select id="rca-reason" style="width:100%; padding:12px; border-radius:10px; border:2px solid #eee; font-size:16px;">
+                    <option value="多一點時間">⏳ 多一點時間</option>
+                    <option value="同事的支援">🏃 同事的支援</option>
+                    <option value="外部資源協助">🏔️ 外部資源協助</option>
+                    <option value="更好的工具">🛠️ 更好的工具</option>
+                    <option value="其他">📝 其他（面談討論）</option>
+                </select>
+                <button onclick="submitRCA('${name}', '${month}')" style="width:100%; background:var(--primary-dark); color:white; padding:14px; border-radius:50px; margin-top:15px; border:none; font-weight:bold; cursor:pointer;">送出分析回饋</button>
             </div>
-            <p style="text-align:center; color:#248EB3; font-weight:bold; margin-top:15px;">🎉 任務已達成！</p>
-        `;
-    } else {
-        // 【未達成 ○】：顯示 RCA 根因分析 (維持您之前的邏輯)
-        content.innerHTML = `
-            <h3 style="color:#FF6B6B; text-align:center;">${month} 補給站 💡</h3>
-            <p style="font-size:14px; color:#555; text-align:center;">你覺得主要的挑戰是什麼？</p>
-            <label style="font-size:12px; color:#999; font-weight:bold;">選擇原因：</label>
-            <select id="rca-reason" style="width:100%; padding:12px; border-radius:10px; margin-top:5px; border:2px solid #eee; font-size:16px;">
-                <option value="多一點時間">⏳ 多一點時間</option>
-                <option value="同事的支援">🏃 同事的支援</option>
-                <option value="外部資源協助">🏔️ 外部資源協助</option>
-                <option value="更好的工具">🛠️ 更好的工具</option>
-                <option value="其他">📝 其他（面談討論）</option>
-            </select>
-            <button onclick="submitRCA('${name}', '${month}')" style="width:100%; background:var(--primary-dark); color:white; padding:12px; border-radius:50px; margin-top:20px; border:none; font-weight:bold;">送出分析</button>
         `;
     }
+
+    content.innerHTML = `
+        <h3 style="color:var(--primary-dark); text-align:center; margin-top:0;">${month} 行動方案回顧</h3>
+        <div style="max-height:300px; overflow-y:auto;">${plansListHtml}</div>
+        ${rcaHtml}
+    `;
 };
 
 // 🚀 送出 RCA 根因分析到 Google Sheets

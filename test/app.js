@@ -547,13 +547,13 @@ function openHistoryDetail(name, month) {
         // 未達成：開啟根因分析 (Check)
         content.innerHTML = `
             <h3 style="color:#FF6B6B; text-align:center;">${month} 補給站 💡</h3>
-            <p style="font-size:13px; color:#666; text-align:center;">這顆星星不小心弄丟了，原因可能是：</p>
+            <p style="font-size:13px; color:#666; text-align:center;">主觀分析<br>你覺得主要的挑戰是什麼？</p>
             <select id="rca-select" style="margin-top:10px;">
-                <option value="時間分配不足">⏳ 時間分配不足</option>
-                <option value="遇到突發外務">外務干擾</option>
-                <option value="目標設定過高">🏔️ 目標設定太難</option>
-                <option value="需要主管支援">👨‍🏫 需要主管指導</option>
-                <option value="其他">其他原因</option>
+                <option value="多一點時間">⏳ 多一點時間</option>
+                <option value="同事的支援">🏃 同事的支援</option>
+                <option value="外部資源協助">🏔️ 外部資源協助</option>
+                <option value="更好的工具">🛠️ 更好的工具</option>
+                <option value="其他">📝 其他（面談討論）</option>
             </select>
             <button onclick="submitRCA('${name}', '${month}')" style="width:100%; background:var(--primary-dark); color:white; padding:10px; border-radius:10px; margin-top:15px; border:none; font-weight:bold;">送出分析</button>
         `;
@@ -588,14 +588,14 @@ window.openHistoryDetail = function(name, month) {
             <div style="text-align:center;">
                 <div style="font-size:50px; margin-bottom:10px;">🌟</div>
                 <h3 style="color:var(--primary-dark); margin:0;">${month} 達成！</h3>
-                <p style="color:#666; font-size:14px; margin-top:10px;">恭喜 ${name} 摘下這顆星！<br>努力追尋下一顆星吧！</p>
+                <p style="color:#666; font-size:14px; margin-top:10px;">恭喜 ${name} 摘下這顆星！<br>一起追尋下一顆星吧！</p>
             </div>
         `;
     } else {
         // 【未達成 ○ 的情況】：顯示 PDCA 根因分析選單 (這就是你要的選項！)
         content.innerHTML = `
             <h3 style="color:#FF6B6B; text-align:center; margin-top:0;">${month} 補給站 💡</h3>
-            <p style="font-size:14px; color:#555; text-align:center;">這顆星星還在等著被點亮，<br>你覺得主要的挑戰是什麼？</p>
+            <p style="font-size:14px; color:#555; text-align:center;">主觀分析<br>你覺得主要的挑戰是什麼？</p>
             
             <label style="font-size:12px; color:#999; font-weight:bold;">選擇原因：</label>
             <select id="rca-reason" style="width:100%; padding:12px; border-radius:10px; margin-top:5px; border:2px solid #eee; font-size:16px;">
@@ -639,7 +639,7 @@ window.submitRCA = async function(name, month) {
         });
 
         // 3. 成功後的回饋
-        alert(`🌸 紀錄成功！\n已將「${month} / ${name}」的分析原因送出：\n${reason}`);
+        alert(`✔️ 紀錄成功！\n已將「${month} / ${name}」的分析原因送出：\n${reason}`);
         closeModal(); // 關閉彈窗
         
     } catch (e) {

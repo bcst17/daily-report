@@ -223,8 +223,8 @@ window.recalcTotals = recalcTotals;
 
 // ===== 分頁切換邏輯 (更新以支援新分頁) =====
 function showView(view) {
-    const views = { 'huddle': $('huddle-view'), 'report': $('report-view'), 'plan': $('plan-view') };
-    const tabs = { 'huddle': $('tab-huddle'), 'report': $('tab-report'), 'plan': $('tab-plan') };
+    const views = { 'huddle': $('huddle-view'), 'report': $('report-view'), 'plan': $('plan-view'), 'history': $('history-view') };
+    const tabs = { 'huddle': $('tab-huddle'), 'report': $('tab-report'), 'plan': $('tab-plan'), 'history': $('tab-history') };
 
     Object.keys(views).forEach(key => {
         if (views[key]) views[key].classList.toggle("hidden", key !== view);
@@ -232,9 +232,10 @@ function showView(view) {
     });
 
     if (view === "huddle") {
-        // 🚀 優先跑進度抓取，並用 try-catch 隔開
         try { fetchAndRenderProgress(); } catch(e) { console.error(e); }
         try { renderHuddle(); } catch(e) { console.error(e); }
+    } else if (view === "history") {
+        try { renderStarryMap(); } catch(e) { console.error(e); } // 新增這行
     }
 }
 
@@ -453,6 +454,106 @@ async function fetchAndRenderProgress() {
     }
 }
 
+// 可以先定義一個暫時的 mock 資料，未來再改為從 API 抓取
+const historyRecords = {
+    "郭孟鑫": { "1月": "⭐️", "2月": "⭐️", "3月": "⭐️" },
+    "陳宛妤": { "1月": "🌟", "2月": "⭐️", "3月": "⭐️" }
+};
+
+async function renderStarryMap() {
+    const container = $("starry-map-container");
+    if (!container) return;
+    
+    container.innerHTML = ""; // 清空舊內容
+
+    // 從您原有的 monthlyData 取得所有同仁姓名
+    const staffNames = Object.keys(monthlyData);
+
+    staffNames.forEach(name => {
+        const card = document.createElement("div");
+        card.style.cssText = "background:#fff; padding:15px; border-radius:15px; margin-bottom:12px; border:1px solid var(--border); box-shadow: 2px 2px 8px rgba(0,0,0,0.05);";
+        
+        // 建立 1~12 月的星星容器
+        let starsHtml = "";
+        for (let i = 1; i <= 12; i++) {
+            const monthKey = `${i}月`;
+            // 判斷狀態：如果有紀錄就顯示星星，沒有就顯示灰色圓圈
+            const status = (historyRecords[name] && historyRecords[name][monthKey]) || "○";
+            const isActive = status !== "○";
+
+            starsHtml += `
+                <div onclick="openHistoryDetail('${name}', '${monthKey}')" style="text-align:center; cursor:pointer;">
+                    <div style="font-size:10px; color:#999; margin-bottom:2px;">${i}月</div>
+                    <div style="font-size:20px; filter:${isActive ? 'none' : 'grayscale(1)'}; opacity:${isActive ? '1' : '0.2'};">
+                        ${status === "○" ? "⭐️" : status}
+                    </div>
+                </div>
+            `;
+        }
+
+        card.innerHTML = `
+            <div style="font-weight:800; color:var(--primary-dark); margin-bottom:10px; display:flex; justify-content:space-between; align-items:center;">
+                <span>${name}</span>
+                <span style="font-size:12px; background:#E0F7EF; padding:2px 8px; border-radius:10px; color:#248EB3;">🔥 連擊中</span>
+            </div>
+            <div style="display:grid; grid-template-columns: repeat(6, 1fr); gap:8px;">
+                ${starsHtml}
+            </div>
+        `;
+        container.appendChild(card);
+    });
+}
+
+function openHistoryDetail(name, month) {
+    const modal = $("history-modal");
+    const content = $("modal-content");
+    const data = (mockHistoryData[name] && mockHistoryData[name][month]) || { status: "○", plan: "尚無紀錄" };
+    
+    modal.classList.remove("hidden");
+    
+    if (data.status !== "○") {
+        // 成功達成：顯示歷史計畫
+        content.innerHTML = `
+            <h3 style="color:var(--primary-dark); text-align:center;">${month} 的榮耀時刻 ⭐️</h3>
+            <p style="font-size:14px; background:#f9f9f9; padding:10px; border-radius:10px;">
+                <strong>當時方案：</strong><br>${data.plan || "此月份為手動點亮達成"}
+            </p>
+            <div style="text-align:center; font-size:40px;">🎉</div>
+        `;
+    } else {
+        // 未達成：開啟根因分析 (Check)
+        content.innerHTML = `
+            <h3 style="color:#FF6B6B; text-align:center;">${month} 補給站 💡</h3>
+            <p style="font-size:13px; color:#666; text-align:center;">這顆星星不小心弄丟了，原因可能是：</p>
+            <select id="rca-select" style="margin-top:10px;">
+                <option value="時間分配不足">⏳ 時間分配不足</option>
+                <option value="遇到突發外務">外務干擾</option>
+                <option value="目標設定過高">🏔️ 目標設定太難</option>
+                <option value="需要主管支援">👨‍🏫 需要主管指導</option>
+                <option value="其他">其他原因</option>
+            </select>
+            <button onclick="submitRCA('${name}', '${month}')" style="width:100%; background:var(--primary-dark); color:white; padding:10px; border-radius:10px; margin-top:15px; border:none; font-weight:bold;">送出分析</button>
+        `;
+    }
+}
+
+function closeModal() {
+    $("history-modal").classList.add("hidden");
+}
+
+function submitRCA(name, month) {
+    const reason = $("rca-select").value;
+    alert(`已記錄 ${name} 在 ${month} 的原因：${reason}\n這將同步至 Google Sheet 後台。`);
+    // 這裡實作 fetch POST 到您的 API 的邏輯
+    closeModal();
+}
+
+// 點擊星星的詳細視窗邏輯
+window.openHistoryDetail = function(name, month) {
+    // 這裡可以串接您之前的 Modal 邏輯，或是簡單的 alert 測試
+    alert(`正在查看 ${name} 在 ${month} 的行動方案紀錄...`);
+};
+
 // ===== 產生訊息 =====
 function generateMessage() {
     saveToday();
@@ -563,14 +664,17 @@ function initDateLoad() {
 }
 
 document.addEventListener("DOMContentLoaded", () => {
-    // 綁定分頁按鈕
+    // 綁定原有按鈕
     if($("tab-huddle")) $("tab-huddle").addEventListener("click", () => showView("huddle"));
     if($("tab-report")) $("tab-report").addEventListener("click", () => showView("report"));
     if($("tab-plan")) $("tab-plan").addEventListener("click", () => showView("plan"));
+    
+    // 🚀 新增：歷史回溯按鈕監聽
+    if($("tab-history")) $("tab-history").addEventListener("click", () => showView("history"));
 
     bindAutoSave();
     initDateLoad();
     renderHuddle();
     initPlanTab();
-    fetchAndRenderProgress(); // 🚀 初始化時也跑一次
+    fetchAndRenderProgress();
 });

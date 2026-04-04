@@ -54,7 +54,6 @@ const monthlyData = {
   "呂桂梅": [
     { content: "八德2025RS潛客，針對AHI由高至低依序聯繫，如有成功邀約但沒機器，及時通知秉忻。", target: "每日完成3~5筆聯繫，目標邀約回店做HST重測或APAP再次暫借。", customerType: "潛客", itemType: "RS" }
   ],
-  "蔡秉忻": [{ content: " ", target: " " }]
 };
 
 // ===== ↓↓↓ Google Sheet 串接（測試版）↓↓↓ =====

@@ -584,7 +584,7 @@ if (hasFailedTask) {
                     <option value="更好的工具">🛠️ 更好的工具</option>
                     <option value="其他">📝 其他（面談討論）</option>
                 </select>
-                <button onclick="submitRCA('${name}', '${month}')" style="width:100%; background:${hasFailedTask ? '#FF6B6B' : 'var(--primary-dark)'}; color:white; padding:14px; border-radius:50px; margin-top:15px; border:none; font-weight:bold; cursor:pointer; box-shadow: 0 4px 0px rgba(0,0,0,0.1);">送出分析回饋</button>
+                <button onclick="submitRCA('${name}', '${month}')" style="width:100%; background:${hasFailedTask ? '#FF6B6B' : 'var(--primary-dark)'}; color:white; padding:14px; border-radius:50px; margin-top:15px; border:none; font-weight:bold; cursor:pointer; box-shadow: 0 4px 0px rgba(0,0,0,0.1);">送出回饋</button>
             </div>
         `;
     }

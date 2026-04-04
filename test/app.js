@@ -538,48 +538,61 @@ for (let i = 1; i <= 12; i++) {
 window.openHistoryDetail = function(name, month) {
     const modal = $("history-modal");
     const content = $("modal-content");
-    const monthPlans = globalHistoryData[name]?.[month] || []; //
+    const monthPlans = globalHistoryData[name]?.[month] || [];
     
     if (modal) modal.classList.remove("hidden");
 
-    // 若完全沒資料 (點擊到空白月份)，顯示提示並結束
     if (monthPlans.length === 0) {
         content.innerHTML = `<h3 style="text-align:center; color:#999;">${month} 尚無計畫紀錄</h3>`;
         return;
     }
 
-    // 1. 產生所有計畫清單
-    let plansListHtml = monthPlans.map((p, idx) => `
-        <div style="background:#f9f9f9; padding:12px; border-radius:10px; margin-bottom:10px; border-left:4px solid ${p.status === '⭐' || p.status === '⭐️' ? '#248EB3' : '#FF6B6B'};">
-            <div style="font-size:12px; color:#999;">方案 ${idx + 1} [${p.status === '⭐' || p.status === '⭐️' ? '達成' : '未達標'}]</div>
-            <div style="font-size:14px; color:#333; margin:4px 0;"><strong>計畫：</strong>${p.plan}</div>
-            <div style="font-size:13px; color:#666;"><strong>目標：</strong>${p.target}</div>
-        </div>
-    `).join("");
+    // 🚀 1. 產生帶有顏色與 Emoji 的計畫清單
+    let plansListHtml = monthPlans.map((p, idx) => {
+        // 判斷是否達成
+        const isAchieved = p.status === '⭐' || p.status === '⭐️';
+        const statusEmoji = isAchieved ? "✔️" : "❌";
+        const statusLabel = isAchieved ? "達成" : "未達標";
+        const themeColor = isAchieved ? "#248EB3" : "#FF6B6B"; // 藍色 vs 紅色
+        const bgColor = isAchieved ? "#E0F7EF" : "#FFF0F0";    // 淺綠底 vs 淺紅底
 
-    // 2. 判斷是否顯示回饋選單 (只要有一個沒達成，就顯示)
+        return `
+            <div style="background:#f9f9f9; padding:15px; border-radius:12px; margin-bottom:12px; border-left:5px solid ${themeColor}; box-shadow: 2px 2px 5px rgba(0,0,0,0.03);">
+                <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px;">
+                    <span style="font-size:12px; font-weight:bold; color:#aaa;">方案 ${idx + 1}</span>
+                    <span style="background:${bgColor}; color:${themeColor}; padding:2px 10px; border-radius:20px; font-size:11px; font-weight:800; border: 1px solid ${themeColor}44;">
+                        ${statusEmoji} ${statusLabel}
+                    </span>
+                </div>
+                <div style="font-size:15px; color:#333; line-height:1.5;"><strong>計畫：</strong>${p.plan}</div>
+                <div style="font-size:13px; color:#666; margin-top:6px; padding-top:6px; border-top:1px solid #eee;"><strong>目標：</strong>${p.target}</div>
+            </div>
+        `;
+    }).join("");
+
+    // 2. 判斷是否顯示回饋選單 (只要有一個未達成，就顯示)
     const hasFailedTask = monthPlans.some(p => !(p.status === "⭐" || p.status === "⭐️"));
     let rcaHtml = "";
     
-    if (hasFailedTask) {
+if (hasFailedTask) {
         rcaHtml = `
-            <div style="border-top:1px dashed #ccc; margin-top:15px; padding-top:15px;">
+            <div style="border-top:2px dashed #eee; margin-top:20px; padding-top:15px;">
                 <h3 style="color:#FF6B6B; text-align:center; font-size:16px; margin-bottom:10px;">未達標原因回饋 💡</h3>
-                <select id="rca-reason" style="width:100%; padding:12px; border-radius:10px; border:2px solid #eee; font-size:16px;">
+                <select id="rca-reason" style="width:100%; padding:12px; border-radius:10px; border:2px solid #eee; font-size:16px; background:#fff;">
                     <option value="多一點時間">⏳ 多一點時間</option>
                     <option value="同事的支援">🏃 同事的支援</option>
                     <option value="外部資源協助">🏔️ 外部資源協助</option>
                     <option value="更好的工具">🛠️ 更好的工具</option>
                     <option value="其他">📝 其他（面談討論）</option>
                 </select>
-                <button onclick="submitRCA('${name}', '${month}')" style="width:100%; background:var(--primary-dark); color:white; padding:14px; border-radius:50px; margin-top:15px; border:none; font-weight:bold; cursor:pointer;">送出分析回饋</button>
+                <button onclick="submitRCA('${name}', '${month}')" style="width:100%; background:${hasFailedTask ? '#FF6B6B' : 'var(--primary-dark)'}; color:white; padding:14px; border-radius:50px; margin-top:15px; border:none; font-weight:bold; cursor:pointer; box-shadow: 0 4px 0px rgba(0,0,0,0.1);">送出分析回饋</button>
             </div>
         `;
     }
 
     content.innerHTML = `
-        <h3 style="color:var(--primary-dark); text-align:center; margin-top:0;">${month} 行動方案回顧</h3>
-        <div style="max-height:300px; overflow-y:auto;">${plansListHtml}</div>
+        <h3 style="color:var(--primary-dark); text-align:center; margin:0 0 15px 0; font-weight:900;">${month} 行動方案回顧</h3>
+        <div style="max-height:350px; overflow-y:auto; padding-right:5px;">${plansListHtml}</div>
         ${rcaHtml}
     `;
 };

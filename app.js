@@ -2,8 +2,10 @@ console.log("🌸 Mar Style app.js loaded: Sakura & Doraemon Edition");
 
 // ✅ 測試版儲存前綴
 const STORAGE_PREFIX = "daily-report-test-";
+const PROGRESS_API_URL = "https://script.google.com/macros/s/AKfycbyrm3inO0h3qQf3hpKGCuQrNk68clolrYTXo5ncwEblDghytWB29dMIKA1LenjyIAr0qw/exec";
 
-const PROGRESS_API_URL = "https://script.google.com/macros/s/AKfycbwqpw_lNJO5XUDx3D31DJmGN-zjC3EY981fYzWtkbtUATmLlER3bt_A4Cy7ztXcB84tdA/exec";
+// 💡 請在 app.js 的最上方（或 PROGRESS_API_URL 下方）新增這行，用來存放抓回來的歷史資料
+let globalHistoryData = {};
 
 // ===== ↓↓↓ 當月計畫資料庫 (後台輸入區) ↓↓↓ =====
 // 這裡可以預先輸入每位同仁的計畫，數量不限
@@ -52,7 +54,6 @@ const monthlyData = {
   "呂桂梅": [
     { content: "八德2025RS潛客，針對AHI由高至低依序聯繫，如有成功邀約但沒機器，及時通知秉忻。", target: "每日完成3~5筆聯繫，目標邀約回店做HST重測或APAP再次暫借。", customerType: "潛客", itemType: "RS" }
   ],
-  "蔡秉忻": [{ content: " ", target: " " }]
 };
 
 // ===== ↓↓↓ Google Sheet 串接（測試版）↓↓↓ =====
@@ -223,18 +224,33 @@ window.recalcTotals = recalcTotals;
 
 // ===== 分頁切換邏輯 (更新以支援新分頁) =====
 function showView(view) {
-    const views = { 'huddle': $('huddle-view'), 'report': $('report-view'), 'plan': $('plan-view') };
-    const tabs = { 'huddle': $('tab-huddle'), 'report': $('tab-report'), 'plan': $('tab-plan') };
+    // 確保這裡的 ID 與 HTML 中的 ID 一一對應
+    const views = { 
+        'huddle': $('huddle-view'), 
+        'plan': $('plan-view'), 
+        'history': $('history-view') 
+    };
+    
+    const tabs = { 
+        'huddle': $('tab-huddle'), 
+        'plan': $('tab-plan'), 
+        'history': $('tab-history') 
+    };
 
     Object.keys(views).forEach(key => {
-        if (views[key]) views[key].classList.toggle("hidden", key !== view);
-        if (tabs[key]) tabs[key].classList.toggle("active", key === view);
+        if (views[key]) {
+            views[key].classList.toggle("hidden", key !== view);
+        }
+        if (tabs[key]) {
+            tabs[key].classList.toggle("active", key === view);
+        }
     });
 
     if (view === "huddle") {
-        // 🚀 優先跑進度抓取，並用 try-catch 隔開
         try { fetchAndRenderProgress(); } catch(e) { console.error(e); }
         try { renderHuddle(); } catch(e) { console.error(e); }
+    } else if (view === "history") {
+        try { renderStarryMap(); } catch(e) { console.error(e); }
     }
 }
 
@@ -453,51 +469,180 @@ async function fetchAndRenderProgress() {
     }
 }
 
-// ===== 產生訊息 =====
-function generateMessage() {
-    saveToday();
-    spawnSakuraShower(); 
+
+async function renderStarryMap() {
+    const container = $("starry-map-container");
+    if (!container) return;
     
-    const d = collectForm();
-    const title = `${d.date}｜${(d.store || "")} ${(d.name || "")}`.trim();
-    const todayCallTotal = num(d.todayCallPotential) + num(d.todayCallOld3Y);
-
-    const msg = `${title}
-1. 今日外撥：${todayCallTotal} 通（潛客 ${num(d.todayCallPotential)} 通、過保舊客 ${num(d.todayCallOld3Y)} 通）
-2. 今日預約：${num(d.todayBookingTotal)} 位
-3. 今日到店：${num(d.todayVisitTotal)} 位
-   試用：HA ${num(d.trialHA)} 位、APAP ${num(d.trialAPAP)} 位
-   成交：HA ${num(d.dealHA)} 位、APAP ${num(d.dealAPAP)} 位
-4. 明日已排預約：${num(d.tomorrowBookingTotal)} 位
-5. 明日KPI：
-   完成試戴 ${num(d.tomorrowKpiTrial)} 位
-   外撥 ${num(d.tomorrowKpiCallTotal)} 通
-   舊客預約 ${num(d.tomorrowKpiCallOld3Y)} 位
-
-📊 今日執行檢視（對照昨日 KPI）
-${buildTodayVsYesterdayKpiText(d)}`;
-
-    if ($("output")) $("output").value = msg;
+    container.innerHTML = "<p style='text-align:center; color:#999; font-size:14px;'>正在讀取星圖資料...</p>";
 
     try {
-        const hash = simpleHash(msg);
-        if (localStorage.getItem(sheetSentKey(d.date)) !== hash) {
-            sendReportToSheet({
-                date: d.date, store: d.store, name: d.name,
-                calls_total: todayCallTotal, calls_potential: num(d.todayCallPotential),
-                calls_old: num(d.todayCallOld3Y), appt_today: num(d.todayBookingTotal),
-                visit_today: num(d.todayVisitTotal), trial_ha: num(d.trialHA),
-                trial_apap: num(d.trialAPAP), deal_ha: num(d.dealHA),
-                deal_apap: num(d.dealAPAP), appt_tomorrow: num(d.tomorrowBookingTotal),
-                kpi_call_tomorrow: num(d.tomorrowKpiCallTotal),
-                kpi_old_appt_tomorrow: num(d.tomorrowKpiCallOld3Y),
-                kpi_trial_tomorrow: num(d.tomorrowKpiTrial), message_text: msg
-            });
-            localStorage.setItem(sheetSentKey(d.date), hash);
+        const response = await fetch(`${PROGRESS_API_URL}?action=getHistory`);
+        globalHistoryData = await response.json(); 
+
+        container.innerHTML = ""; 
+        const staffNames = Object.keys(monthlyData);
+
+        staffNames.forEach(name => {
+            const card = document.createElement("div");
+            card.style.cssText = "background:#fff; padding:15px; border-radius:15px; margin-bottom:12px; border:1px solid var(--border); box-shadow: 2px 2px 8px rgba(0,0,0,0.05);";
+            
+let starsHtml = "";
+for (let i = 1; i <= 12; i++) {
+    const monthKey = `${i}月`;
+    const monthPlans = globalHistoryData[name]?.[monthKey]; // 取得該月計畫陣列
+    
+    let displayContent = ""; // 預設：完全空白 (未來月份)
+
+    // 檢查該月是否有資料
+    if (monthPlans && monthPlans.length > 0) {
+        // 🚀 判斷邏輯：檢查陣列中是否「所有方案」的 status 都是 "⭐"
+        const isAllDone = monthPlans.every(p => p.status === "⭐" || p.status === "⭐️");
+        
+        if (isAllDone) {
+            // 狀態 A：全數完成 -> 顯示亮起的金星
+            displayContent = `<div style="font-size:20px;">⭐</div>`;
+        } else {
+            // 狀態 B：有資料但未全完成 -> 顯示「原本沒亮起的⭐」(灰色)
+            displayContent = `<div style="font-size:20px; filter:grayscale(1); opacity:0.3;">⭐</div>`;
         }
-    } catch (err) { console.error("send to sheet failed:", err); }
+    }
+
+    starsHtml += `
+        <div onclick="openHistoryDetail('${name}', '${monthKey}')" style="text-align:center; cursor:pointer; min-height:40px;">
+            <div style="font-size:10px; color:#999; margin-bottom:2px;">${i}月</div>
+            ${displayContent}
+        </div>
+    `;
 }
-window.generateMessage = generateMessage;
+
+            card.innerHTML = `
+                <div style="font-weight:800; color:var(--primary-dark); margin-bottom:10px; display:flex; justify-content:space-between; align-items:center;">
+                    <span>${name}</span>
+                </div>
+                <div style="display:grid; grid-template-columns: repeat(6, 1fr); gap:8px;">
+                    ${starsHtml}
+                </div>
+            `;
+            container.appendChild(card);
+        });
+    } catch (error) {
+        console.error("讀取星圖失敗:", error);
+        container.innerHTML = "<p style='text-align:center; color:red;'>星圖載入失敗，請檢查網路</p>";
+    }
+}
+
+
+// 點擊星星的詳細視窗邏輯
+window.openHistoryDetail = function(name, month) {
+    const modal = $("history-modal");
+    const content = $("modal-content");
+    const monthPlans = globalHistoryData[name]?.[month] || [];
+    
+    if (modal) modal.classList.remove("hidden");
+
+    if (monthPlans.length === 0) {
+        content.innerHTML = `<h3 style="text-align:center; color:#999;">${month} 尚無計畫紀錄</h3>`;
+        return;
+    }
+
+    // 🚀 1. 產生帶有顏色與 Emoji 的計畫清單
+    let plansListHtml = monthPlans.map((p, idx) => {
+        // 判斷是否達成
+        const isAchieved = p.status === '⭐' || p.status === '⭐️';
+        const statusEmoji = isAchieved ? "✔️" : "❌";
+        const statusLabel = isAchieved ? "達成" : "未達標";
+        const themeColor = isAchieved ? "#248EB3" : "#FF6B6B"; // 藍色 vs 紅色
+        const bgColor = isAchieved ? "#E0F7EF" : "#FFF0F0";    // 淺綠底 vs 淺紅底
+
+        return `
+            <div style="background:#f9f9f9; padding:15px; border-radius:12px; margin-bottom:12px; border-left:5px solid ${themeColor}; box-shadow: 2px 2px 5px rgba(0,0,0,0.03);">
+                <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px;">
+                    <span style="font-size:12px; font-weight:bold; color:#aaa;">方案 ${idx + 1}</span>
+                    <span style="background:${bgColor}; color:${themeColor}; padding:2px 10px; border-radius:20px; font-size:11px; font-weight:800; border: 1px solid ${themeColor}44;">
+                        ${statusEmoji} ${statusLabel}
+                    </span>
+                </div>
+                <div style="font-size:15px; color:#333; line-height:1.5;"><strong>計畫：</strong>${p.plan}</div>
+                <div style="font-size:13px; color:#666; margin-top:6px; padding-top:6px; border-top:1px solid #eee;"><strong>目標：</strong>${p.target}</div>
+            </div>
+        `;
+    }).join("");
+
+    // 2. 判斷是否顯示回饋選單 (只要有一個未達成，就顯示)
+    const hasFailedTask = monthPlans.some(p => !(p.status === "⭐" || p.status === "⭐️"));
+    let rcaHtml = "";
+    
+if (hasFailedTask) {
+        rcaHtml = `
+            <div style="border-top:2px dashed #eee; margin-top:20px; padding-top:15px;">
+                <h3 style="color:#FF6B6B; text-align:center; font-size:16px; margin-bottom:10px;">未達標原因回饋 💡</h3>
+                <select id="rca-reason" style="width:100%; padding:12px; border-radius:10px; border:2px solid #eee; font-size:16px; background:#fff;">
+                    <option value="多一點時間">⏳ 多一點時間</option>
+                    <option value="同事的支援">🏃 同事的支援</option>
+                    <option value="外部資源協助">🏔️ 外部資源協助</option>
+                    <option value="更好的工具">🛠️ 更好的工具</option>
+                    <option value="其他">📝 其他（面談討論）</option>
+                </select>
+                <button onclick="submitRCA('${name}', '${month}')" style="width:100%; background:${hasFailedTask ? '#FF6B6B' : 'var(--primary-dark)'}; color:white; padding:14px; border-radius:50px; margin-top:15px; border:none; font-weight:bold; cursor:pointer; box-shadow: 0 4px 0px rgba(0,0,0,0.1);">送出回饋</button>
+            </div>
+        `;
+    }
+
+    content.innerHTML = `
+        <h3 style="color:var(--primary-dark); text-align:center; margin:0 0 15px 0; font-weight:900;">${month} 行動方案回顧</h3>
+        <div style="max-height:350px; overflow-y:auto; padding-right:5px;">${plansListHtml}</div>
+        ${rcaHtml}
+    `;
+};
+
+// 🚀 送出 RCA 根因分析到 Google Sheets
+window.submitRCA = async function(name, month) {
+    const reasonEl = document.getElementById("rca-reason");
+    if (!reasonEl) return;
+    
+    const reason = reasonEl.value;
+    const submitBtn = event.target; // 取得目前的按鈕
+
+    // 1. 防止重複點擊
+    submitBtn.disabled = true;
+    submitBtn.innerText = "傳送中...";
+
+    try {
+        // 2. 發送 POST 請求到您的 GAS
+        // 注意：這裡必須使用 JSON.stringify 打包資料
+        await fetch(PROGRESS_API_URL, {
+            method: "POST",
+            mode: "no-cors", // 避免瀏覽器跨網域攔截
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ 
+                action: "submitRCA", 
+                name: name, 
+                month: month, 
+                reason: reason 
+            })
+        });
+
+        // 3. 成功後的回饋
+        alert(`✔️ 紀錄成功！\n已將「${month} / ${name}」的分析原因送出：\n${reason}`);
+        closeModal(); // 關閉彈窗
+        
+    } catch (e) {
+        console.error("RCA 送出失敗:", e);
+        alert("❌ 傳送失敗，請檢查網路連線或 GAS 部署狀態");
+    } finally {
+        submitBtn.disabled = false;
+        submitBtn.innerText = "送出回饋";
+    }
+};
+
+// 關閉彈窗的功能
+window.closeModal = function() {
+    if ($("history-modal")) $("history-modal").classList.add("hidden");
+};
+
+// ===== 產生訊息 =====
+
 
 function buildTodayVsYesterdayKpiText(todayForm) {
     const kpiSourceDate = getKpiSourceDateForToday(todayForm.date);
@@ -517,20 +662,7 @@ function buildTodayVsYesterdayKpiText(todayForm) {
     ].join("\n");
 }
 
-async function copyMessage() {
-    const text = $("output")?.value || "";
-    if (!text.trim()) return;
-    spawnSakuraShower(); 
 
-    try {
-        await navigator.clipboard.writeText(text);
-        alert("🌸 訊息已複製！祝您三月業績如櫻花盛開！");
-    } catch {
-        const ta = $("output");
-        if (ta) { ta.select(); document.execCommand("copy"); alert("✨ 已複製到剪貼簿！"); }
-    }
-}
-window.copyMessage = copyMessage;
 
 // ===== 初始化邏輯 =====
 function bindAutoSave() {
@@ -563,14 +695,18 @@ function initDateLoad() {
 }
 
 document.addEventListener("DOMContentLoaded", () => {
-    // 綁定分頁按鈕
+    // 綁定分頁按鈕監聽 (維持原樣)
     if($("tab-huddle")) $("tab-huddle").addEventListener("click", () => showView("huddle"));
     if($("tab-report")) $("tab-report").addEventListener("click", () => showView("report"));
     if($("tab-plan")) $("tab-plan").addEventListener("click", () => showView("plan"));
+    if($("tab-history")) $("tab-history").addEventListener("click", () => showView("history"));
+  
+  // 🚀 關鍵修正：確保網頁開啟後，主動執行一次「今日檢視」的切換與渲染
+    showView("huddle");
 
     bindAutoSave();
     initDateLoad();
     renderHuddle();
     initPlanTab();
-    fetchAndRenderProgress(); // 🚀 初始化時也跑一次
+    fetchAndRenderProgress();
 });

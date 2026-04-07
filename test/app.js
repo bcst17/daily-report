@@ -644,24 +644,6 @@ window.closeModal = function() {
 // ===== 產生訊息 =====
 
 
-function buildTodayVsYesterdayKpiText(todayForm) {
-    const kpiSourceDate = getKpiSourceDateForToday(todayForm.date);
-    const kpiSourceData = kpiSourceDate ? loadByDate(kpiSourceDate) : null;
-    if (!kpiSourceData) return "•（找不到昨日 KPI）";
-
-    const actualTrial = num(todayForm.trialHA) + num(todayForm.trialAPAP);
-    const actualCall = num(todayForm.todayCallPotential) + num(todayForm.todayCallOld3Y);
-    const actualInvite = num(todayForm.todayInviteReturn);
-    const rate = actualCall > 0 ? (actualInvite / actualCall) : 0;
-
-    return [
-        `• 試戴數：目標 ${num(kpiSourceData.tomorrowKpiTrial)} / 執行 ${actualTrial}  ${okText(actualTrial >= num(kpiSourceData.tomorrowKpiTrial))}`,
-        `• 外撥通數：目標 ${num(kpiSourceData.tomorrowKpiCallTotal)} / 執行 ${actualCall}  ${okText(actualCall >= num(kpiSourceData.tomorrowKpiCallTotal))}`,
-        `• 邀約回店數：目標 ${num(kpiSourceData.tomorrowKpiCallOld3Y)} / 執行 ${actualInvite}  ${okText(actualInvite >= num(kpiSourceData.tomorrowKpiCallOld3Y))}`,
-        `• 邀約成功率：${Math.round(rate * 100)}%`.trim(),
-    ].join("\n");
-}
-
 
 
 // ===== 初始化邏輯 =====

@@ -19,6 +19,7 @@ const monthlyData = {
   ],
   "游瑟焄": [
     { content: "鎖定林長進店保外舊客開發試聽", target: "每周 1~2 位舊客試聽", customerType: "舊客", itemType: "HA" },
+    { content: "台大CI轉介名單致電", target: "合計 28 位潛客，本月完成聯繫", customerType: "潛客", itemType: "HA" }
   ],
   "魏頎恩": [
     { content: "提升助聽器業績佔比，針對 2021 年前站前潛客進行致電聯繫", target: "每週致電 10 筆接通", customerType: "潛客", itemType: "HA" }

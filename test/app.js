@@ -1,4 +1,4 @@
-console.log("🌸 Mar Style app.js loaded: Sakura & Doraemon Edition");
+console.log("🪵 May Vibe app.js loaded: Dinotaeng & Marsh Edition");
 
 // ✅ 測試版儲存前綴
 const STORAGE_PREFIX = "daily-report-test-";
@@ -407,20 +407,20 @@ async function fetchAndRenderProgress() {
             
             // 生成該同仁內部的所有進度條 HTML
             const taskRowsHtml = staffTasks.map(task => {
-                const barColor = task.percent >= 80 ? "#6BCB77" : (task.percent >= 50 ? "#FFA41B" : "var(--primary)");
-                return `
-                    <div style="margin-bottom: 15px;">
-                        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:5px;">
-                            <span style="font-size:13px; color:#666;">${task.taskName}</span>
-                            <span style="font-weight:bold; color:${barColor}; font-size:14px;">${task.completed} / ${task.target} 筆</span>
-                        </div>
-                        <div style="background:#F0F0F0; height:10px; border-radius:5px; overflow:hidden; position:relative;">
-                            <div style="background:${barColor}; width:${task.percent}%; height:100%; transition:width 1s ease-out;"></div>
-                        </div>
-                        <div style="text-align:right; font-size:11px; color:#999; margin-top:4px;">當月達成率 ${task.percent}%</div>
-                    </div>
-                `;
-            }).join("");
+                const barColor = task.percent >= 80 ? "#A8B890" : "#E5B083"; 
+        return `
+            <div style="margin-bottom: 20px;">
+                <div style="display:flex; justify-content:space-between; align-items:end; margin-bottom:8px;">
+                    <span style="font-size:14px; font-weight:bold; color:#5C4033;">${task.taskName}</span>
+                    <span style="font-weight:900; color:${barColor}; font-size:15px;">${task.completed} / ${task.target} 筆</span>
+                </div>
+                <div style="background:#EFEBE5; height:12px; border-radius:10px; overflow:hidden;">
+                    <div style="background:${barColor}; width:${task.percent}%; height:100%; transition:width 1.2s cubic-bezier(0.17, 0.67, 0.83, 0.67);"></div>
+                </div>
+                <div style="text-align:right; font-size:11px; color:#A89F94; margin-top:5px; font-weight:bold;">五月達成率 ${task.percent}%</div>
+            </div>
+        `;
+    }).join("");
 
             // 生成外層的大圖卡容器
             const card = document.createElement("div");

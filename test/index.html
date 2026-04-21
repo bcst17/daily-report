@@ -16,16 +16,12 @@
 
 <style>
 :root {
-  /* 睡衣薄荷綠底色 */
-  --bg: #E0F7EF;           
-  
-  /* 核心動感藍 (對應進度條、姓名、選中按鈕) */
-  --primary-dark: #248EB3;  
-  
-  /* 輔助色 */
-  --primary: #248EB3;      /* 讓未滿 50% 的進度條也統一成藍色 */
-  --secondary: #F4D03F;    /* 小新睡衣黃 */
-  --border: #A5D6A7;       /* 邊框改用淺綠，更和諧 */
+  /* Dinotaeng 五月大地配色 */
+  --bg: #F4EDE1;           /* 經典米色底 */
+  --primary-dark: #5C4033;  /* 巧克力深棕 (文字與標籤) */
+  --primary: #A8B890;       /* 手繪感森林綠 */
+  --accent-orange: #E5B083; /* 烤棉花糖橘 */
+  --border: #D7C9B7;       /* 溫和邊框色 */
   --card-bg: #FFFFFF;
 }
 
@@ -112,13 +108,13 @@ h1::after {
 
 .section{
   background: var(--card-bg);
-  border-radius:15px;
-  border:3px solid var(--primary-dark);
+  border-radius:20px;
+  border:1px solid var(--primary-dark);
   padding:16px;
   margin-bottom:12px;
   position:relative;
   overflow: visible !important; /* 確保角色可以飛出邊框 */
-  box-shadow: 4px 4px 0px rgba(0, 91, 172, 0.1);
+  box-shadow: 0 8px 20px rgba(92, 64, 51, 0.05); /* 輕微柔和陰影 */
 }
 
 /* 2. 右上角角色：小新 (Before) */
@@ -233,12 +229,6 @@ button{
   display: none !important;
 }
 
-/* 🎯 專門針對三角形 (🔺) 更改大小 */
-/* 3n+1 代表：每 3 個循環一次，選取當中的第 1 個 */
-.leaves span:nth-child(3n+1) {
-  font-size: 40px; /* 👈 在這裡輸入你要的大小，例如 40px 或更大 */
-  filter: drop-shadow(0 0 5px rgba(255, 107, 107, 0.3)); /* 選用：幫紅色三角形加點光暈感 */
-}
 
 </style>
 </head>
@@ -314,9 +304,9 @@ button{
 
 
 <div class="leaves">
-  <span>🔺</span> <span>🟢</span> <span>🟨</span> <span>🔺</span>
-  <span>🟢</span>
-  <span>🟨</span>
+  <span>🌰</span> <span>🍃</span> <span>🍭</span> <span>🌰</span>
+  <span>🍃</span>
+  <span>🍭</span>
 </div>
 
 <script src="app.js?v=11"></script>

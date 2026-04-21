@@ -287,8 +287,8 @@ function initPlanTab() {
             planEl.style.cssText = "background: #fff; border: 1px solid var(--border); border-radius: 12px; padding: 18px; margin-bottom: 18px; border-left: 6px solid var(--primary); box-shadow: 0 4px 10px rgba(0,0,0,0.05); position:relative;";
             
             // 標籤顏色定義 (使用較明亮的顏色)
-            const custColor = plan.customerType === '潛客' ? '#FFAB91' : (plan.customerType === '新客' ? '#AED581' : '#BCAAA4');
-            const itemColor = plan.itemType === 'RS' ? '#81D4FA' : '#FFCC80';
+            const custColor = plan.customerType === '潛客' ? '#FF6B6B' : (plan.customerType === '新客' ? '#4D96FF' : '#8D6E63'); // 舊客改用溫和的咖啡色
+            const itemColor = plan.itemType === 'RS' ? '#6BCB77' : '#FFA41B'; // RS綠，HA橘
 
             // 標籤文字縮減邏輯
             const custAbbr = plan.customerType ? plan.customerType.substring(0, 1) : '?';
@@ -407,20 +407,20 @@ async function fetchAndRenderProgress() {
             
             // 生成該同仁內部的所有進度條 HTML
             const taskRowsHtml = staffTasks.map(task => {
-        // 修改顏色：達成率高為暖綠色，一般為褐棕色
-        const barColor = task.percent >= 80 ? "#A5D6A7" : (task.percent >= 50 ? "#FFCCBC" : "var(--primary)");
-        return `
-            <div style="margin-bottom: 18px;">
-                <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:6px;">
-                    <span style="font-size:14px; font-weight:600; color:#5D4037;">${task.taskName}</span>
-                    <span style="font-weight:bold; color:${barColor}; font-size:14px;">${task.completed} / ${task.target}</span>
-                </div>
-                <div style="background:#EFEBE9; height:12px; border-radius:6px; overflow:hidden;">
-                    <div style="background:${barColor}; width:${task.percent}%; height:100%; transition:width 1s ease;"></div>
-                </div>
-            </div>
-        `;
-    }).join("");
+                const barColor = task.percent >= 80 ? "#6BCB77" : (task.percent >= 50 ? "#FFA41B" : "var(--primary)");
+                return `
+                    <div style="margin-bottom: 15px;">
+                        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:5px;">
+                            <span style="font-size:13px; color:#666;">${task.taskName}</span>
+                            <span style="font-weight:bold; color:${barColor}; font-size:14px;">${task.completed} / ${task.target} 筆</span>
+                        </div>
+                        <div style="background:#F0F0F0; height:10px; border-radius:5px; overflow:hidden; position:relative;">
+                            <div style="background:${barColor}; width:${task.percent}%; height:100%; transition:width 1s ease-out;"></div>
+                        </div>
+                        <div style="text-align:right; font-size:11px; color:#999; margin-top:4px;">當月達成率 ${task.percent}%</div>
+                    </div>
+                `;
+            }).join("");
 
             // 生成外層的大圖卡容器
             const card = document.createElement("div");

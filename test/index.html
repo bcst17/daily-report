@@ -119,21 +119,17 @@ h1::after {
 
 /* 2. 右上角角色：小新 (Before) */
 .section::before {
-  content: ""; 
-  position: absolute; 
-  z-index: 10;
+  content: "";
+  position: absolute;
+  top: -90px; /* 調整高度讓繩子剛好落在邊框上 */
+  left: 50%;
+  transform: translateX(-50%);
   
-  /* 位置設定：飛出頂部 */
-  top: -260px;    
-  right: 110px;   
-  
-  /* 尺寸與圖片 */
-  width: 320px;   
-  height: 320px; 
+  width: 250px; /* 根據跳繩圖的實際寬度調整 */
+  height: 250px;
   background: url("quokka.png") no-repeat center;
   background-size: contain;
-  
-  /* 避免擋住滑鼠點擊 */
+  z-index: 10;
   pointer-events: none;
 }
 

@@ -16,111 +16,230 @@
 
 <style>
 :root {
-  /* Dinotaeng 溫暖大地色系 */
-  --bg: #FDF8F1;           /* 背景：米杏色 */
-  --primary-dark: #5D4037;  /* 主色：深可可棕 */
-  --primary: #8D6E63;       /* 次主色：溫暖褐 */
-  --secondary: #EADBC8;    /* 輔助：淺杏色 */
-  --accent: #FFAB91;       /* 強調：肉粉色 (棉花糖配色) */
-  --border: #D7CCC8;       /* 邊框：淡灰褐 */
+  /* 睡衣薄荷綠底色 */
+  --bg: #E0F7EF;           
+  
+  /* 核心動感藍 (對應進度條、姓名、選中按鈕) */
+  --primary-dark: #248EB3;  
+  
+  /* 輔助色 */
+  --primary: #248EB3;      /* 讓未滿 50% 的進度條也統一成藍色 */
+  --secondary: #F4D03F;    /* 小新睡衣黃 */
+  --border: #A5D6A7;       /* 邊框改用淺綠，更和諧 */
   --card-bg: #FFFFFF;
 }
 
-*, *::before, *::after { box-sizing: border-box; }
+*,*::before,*::after{ box-sizing:border-box; }
 
-body {
-  font-family: "PingFang TC", "Microsoft JhengHei", system-ui, sans-serif;
-  margin: 0;
-  padding: 14px 14px 90px;
+body{
+  font-family:-apple-system,BlinkMacSystemFont,system-ui,sans-serif;
+  margin:0;
+  padding:14px 14px 90px;
   background: var(--bg);
-  color: #4E342E;
+  display:flex;
+  justify-content:center;
+  color:#333;
+  overflow-x:hidden;
 }
 
-/* 🖍️ 標題：改為簡約文字與角色裝飾 */
+.container{
+  width:100%;
+  max-width:520px;
+  margin-left:auto;
+  margin-right:auto;
+}
+
+/* 🖍️ 標題配置 */
 h1 { 
   text-align: center; 
-  margin: 20px 0 40px; 
+  margin: 10px 0 30px; 
   font-size: 24px; 
   font-weight: 900;
-  color: var(--primary-dark);
-  letter-spacing: 1px;
-}
-
-/* 🔹 分頁標籤：圓角與奶油感 */
-.tab-header {
   display: flex;
-  gap: 12px;
-  margin-bottom: 50px;
+  justify-content: center;
+  align-items: center;
+  gap: 12px; 
+  color: var(--primary);
+  text-shadow: 2px 2px 0px var(--secondary);
 }
 
-.tab-header button {
-  flex: 1;
-  padding: 12px 0;
-  border-radius: 12px;
-  border: 2px solid var(--primary-dark);
-  background: #fff;
+h1::before {
+  content: "";
+  display: block;
+  width: 40px;  /* 調整圖片寬度 */
+  height: 40px; /* 調整圖片高度 */
+  background: url("Chocobi_r.png") no-repeat center;
+  background-size: contain;
+  flex-shrink: 0;
+}
+
+h1::after {
+  content: "";
+  display: block;
+  width: 40px;
+  height: 40px;
+  background: url("Chocobi.png") no-repeat center;
+  background-size: contain;
+  flex-shrink: 0;
+}
+
+.subtitle{ text-align:center; font-size:13px; color:#555; margin-bottom:8px; font-weight: bold; }
+
+/* 🔹 分頁標籤 */
+.tab-header{
+  display:flex;
+  gap:8px;
+  margin-bottom:60px;
+}
+
+.tab-header button{
+  flex:1;
+  padding:10px 0;
+  border-radius:15px;
+  border:2px solid var(--primary-dark);
+  background:#fff;
+  font-size:14px;
   font-weight: bold;
   color: var(--primary-dark);
-  box-shadow: 0 4px 0 var(--primary-dark);
-  transition: all 0.2s;
+  cursor: pointer;
 }
 
 .tab-header button.active {
   background: var(--primary-dark) !important;
-  color: #fff !important;
-  transform: translateY(2px);
-  box-shadow: 0 2px 0 var(--primary-dark);
+  color: #FFFFFF !important;
+  border-color: var(--primary-dark);
 }
 
-/* 🖼️ 卡片樣式：移除粗黑邊，改為圓潤陰影 */
-.section {
+.section{
   background: var(--card-bg);
-  border-radius: 20px;
-  border: 1px solid var(--border);
-  padding: 20px;
-  margin-bottom: 15px;
-  position: relative;
-  box-shadow: 0 8px 20px rgba(93, 64, 55, 0.08);
+  border-radius:15px;
+  border:3px solid var(--primary-dark);
+  padding:16px;
+  margin-bottom:12px;
+  position:relative;
+  overflow: visible !important; /* 確保角色可以飛出邊框 */
+  box-shadow: 4px 4px 0px rgba(0, 91, 172, 0.1);
 }
 
-/* 角色裝飾位置 (您可自行替換圖片路徑) */
+/* 2. 右上角角色：小新 (Before) */
 .section::before {
   content: ""; 
   position: absolute; 
-  top: -85px; right: 10px;
-  width: 80px; height: 80px;
-  background: url("quokka_standing.png") no-repeat center; /* 站立 Quokka */
+  z-index: 10;
+  
+  /* 位置設定：飛出頂部 */
+  top: -97px;    
+  right: 15px;   
+  
+  /* 尺寸與圖片 */
+  width: 94px;   
+  height: 94px; 
+  background: url("shinchan.png") no-repeat center;
   background-size: contain;
+  
+  /* 避免擋住滑鼠點擊 */
   pointer-events: none;
 }
 
+/* 3. 左上角角色：小白 (After) */
 .section::after {
   content: ""; 
   position: absolute; 
-  top: -65px; left: 10px;
-  width: 60px; height: 60px;
-  background: url("marshmallow.png") no-repeat center; /* 棉花糖角色 */
+  z-index: 10;
+  
+  /* 位置設定：建議也飛高一點，才不會壓到標題文字 */
+  top: -74px;    /* 這裡原本是 -45px，改深一點可以讓它飛出邊框 */
+  left: 10px;    
+  
+  /* 尺寸與圖片 */
+  width: 71px;   
+  height: 71px; 
+  background: url("shiro.png") no-repeat center;
   background-size: contain;
+  
+  /* 避免擋住滑鼠點擊 */
   pointer-events: none;
 }
 
-.section h2 { 
-  margin: 0 0 15px; 
-  font-size: 18px; 
-  color: var(--primary-dark); 
-  border-left: 6px solid var(--accent); 
-  padding-left: 10px; 
+.section h2{ margin:0 0 10px; font-size:18px; font-weight:900; color: var(--primary); border-left: 5px solid var(--secondary); padding-left: 8px; }
+
+label{ display:block;font-size:14px;margin-top:4px; color: #333; font-weight: bold; }
+
+input,select{
+  width:100%;
+  padding:10px; font-size:16px;
+  margin-top:4px; margin-bottom:10px;
+  border-radius:12px; border:2px solid #ccc;
+  background:#fff;
 }
 
-/* 下拉選單與輸入框 */
-input, select {
-  border: 1px solid var(--border);
-  background: #FAFAFA;
-  border-radius: 10px;
+input:focus, select:focus{
+  outline: none;
+  border-color: var(--primary-dark);
+  box-shadow: 0 0 0 3px rgba(0, 91, 172, 0.1);
 }
 
-/* 飄落特效：改為橡實與愛心 */
-.leaves span:nth-child(3n+1) { font-size: 25px; }
+.actions{
+  position:fixed;left:0;right:0;bottom:0;
+  padding:12px 14px 15px;background:rgba(255,255,255,0.95);
+  display:flex;gap:12px;border-top:3px solid var(--primary-dark);
+  backdrop-filter:blur(10px);
+  z-index:50;
+}
+
+button{
+  padding:14px 0;
+  border-radius:50px;
+  border:none;
+  font-size:16px;
+  font-weight:900;
+  cursor: pointer;
+  box-shadow: 0 4px 0px rgba(0,0,0,0.1);
+}
+
+.btn-primary{ flex:1; background:var(--btn-generate); color:#fff; }
+.btn-secondary{ flex:1; background:var(--btn-copy); color:#fff; }
+
+/* =============== 🌟 Action Animation =============== */
+.leaves span {
+  position:absolute;
+  top:-20px;
+  display:block;
+  font-size: 20px;
+  animation: leafFall 8s linear infinite;
+  opacity: 0;
+}
+
+/* 🎨 讓 6 個 Emoji 分散在螢幕各處 */
+.leaves span:nth-child(1) { left: 5%;  animation-delay: 0s;   animation-duration: 10s; }
+.leaves span:nth-child(2) { left: 20%; animation-delay: 3s;   animation-duration: 14s; }
+.leaves span:nth-child(3) { left: 40%; animation-delay: 1.5s; animation-duration: 12s; }
+.leaves span:nth-child(4) { left: 65%; animation-delay: 5s;   animation-duration: 15s; }
+.leaves span:nth-child(5) { left: 80%; animation-delay: 0.5s; animation-duration: 11s; }
+.leaves span:nth-child(6) { left: 92%; animation-delay: 4s;   animation-duration: 13s; }
+
+@keyframes leafFall {
+  0%   { transform: translate(0, 0) rotate(0deg); opacity: 0; }
+  10%  { opacity: 0.7; }
+  90%  { opacity: 0.7; }
+  100% { transform: translate(80px, 105vh) rotate(360deg); opacity: 0; }
+}
+
+.badge.green{ background:#D4EDDA; color:#155724; border: 1px solid; }
+.badge.yellow{ background:#FFF3CD; color:#856404; border: 1px solid; }
+.badge.red{ background:#F8D7DA; color:#721C24; border: 1px solid; }
+
+.hidden {
+  display: none !important;
+}
+
+/* 🎯 專門針對三角形 (🔺) 更改大小 */
+/* 3n+1 代表：每 3 個循環一次，選取當中的第 1 個 */
+.leaves span:nth-child(3n+1) {
+  font-size: 40px; /* 👈 在這裡輸入你要的大小，例如 40px 或更大 */
+  filter: drop-shadow(0 0 5px rgba(255, 107, 107, 0.3)); /* 選用：幫紅色三角形加點光暈感 */
+}
+
 </style>
 </head>
 

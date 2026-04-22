@@ -665,17 +665,13 @@ document.addEventListener("DOMContentLoaded", () => {
     initPlanTab();
     fetchAndRenderProgress();
 
-    // === 🎂 寓葳生日彩蛋：Marsh (左上角白色小精靈) 專屬邏輯 ===
-const marshTrigger = document.querySelector('.section');
-if (marshTrigger) {
-    marshTrigger.addEventListener('click', (e) => {
-        const rect = marshTrigger.getBoundingClientRect();
-        // 計算點擊座標
-        const x = e.clientX - rect.left;
-        const y = e.clientY - rect.top;
-
-        // 判斷是否點擊在左上角 Marsh 的範圍 (y < 0 且 x 在左側)
-        if (y < 0 && y > -60 && x < 60) {
+    // === 🎂 寓葳生日彩蛋：手機/電腦通用穩定版 ===
+document.querySelectorAll('.marsh-icon').forEach(marsh => {
+    // 手機版建議監聽 'touchstart' 或統一用 'click' (現代手機瀏覽器 click 已優化)
+    marsh.addEventListener('click', (e) => {
+        // 阻止點擊事件穿透到下方的 section
+        e.stopPropagation();
+      
             const today = new Date();
             const isMay19 = (today.getMonth() + 1 === 5 && today.getDate() === 19);
             

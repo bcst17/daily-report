@@ -665,25 +665,26 @@ document.addEventListener("DOMContentLoaded", () => {
     initPlanTab();
     fetchAndRenderProgress();
 
-    // === 🎂 寓葳生日彩蛋：手機/電腦通用穩定版 ===
-document.querySelectorAll('.marsh-icon').forEach(marsh => {
-    // 手機版建議監聽 'touchstart' 或統一用 'click' (現代手機瀏覽器 click 已優化)
-    marsh.addEventListener('click', (e) => {
-        // 阻止點擊事件穿透到下方的 section
-        e.stopPropagation();
-      
-            const today = new Date();
-            const isMay19 = (today.getMonth() + 1 === 5 && today.getDate() === 19);
-            
-            if (isMay19) {
-                // 5/19 當天的驚喜訊息
-                alert("🎂 寓葳生日快樂 🎉");
-            } else {
-                // 非生日當天的提示
-                alert("發現彩蛋了！但寓葳生日 5/19 還沒到喔 🤫");
+    // === 🎂 這裡就是加進去的地方：寓葳生日彩蛋 ===
+    const quokkaTrigger = document.querySelector('.section');
+    if (quokkaTrigger) {
+        quokkaTrigger.addEventListener('click', (e) => {
+            const rect = quokkaTrigger.getBoundingClientRect();
+            const y = e.clientY - rect.top;
+
+            // 判斷是否點擊到 section 上方的 Quokka 跳繩圖區域 (y < 0)
+            if (y < 0) {
+                const today = new Date();
+                const isMay19 = (today.getMonth() + 1 === 5 && today.getDate() === 19);
+                
+                if (isMay19) {
+                    alert("🎂 寓葳 5/19 生日快樂 🎉");
+                } else {
+                    // 非生日當天也可以點擊看到的提示 (可選)
+                    console.log("發現彩蛋了！但寓葳生日還沒到喔 🤫");
+                }
             }
-        }
-    });
-}
+        });
+    }
     // === 彩蛋結束 ===
 });

@@ -650,12 +650,13 @@ function initDateLoad() {
 }
 
 document.addEventListener("DOMContentLoaded", () => {
-    // 綁定分頁按鈕監聽
+    // 綁定分頁按鈕監聽 (維持原樣)
     if($("tab-huddle")) $("tab-huddle").addEventListener("click", () => showView("huddle"));
     if($("tab-report")) $("tab-report").addEventListener("click", () => showView("report"));
     if($("tab-plan")) $("tab-plan").addEventListener("click", () => showView("plan"));
     if($("tab-history")) $("tab-history").addEventListener("click", () => showView("history"));
   
+  // 🚀 關鍵修正：確保網頁開啟後，主動執行一次「今日檢視」的切換與渲染
     showView("huddle");
 
     bindAutoSave();
@@ -664,19 +665,25 @@ document.addEventListener("DOMContentLoaded", () => {
     initPlanTab();
     fetchAndRenderProgress();
 
-    // === 🎂 寓葳生日彩蛋修正版 ===
-    document.querySelectorAll('.marsh-icon').forEach(marsh => {
-        marsh.addEventListener('click', (e) => {
-            e.stopPropagation();
+    // === 🎂 寓葳生日彩蛋：手機/電腦通用穩定版 ===
+document.querySelectorAll('.marsh-icon').forEach(marsh => {
+    // 手機版建議監聽 'touchstart' 或統一用 'click' (現代手機瀏覽器 click 已優化)
+    marsh.addEventListener('click', (e) => {
+        // 阻止點擊事件穿透到下方的 section
+        e.stopPropagation();
+      
             const today = new Date();
             const isMay19 = (today.getMonth() + 1 === 5 && today.getDate() === 19);
             
             if (isMay19) {
+                // 5/19 當天的驚喜訊息
                 alert("🎂 寓葳生日快樂 🎉");
             } else {
+                // 非生日當天的提示
                 alert("發現彩蛋了！但寓葳 5/19 生日還沒到喔 🤫");
             }
-        });
+        }
     });
+    }
     // === 彩蛋結束 ===
 });

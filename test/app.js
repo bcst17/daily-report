@@ -665,12 +665,12 @@ document.addEventListener("DOMContentLoaded", () => {
     initPlanTab();
     fetchAndRenderProgress();
 
-    // === 🎂 寓葳生日彩蛋：全分頁 Marsh 點擊邏輯 ===
-// 使用 querySelectorAll 選取所有分頁區塊
-document.querySelectorAll('.section').forEach(section => {
-    section.addEventListener('click', (e) => {
-        const rect = section.getBoundingClientRect();
-        // 計算點擊座標 (相對於該 section)
+    // === 🎂 寓葳生日彩蛋：Marsh (左上角白色小精靈) 專屬邏輯 ===
+const marshTrigger = document.querySelector('.section');
+if (marshTrigger) {
+    marshTrigger.addEventListener('click', (e) => {
+        const rect = marshTrigger.getBoundingClientRect();
+        // 計算點擊座標
         const x = e.clientX - rect.left;
         const y = e.clientY - rect.top;
 

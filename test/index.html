@@ -133,21 +133,24 @@ h1::after {
   pointer-events: none;
 }
 
-/* 刪除原本的 .section::after，改寫成下面這樣 */
-.marsh-icon {
+/* 3. 左上角角色：棉花糖 (After) */
+.section::after {
+  content: ""; 
   position: absolute; 
-  z-index: 100;       /* 確保在最前方 */
-  top: -50px;         /* 根據你的五月主題調整高度 */
+  z-index: 10;
+  
+  /* 位置設定：建議也飛高一點，才不會壓到標題文字 */
+  top: -50px;    /* 這裡原本是 -45px，改深一點可以讓它飛出邊框 */
   left: 0px;    
-  width: 60px;        /* 稍微加大手機版的可點擊面積 */
-  height: 60px; 
+  
+  /* 尺寸與圖片 */
+  width: 50px;   
+  height: 50px; 
   background: url("marsh.png") no-repeat center;
   background-size: contain;
-  cursor: pointer;
-  pointer-events: auto; /* 核心：一定要開啟點擊 */
   
-  /* 讓 Marsh 在手機上不要太小 */
-  -webkit-tap-highlight-color: transparent; /* 移除手機點擊時的藍色陰影 */
+  /* 避免擋住滑鼠點擊 */
+  pointer-events: auto;
 }
 
 .section h2{ margin:0 0 10px; font-size:18px; font-weight:900; color: var(--primary); border-left: 5px solid var(--secondary); padding-left: 8px; }
@@ -237,19 +240,19 @@ button{
   </header>
 
   <section id="huddle-view" class="section">
-    <div class="marsh-icon"></div> <h2>當月行動方案完成度</h2>
+    <h2>當月行動方案完成度</h2>
     <div id="progress-dashboard">
-        <p style="text-align:center; color:#999; font-size:14px;">資料載入中...</p>
+      <p style="text-align:center; color:#999; font-size:14px;">資料載入中...</p>
     </div>
-</section>
+  </section>
 
   
 <section id="plan-view" class="section hidden">
-    <div class="marsh-icon"></div>
     <h2>個人月度行動計畫</h2>
-    <div id="plan-list-container" style="margin-top: 15px;"></div>
-</section>
-  
+    <label for="plan-name-select">1. 選擇姓名：</label>
+    <select id="plan-name-select">
+      <option value="">-- 請選擇 --</option>
+    </select>
 
 <div style="display: flex; gap: 10px; margin-top: 10px;">
       <div style="flex: 1;">
@@ -275,10 +278,11 @@ button{
 </section>
 
 <section id="history-view" class="section hidden">
-    <div class="marsh-icon"></div>
     <h2>每月成果回顧</h2>
     <p class="subtitle">點擊星星查看紀錄，點擊空白處分析原因</p>
-    <div id="starry-map-container" style="margin-top: 20px;"></div>
+    <div id="starry-map-container" style="margin-top: 20px;">
+      <p style="text-align:center; color:#999; font-size:14px;">資料載入中...</p>
+    </div>
 </section>
 
 <div id="history-modal" class="hidden" style="position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.6); z-index:1000; display:flex; justify-content:center; align-items:center; padding:20px;">

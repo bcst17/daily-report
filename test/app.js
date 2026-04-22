@@ -665,25 +665,27 @@ document.addEventListener("DOMContentLoaded", () => {
     initPlanTab();
     fetchAndRenderProgress();
 
-    // === 🎂 寓葳生日彩蛋：指定點擊 Marsh (左上角白色小精靈) ===
+    // === 🎂 寓葳生日彩蛋：Marsh (左上角白色小精靈) 專屬邏輯 ===
 const marshTrigger = document.querySelector('.section');
 if (marshTrigger) {
     marshTrigger.addEventListener('click', (e) => {
         const rect = marshTrigger.getBoundingClientRect();
-        // 計算點擊位置相對於 section 左上角的距離
+        // 計算點擊座標
         const x = e.clientX - rect.left;
         const y = e.clientY - rect.top;
 
-        /* 精確判斷點擊位置：
-           - y < 0: 在邊框上方
-           - x < 60: 在左側區域 (Marsh 的寬度大約 50px)
-        */
+        // 判斷是否點擊在左上角 Marsh 的範圍 (y < 0 且 x 在左側)
         if (y < 0 && y > -60 && x < 60) {
-            // 💡 為了測試，我先註解掉日期判斷，測完沒問題可以再加回來
-            // const today = new Date();
-            // const isMay19 = (today.getMonth() + 1 === 5 && today.getDate() === 19);
+            const today = new Date();
+            const isMay19 = (today.getMonth() + 1 === 5 && today.getDate() === 19);
             
-            alert("🎂 寓葳 5/19 生日快樂 🎉");
+            if (isMay19) {
+                // 5/19 當天的驚喜訊息
+                alert("🎂 寓葳 5/19 生日快樂 🎉\n願天母 Quokka 戰神每天都開開心心！");
+            } else {
+                // 非生日當天的提示
+                alert("發現彩蛋了！但寓葳生日還沒到喔 🤫");
+            }
         }
     });
 }

@@ -665,26 +665,29 @@ document.addEventListener("DOMContentLoaded", () => {
     initPlanTab();
     fetchAndRenderProgress();
 
-    // === 🎂 這裡就是加進去的地方：寓葳生日彩蛋 ===
-    const quokkaTrigger = document.querySelector('.section');
-    if (quokkaTrigger) {
-        quokkaTrigger.addEventListener('click', (e) => {
-            const rect = quokkaTrigger.getBoundingClientRect();
-            const y = e.clientY - rect.top;
+    // === 🎂 寓葳生日彩蛋：Marsh (左上角白色小精靈) 專屬邏輯 ===
+const marshTrigger = document.querySelector('.section');
+if (marshTrigger) {
+    marshTrigger.addEventListener('click', (e) => {
+        const rect = marshTrigger.getBoundingClientRect();
+        // 計算點擊座標
+        const x = e.clientX - rect.left;
+        const y = e.clientY - rect.top;
 
-            // 判斷是否點擊到 section 上方的 Quokka 跳繩圖區域 (y < 0)
-            if (y < 0) {
-                const today = new Date();
-                const isMay19 = (today.getMonth() + 1 === 5 && today.getDate() === 19);
-                
-                if (isMay19) {
-                    alert("🎂 寓葳 5/19 生日快樂 🎉");
-                } else {
-                    // 非生日當天也可以點擊看到的提示 (可選)
-                    console.log("發現彩蛋了！但寓葳生日還沒到喔 🤫");
-                }
+        // 判斷是否點擊在左上角 Marsh 的範圍 (y < 0 且 x 在左側)
+        if (y < 0 && y > -60 && x < 60) {
+            const today = new Date();
+            const isMay19 = (today.getMonth() + 1 === 5 && today.getDate() === 19);
+            
+            if (isMay19) {
+                // 5/19 當天的驚喜訊息
+                alert("🎂 寓葳生日快樂 🎉");
+            } else {
+                // 非生日當天的提示
+                alert("發現彩蛋了！但寓葳 5/19 生日還沒到喔 🤫");
             }
-        });
+        }
+    });
     }
     // === 彩蛋結束 ===
 });

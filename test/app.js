@@ -665,26 +665,27 @@ document.addEventListener("DOMContentLoaded", () => {
     initPlanTab();
     fetchAndRenderProgress();
 
-    // === 🎂 這裡就是加進去的地方：寓葳生日彩蛋 ===
-    const quokkaTrigger = document.querySelector('.section');
-    if (quokkaTrigger) {
-        quokkaTrigger.addEventListener('click', (e) => {
-            const rect = quokkaTrigger.getBoundingClientRect();
-            const y = e.clientY - rect.top;
+    // === 🎂 寓葳生日彩蛋：指定點擊 Marsh (左上角白色小精靈) ===
+const marshTrigger = document.querySelector('.section');
+if (marshTrigger) {
+    marshTrigger.addEventListener('click', (e) => {
+        const rect = marshTrigger.getBoundingClientRect();
+        // 計算點擊位置相對於 section 左上角的距離
+        const x = e.clientX - rect.left;
+        const y = e.clientY - rect.top;
 
-            // 判斷是否點擊到 section 上方的 Quokka 跳繩圖區域 (y < 0)
-            if (y < 0) {
-                const today = new Date();
-                const isMay19 = (today.getMonth() + 1 === 5 && today.getDate() === 19);
-                
-                if (isMay19) {
-                    alert("🎂 寓葳 5/19 生日快樂 🎉");
-                } else {
-                    // 非生日當天也可以點擊看到的提示 (可選)
-                    console.log("發現彩蛋了！但寓葳生日還沒到喔 🤫");
-                }
-            }
-        });
-    }
+        /* 精確判斷點擊位置：
+           - y < 0: 在邊框上方
+           - x < 60: 在左側區域 (Marsh 的寬度大約 50px)
+        */
+        if (y < 0 && y > -60 && x < 60) {
+            // 💡 為了測試，我先註解掉日期判斷，測完沒問題可以再加回來
+            // const today = new Date();
+            // const isMay19 = (today.getMonth() + 1 === 5 && today.getDate() === 19);
+            
+            alert("🎂 寓葳 5/19 生日快樂 🎉");
+        }
+    });
+}
     // === 彩蛋結束 ===
 });

@@ -237,19 +237,19 @@ button{
   </header>
 
   <section id="huddle-view" class="section">
-    <div class="marsh-icon"><h2>當月行動方案完成度</h2>
+    <div class="marsh-icon"></div> <h2>當月行動方案完成度</h2>
     <div id="progress-dashboard">
-      <p style="text-align:center; color:#999; font-size:14px;">資料載入中...</p>
+        <p style="text-align:center; color:#999; font-size:14px;">資料載入中...</p>
     </div>
-  </section>
+</section>
 
   
 <section id="plan-view" class="section hidden">
-    <div class="marsh-icon"><h2>個人月度行動計畫</h2>
-    <label for="plan-name-select">1. 選擇姓名：</label>
-    <select id="plan-name-select">
-      <option value="">-- 請選擇 --</option>
-    </select>
+    <div class="marsh-icon"></div>
+    <h2>個人月度行動計畫</h2>
+    <div id="plan-list-container" style="margin-top: 15px;"></div>
+</section>
+  
 
 <div style="display: flex; gap: 10px; margin-top: 10px;">
       <div style="flex: 1;">
@@ -275,11 +275,10 @@ button{
 </section>
 
 <section id="history-view" class="section hidden">
-    <div class="marsh-icon"><h2>每月成果回顧</h2>
+    <div class="marsh-icon"></div>
+    <h2>每月成果回顧</h2>
     <p class="subtitle">點擊星星查看紀錄，點擊空白處分析原因</p>
-    <div id="starry-map-container" style="margin-top: 20px;">
-      <p style="text-align:center; color:#999; font-size:14px;">資料載入中...</p>
-    </div>
+    <div id="starry-map-container" style="margin-top: 20px;"></div>
 </section>
 
 <div id="history-modal" class="hidden" style="position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.6); z-index:1000; display:flex; justify-content:center; align-items:center; padding:20px;">

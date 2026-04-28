@@ -16,16 +16,12 @@
 
 <style>
 :root {
-  /* 睡衣薄荷綠底色 */
-  --bg: #E0F7EF;           
-  
-  /* 核心動感藍 (對應進度條、姓名、選中按鈕) */
-  --primary-dark: #248EB3;  
-  
-  /* 輔助色 */
-  --primary: #248EB3;      /* 讓未滿 50% 的進度條也統一成藍色 */
-  --secondary: #F4D03F;    /* 小新睡衣黃 */
-  --border: #A5D6A7;       /* 邊框改用淺綠，更和諧 */
+  /* Dinotaeng 五月大地配色 */
+  --bg: #F4EDE1;           /* 經典米色底 */
+  --primary-dark: #5C4033;  /* 巧克力深棕 (文字與標籤) */
+  --primary: #A8B890;       /* 手繪感森林綠 */
+  --accent-orange: #E5B083; /* 烤棉花糖橘 */
+  --border: #D7C9B7;       /* 溫和邊框色 */
   --card-bg: #FFFFFF;
 }
 
@@ -66,9 +62,9 @@ h1 {
 h1::before {
   content: "";
   display: block;
-  width: 40px;  /* 調整圖片寬度 */
-  height: 40px; /* 調整圖片高度 */
-  background: url("Chocobi_r.png") no-repeat center;
+  width: 50px;  /* 調整圖片寬度 */
+  height: 50px; /* 調整圖片高度 */
+  background: url("tree.png") no-repeat center;
   background-size: contain;
   flex-shrink: 0;
 }
@@ -76,9 +72,9 @@ h1::before {
 h1::after {
   content: "";
   display: block;
-  width: 40px;
-  height: 40px;
-  background: url("Chocobi.png") no-repeat center;
+  width: 50px;
+  height: 50px;
+  background: url("tree2.png") no-repeat center;
   background-size: contain;
   flex-shrink: 0;
 }
@@ -89,7 +85,7 @@ h1::after {
 .tab-header{
   display:flex;
   gap:8px;
-  margin-bottom:60px;
+  margin-bottom:60px;    
 }
 
 .tab-header button{
@@ -123,42 +119,38 @@ h1::after {
 
 /* 2. 右上角角色：小新 (Before) */
 .section::before {
-  content: ""; 
-  position: absolute; 
-  z-index: 10;
+  content: "";
+  position: absolute;
+  top: -138px; /* 越負越高 */
+  left: 50%;
+  transform: translateX(-50%) rotate(1deg);
   
-  /* 位置設定：飛出頂部 */
-  top: -97px;    
-  right: 15px;   
-  
-  /* 尺寸與圖片 */
-  width: 94px;   
-  height: 94px; 
-  background: url("shinchan.png") no-repeat center;
+  width: 220px; /* 根據跳繩圖的實際寬度調整 */
+  height: 220px;
+  background: url("quokka.png") no-repeat center;
   background-size: contain;
-  
-  /* 避免擋住滑鼠點擊 */
+  z-index: 10;
   pointer-events: none;
 }
 
-/* 3. 左上角角色：小白 (After) */
+/* 3. 左上角角色：棉花糖 (After) */
 .section::after {
   content: ""; 
   position: absolute; 
   z-index: 10;
   
   /* 位置設定：建議也飛高一點，才不會壓到標題文字 */
-  top: -74px;    /* 這裡原本是 -45px，改深一點可以讓它飛出邊框 */
-  left: 10px;    
+  top: -50px;    /* 這裡原本是 -45px，改深一點可以讓它飛出邊框 */
+  left: 0px;    
   
   /* 尺寸與圖片 */
-  width: 71px;   
-  height: 71px; 
-  background: url("shiro.png") no-repeat center;
+  width: 50px;   
+  height: 50px; 
+  background: url("marsh.png") no-repeat center;
   background-size: contain;
   
   /* 避免擋住滑鼠點擊 */
-  pointer-events: none;
+  pointer-events: auto;
 }
 
 .section h2{ margin:0 0 10px; font-size:18px; font-weight:900; color: var(--primary); border-left: 5px solid var(--secondary); padding-left: 8px; }
@@ -233,12 +225,6 @@ button{
   display: none !important;
 }
 
-/* 🎯 專門針對三角形 (🔺) 更改大小 */
-/* 3n+1 代表：每 3 個循環一次，選取當中的第 1 個 */
-.leaves span:nth-child(3n+1) {
-  font-size: 40px; /* 👈 在這裡輸入你要的大小，例如 40px 或更大 */
-  filter: drop-shadow(0 0 5px rgba(255, 107, 107, 0.3)); /* 選用：幫紅色三角形加點光暈感 */
-}
 
 </style>
 </head>
@@ -297,7 +283,7 @@ button{
     <div id="starry-map-container" style="margin-top: 20px;">
       <p style="text-align:center; color:#999; font-size:14px;">資料載入中...</p>
     </div>
-  </section>
+</section>
 
 <div id="history-modal" class="hidden" style="position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.6); z-index:1000; display:flex; justify-content:center; align-items:center; padding:20px;">
   <div style="background:white; width:100%; max-width:400px; border-radius:20px; padding:25px; position:relative; border: 3px solid var(--primary-dark); box-shadow: 0 10px 25px rgba(0,0,0,0.2);">
@@ -314,12 +300,12 @@ button{
 
 
 <div class="leaves">
-  <span>🔺</span> <span>🟢</span> <span>🟨</span> <span>🔺</span>
-  <span>🟢</span>
-  <span>🟨</span>
+  <span>🤎</span> <span>☁️</span> <span>🍭</span> <span>🤎</span>
+  <span>☁️</span>
+  <span>🍭</span>
 </div>
 
-<script src="app.js?v=12"></script>
+<script src="app.js?v=13"></script>
 
 </body>
 </html>

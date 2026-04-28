@@ -1,4 +1,4 @@
-console.log("🌸 Mar Style app.js loaded: Sakura & Doraemon Edition");
+console.log("🪵 May Vibe app.js loaded: Dinotaeng & Marsh Edition");
 
 // ✅ 測試版儲存前綴
 const STORAGE_PREFIX = "daily-report-test-";
@@ -11,49 +11,48 @@ let globalHistoryData = {};
 // 這裡可以預先輸入每位同仁的計畫，數量不限
 const monthlyData = {
   "郭孟鑫": [
-    { content: "優先聯繫 2014-2024 站前歷年成交且掛名之有效名單", target: "推估 70 筆，於月底前完成，並提供介紹卡", customerType: "舊客", itemType: "HA" },
-    { content: "癌醫駐點陳醫師轉介流程溝通", target: "聽損新客 100% 回聽檢室進行聽力衛教，創造進店", customerType: "新客", itemType: "HA" }
+    { content: "站前2019~2020年HA潛客聯繫", target: "合計八筆，五月完成", customerType: "潛客", itemType: "HA" }
   ],
   "陳詩潔": [
-    { content: "每個月固定要追蹤前一個月的台大潛客 (例如每周一1300~1330)", target: "自己的雲端紀錄聯繫狀況(下次面談確認)", customerType: "潛客", itemType: "HA" }
+    { content: "執行台大 4 月份 HA 潛客追蹤", target: "完成 2 筆聯繫", customerType: "潛客", itemType: "HA" },
+    { content: "確認 2025 年台大 HA 潛客關心", target: "完成 14 筆聯繫", customerType: "潛客", itemType: "HA" }
   ],
   "游瑟焄": [
-    { content: "鎖定林長進店保外舊客開發試聽", target: "每周 1~2 位舊客試聽", customerType: "舊客", itemType: "HA" },
-    { content: "台大CI轉介名單致電", target: "合計 28 位潛客，本月完成聯繫", customerType: "潛客", itemType: "HA" }
+    { content: "優先聯繫站前 Intent MNB 名單 (針對非在職同仁用戶)", target: "合計 11 筆確認完畢", customerType: "潛客", itemType: "HA" }
   ],
   "魏頎恩": [
-    { content: "提升助聽器業績佔比，針對 2021 年前站前潛客進行致電聯繫", target: "每週致電 10 筆接通", customerType: "潛客", itemType: "HA" }
+    { content: "針對站前 HA 潛客持續連繫（參考 2021 年 1/3 佩戴率）", target: "五月底完成 30 筆", customerType: "潛客", itemType: "HA" }
   ],
   "李孟馨": [
-    { content: "目前缺口在RS，但用HA補。台大近一年HA潛客名單", target: "每周聯繫 5 個 (周二台大 RS 駐點 13:00~13:30 較有空檔)", customerType: "潛客", itemType: "HA" },
-    { content: "聯繫台大歷年舊客 (有效、高階、過保)，優先邀約回站前店", target: "共 57 位名單，日均致電約 4 位", customerType: "舊客", itemType: "HA" }
+    { content: "台大HA 2025/2026自己的潛客結案完畢", target: "33筆完成聯繫", customerType: "潛客", itemType: "HA" },
+    { content: "台大HA高階過保舊客持續執行", target: "48筆完成聯繫", customerType: "舊客", itemType: "HA" }
   ],
   "劉瑋婷": [
-    { content: "金山南潛客名單（客編從 2024/06 往前，條件：住附近、潛客），另請梅子姐過濾無效名單", target: "每日 5 通（在站前值班時完成），合計每週 10 通", customerType: "潛客", itemType: "HA" }
+    { content: "五月份持續執行金山南 HA 潛客聯繫", target: "月目標 40 筆", customerType: "潛客", itemType: "HA" },
+    { content: "個人 HA Intent MNB 名單聯繫", target: "合計 8 筆，五月份確認完畢", customerType: "舊客", itemType: "HA" }
   ],
   "周曉玄": [
-    { content: "聯繫 2019~2021 忠孝門市 HA 潛客（工讀生初篩）", target: "每週接通 5 筆、20% 回店率", customerType: "潛客", itemType: "HA" },
-    { content: "指派工讀生 APAP 舊客檢測流程，執行報告講解及AS11資訊提供", target: "3/14 完成教導並開始執行", customerType: "舊客", itemType: "RS" }
+    { content: "持續完成忠孝 HA 潛客少量聯繫 (考量 5 月工作日有限)", target: "五月底前完成 10 筆聯繫", customerType: "潛客", itemType: "HA" }
   ],
   "蕭純聿": [
-    { content: "提升舊客成交率：1. 以單一個案與教育訓練討論服務內容及新舊機差異展示方式；2. 秉忻確認舊客試聽服務影片後回饋優化建議", target: "舊客成交率 47% (區域門市平均)", customerType: "舊客", itemType: "HA" },
-    { content: "針對台大 2025 的 HA 潛客做追蹤（利用週五彈性時間）", target: "下次面談時完成 50% 的聯繫進度", customerType: "潛客", itemType: "HA" }
+    { content: "台大HA潛客剩餘名單聯繫", target: "完成17筆", customerType: "潛客", itemType: "HA" },
+    { content: "忠孝舊客分流管理：先依行事曆分配，再優先聯繫瑀婕名單中高換機率過保名單", target: "完成17筆過保名單聯繫", customerType: "舊客", itemType: "HA" },
+    { content: "忠孝Intent MNB 名單聯繫：先由書廷進行聯繫追蹤", target: "若前兩項行動方案完成再執行", customerType: "舊客", itemType: "HA" }
   ],
   "陳宛妤": [
-    { content: "優化門市排程效益：建議拉長保內舊客回店頻率至 4 個月以上並縮短單人服務時間", target: "下次面談討論", customerType: "舊客", itemType: "HA" },
-    { content: "提升 APAP 成交率：每月邀請睡眠技師陪同暫借預約，了解諮商狀況", target: "每月至少 2 位陪同，目標成交率提升至50% ", customerType: "新客", itemType: "RS" },
-    { content: "運用 2025 忠孝潛客名單邀約 HST 或 APAP 暫借，以彌補第一季 RS 缺口", target: "每月 24 筆接通（每週 6 筆）", customerType: "潛客", itemType: "RS" }
+    { content: "聯繫瑀婕交接之高/中換機機率名單（共46筆），確認安排回店", target: "5月完成46筆聯繫，回店個案給予轉介卡", customerType: "舊客", itemType: "HA" },
+    { content: "聯繫2024年RS潛客（依AHI高至低順序進行電話聯繫）", target: "5月完成20筆電話聯繫，目標產出2位個案回店暫借", customerType: "潛客", itemType: "RS" }
   ],
   "林寓葳": [
-    { content: "篩選天母 6 個月以上未聽檢舊客名單邀約進店（進店送 5 點，帶友加送 5 點）", target: "4 月底前完成至少 10 個舊客聽檢", customerType: "舊客", itemType: "HA" },
-    { content: "整理 2015-2016 剩餘 HA 舊客名單（填寫類別與狀況）並開始聯繫 2025 年以前潛客", target: "每週聯繫 10 通有接通潛客，邀約 1 位回店", customerType: "潛客", itemType: "HA" },
-    { content: "針對 2025 年 RS 未成交的個案進行聯繫", target: "下次面談前確認進度", customerType: "潛客", itemType: "RS" }
+    { content: "天母 RS 潛客聯繫 2024 年名單完成", target: "38 筆完成確認", customerType: "潛客", itemType: "RS" },
+    { content: "天母 HA 潛客聯繫（2018 年名單）", target: "合計 56 筆於 5 月確認完畢", customerType: "潛客", itemType: "HA" },
+    { content: "天母 HA Intent MNB 名單聯繫", target: "剩餘 5 名聯繫完畢", customerType: "舊客", itemType: "HA" }
   ],
   "吳欣珮": [
-    { content: "本月達標差額約30萬，優先聯繫近一年潛客名單（秉忻已提供）。", target: "每日完成兩筆接通，由聽力重的優先。", customerType: "潛客", itemType: "HA" }
+    { content: "八德 HA 潛客原名單聯繫效益低，改提供 2020 年名單聯繫觀察", target: "完成 30 筆聯繫", customerType: "潛客", itemType: "HA" }
   ],
   "呂桂梅": [
-    { content: "八德2025RS潛客，針對AHI由高至低依序聯繫，如有成功邀約但沒機器，及時通知秉忻。", target: "每日完成3~5筆聯繫，目標邀約回店做HST重測或APAP再次暫借。", customerType: "潛客", itemType: "RS" }
+    { content: "針對 2024 RS 潛客優先聯繫 (未借過 APAP 名單)", target: "五月份完成 50 筆", customerType: "潛客", itemType: "RS" }
   ],
 };
 
@@ -82,34 +81,7 @@ async function sendReportToSheet(payload) {
 }
 
 // ===== 【三月更新】櫻花與鈴鐺噴發特效 =====
-function spawnSakuraShower() {
-    const symbols = ['🌸', '🔔', '💗', '🍡', '✨']; // 櫻花、鈴鐺、愛心、三色糰子
-    const count = 20; 
 
-    for (let i = 0; i < count; i++) {
-        const item = document.createElement('div');
-        item.innerText = symbols[Math.floor(Math.random() * symbols.length)];
-        item.style.position = 'fixed';
-        item.style.bottom = '80px';
-        item.style.left = (Math.random() * 80 + 10) + '%';
-        item.style.fontSize = (Math.random() * 20 + 15) + 'px';
-        item.style.zIndex = '100';
-        item.style.pointerEvents = 'none';
-        item.style.transition = 'all 1.5s cubic-bezier(0.19, 1, 0.22, 1)'; // 更加輕柔的飄落感
-        
-        document.body.appendChild(item);
-
-        const destinationX = (Math.random() - 0.5) * 300;
-        const destinationY = -(Math.random() * 500 + 200);
-
-        requestAnimationFrame(() => {
-            item.style.transform = `translate(${destinationX}px, ${destinationY}px) rotate(${Math.random() * 540}deg)`;
-            item.style.opacity = '0';
-        });
-
-        setTimeout(() => item.remove(), 1500);
-    }
-}
 
 // ===== 日期工具 =====
 function getCurrentDateStr() {
@@ -435,20 +407,20 @@ async function fetchAndRenderProgress() {
             
             // 生成該同仁內部的所有進度條 HTML
             const taskRowsHtml = staffTasks.map(task => {
-                const barColor = task.percent >= 80 ? "#6BCB77" : (task.percent >= 50 ? "#FFA41B" : "var(--primary)");
-                return `
-                    <div style="margin-bottom: 15px;">
-                        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:5px;">
-                            <span style="font-size:13px; color:#666;">${task.taskName}</span>
-                            <span style="font-weight:bold; color:${barColor}; font-size:14px;">${task.completed} / ${task.target} 筆</span>
-                        </div>
-                        <div style="background:#F0F0F0; height:10px; border-radius:5px; overflow:hidden; position:relative;">
-                            <div style="background:${barColor}; width:${task.percent}%; height:100%; transition:width 1s ease-out;"></div>
-                        </div>
-                        <div style="text-align:right; font-size:11px; color:#999; margin-top:4px;">當月達成率 ${task.percent}%</div>
-                    </div>
-                `;
-            }).join("");
+                const barColor = task.percent >= 80 ? "#A8B890" : "#E5B083"; 
+        return `
+            <div style="margin-bottom: 20px;">
+                <div style="display:flex; justify-content:space-between; align-items:end; margin-bottom:8px;">
+                    <span style="font-size:14px; font-weight:bold; color:#5C4033;">${task.taskName}</span>
+                    <span style="font-weight:900; color:${barColor}; font-size:15px;">${task.completed} / ${task.target} 筆</span>
+                </div>
+                <div style="background:#EFEBE5; height:12px; border-radius:10px; overflow:hidden;">
+                    <div style="background:${barColor}; width:${task.percent}%; height:100%; transition:width 1.2s cubic-bezier(0.17, 0.67, 0.83, 0.67);"></div>
+                </div>
+                <div style="text-align:right; font-size:11px; color:#A89F94; margin-top:5px; font-weight:bold;">五月達成率 ${task.percent}%</div>
+            </div>
+        `;
+    }).join("");
 
             // 生成外層的大圖卡容器
             const card = document.createElement("div");
@@ -645,24 +617,6 @@ window.closeModal = function() {
 // ===== 產生訊息 =====
 
 
-function buildTodayVsYesterdayKpiText(todayForm) {
-    const kpiSourceDate = getKpiSourceDateForToday(todayForm.date);
-    const kpiSourceData = kpiSourceDate ? loadByDate(kpiSourceDate) : null;
-    if (!kpiSourceData) return "•（找不到昨日 KPI）";
-
-    const actualTrial = num(todayForm.trialHA) + num(todayForm.trialAPAP);
-    const actualCall = num(todayForm.todayCallPotential) + num(todayForm.todayCallOld3Y);
-    const actualInvite = num(todayForm.todayInviteReturn);
-    const rate = actualCall > 0 ? (actualInvite / actualCall) : 0;
-
-    return [
-        `• 試戴數：目標 ${num(kpiSourceData.tomorrowKpiTrial)} / 執行 ${actualTrial}  ${okText(actualTrial >= num(kpiSourceData.tomorrowKpiTrial))}`,
-        `• 外撥通數：目標 ${num(kpiSourceData.tomorrowKpiCallTotal)} / 執行 ${actualCall}  ${okText(actualCall >= num(kpiSourceData.tomorrowKpiCallTotal))}`,
-        `• 邀約回店數：目標 ${num(kpiSourceData.tomorrowKpiCallOld3Y)} / 執行 ${actualInvite}  ${okText(actualInvite >= num(kpiSourceData.tomorrowKpiCallOld3Y))}`,
-        `• 邀約成功率：${Math.round(rate * 100)}%`.trim(),
-    ].join("\n");
-}
-
 
 
 // ===== 初始化邏輯 =====
@@ -710,4 +664,37 @@ document.addEventListener("DOMContentLoaded", () => {
     renderHuddle();
     initPlanTab();
     fetchAndRenderProgress();
+
+    // === 🎂 寓葳生日彩蛋：Marsh & Quokka 專屬邏輯 ===
+const charTrigger = document.querySelector('.section');
+if (charTrigger) {
+    charTrigger.addEventListener('click', (e) => {
+        const rect = charTrigger.getBoundingClientRect();
+        const x = e.clientX - rect.left; // 點擊相對於容器左側的距離
+        const y = e.clientY - rect.top;  // 點擊相對於容器頂部的距離（向上為負）
+
+        const today = new Date();
+        const isMay19 = (today.getMonth() + 1 === 5 && today.getDate() === 19);
+        const birthdayMsg = "🎂 寓葳生日快樂 🎉";
+        const waitMsg = "發現彩蛋！雖然寓葳生日還沒到，但第一個截圖傳給督導有禮物！";
+
+        // 1. 原有的左上角 Marsh 判定 (x 靠近 0, y 稍微偏上)
+        const isMarsh = (y < 0 && y > -60 && x < 60);
+
+        // 2. 新增的 Quokka 中間偏右判定
+        // Quokka 寬 220px, 置中於容器 (left: 50%, transform: translateX(-50%))
+        const centerX = rect.width / 2;
+        // 判定範圍：x 在中心點往右 10px ~ 80px 之間，y 在上方 -100px 到容器內 40px 之間
+        const isQuokkaRight = (x > centerX + 10 && x < centerX + 80 && y > -100 && y < 40);
+
+        if (isMarsh || isQuokkaRight) {
+            if (isMay19) {
+                alert(birthdayMsg);
+            } else {
+                alert(waitMsg);
+            }
+        }
+    });
+}
+    // === 彩蛋結束 ===
 });

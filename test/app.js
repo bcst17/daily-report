@@ -676,7 +676,7 @@ if (charTrigger) {
         const today = new Date();
         const isMay19 = (today.getMonth() + 1 === 5 && today.getDate() === 19);
         const birthdayMsg = "🎂 寓葳生日快樂 🎉";
-        const waitMsg = "發現彩蛋了！雖然寓葳 5/19 生日還沒到，但第一個截圖給督導的人有禮物";
+        const waitMsg = "發現彩蛋了！雖然寓葳5/19生日還沒到，但第一個截圖給督導的人有禮物";
 
         // 1. 原有的左上角 Marsh 判定 (x 靠近 0, y 稍微偏上)
         const isMarsh = (y < 0 && y > -60 && x < 60);

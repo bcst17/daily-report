@@ -665,29 +665,36 @@ document.addEventListener("DOMContentLoaded", () => {
     initPlanTab();
     fetchAndRenderProgress();
 
-    // === 🎂 寓葳生日彩蛋：Marsh (左上角白色小精靈) 專屬邏輯 ===
-const marshTrigger = document.querySelector('.section');
-if (marshTrigger) {
-    marshTrigger.addEventListener('click', (e) => {
-        const rect = marshTrigger.getBoundingClientRect();
-        // 計算點擊座標
-        const x = e.clientX - rect.left;
-        const y = e.clientY - rect.top;
+    // === 🎂 寓葳生日彩蛋：Marsh & Quokka 專屬邏輯 ===
+const charTrigger = document.querySelector('.section');
+if (charTrigger) {
+    charTrigger.addEventListener('click', (e) => {
+        const rect = charTrigger.getBoundingClientRect();
+        const x = e.clientX - rect.left; // 點擊相對於容器左側的距離
+        const y = e.clientY - rect.top;  // 點擊相對於容器頂部的距離（向上為負）
 
-        // 判斷是否點擊在左上角 Marsh 的範圍 (y < 0 且 x 在左側)
-        if (y < 0 && y > -60 && x < 60) {
-            const today = new Date();
-            const isMay19 = (today.getMonth() + 1 === 5 && today.getDate() === 19);
-            
+        const today = new Date();
+        const isMay19 = (today.getMonth() + 1 === 5 && today.getDate() === 19);
+        const birthdayMsg = "🎂 寓葳生日快樂 🎉";
+        const waitMsg = "發現彩蛋了！但寓葳 5/19 生日還沒到喔 🤫";
+
+        // 1. 原有的左上角 Marsh 判定 (x 靠近 0, y 稍微偏上)
+        const isMarsh = (y < 0 && y > -60 && x < 60);
+
+        // 2. 新增的 Quokka 中間偏右判定
+        // Quokka 寬 220px, 置中於容器 (left: 50%, transform: translateX(-50%))
+        const centerX = rect.width / 2;
+        // 判定範圍：x 在中心點往右 10px ~ 80px 之間，y 在上方 -100px 到容器內 40px 之間
+        const isQuokkaRight = (x > centerX + 10 && x < centerX + 80 && y > -100 && y < 40);
+
+        if (isMarsh || isQuokkaRight) {
             if (isMay19) {
-                // 5/19 當天的驚喜訊息
-                alert("🎂 寓葳生日快樂 🎉");
+                alert(birthdayMsg);
             } else {
-                // 非生日當天的提示
-                alert("發現彩蛋了！但寓葳 5/19 生日還沒到喔 🤫");
+                alert(waitMsg);
             }
         }
     });
-    }
+}
     // === 彩蛋結束 ===
 });

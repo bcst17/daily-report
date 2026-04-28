@@ -11,7 +11,7 @@ let globalHistoryData = {};
 // 這裡可以預先輸入每位同仁的計畫，數量不限
 const monthlyData = {
   "郭孟鑫": [
-    { content: "站前2019~2020年HA潛客聯繫", target: "合計八筆，五月完成", customerType: "潛客", itemType: "HA" }
+    { content: "站前 2019 ~ 2020 年 HA 潛客聯繫", target: "合計 8 筆，五月完成", customerType: "潛客", itemType: "HA" }
   ],
   "陳詩潔": [
     { content: "執行台大 4 月份 HA 潛客追蹤", target: "完成 2 筆聯繫", customerType: "潛客", itemType: "HA" },
@@ -24,8 +24,8 @@ const monthlyData = {
     { content: "針對站前 HA 潛客持續連繫（參考 2021 年 1/3 佩戴率）", target: "五月底完成 30 筆", customerType: "潛客", itemType: "HA" }
   ],
   "李孟馨": [
-    { content: "台大HA 2025/2026自己的潛客結案完畢", target: "33筆完成聯繫", customerType: "潛客", itemType: "HA" },
-    { content: "台大HA高階過保舊客持續執行", target: "48筆完成聯繫", customerType: "舊客", itemType: "HA" }
+    { content: "台大HA 2025 / 2026 自己的潛客結案完畢", target: "完成 33 筆聯繫", customerType: "潛客", itemType: "HA" },
+    { content: "台大 HA 高階過保舊客持續執行", target: "完成 48 筆聯繫", customerType: "舊客", itemType: "HA" }
   ],
   "劉瑋婷": [
     { content: "五月份持續執行金山南 HA 潛客聯繫", target: "月目標 40 筆", customerType: "潛客", itemType: "HA" },
@@ -35,13 +35,13 @@ const monthlyData = {
     { content: "持續完成忠孝 HA 潛客少量聯繫 (考量 5 月工作日有限)", target: "五月底前完成 10 筆聯繫", customerType: "潛客", itemType: "HA" }
   ],
   "蕭純聿": [
-    { content: "台大HA潛客剩餘名單聯繫", target: "完成17筆", customerType: "潛客", itemType: "HA" },
-    { content: "忠孝舊客分流管理：先依行事曆分配，再優先聯繫瑀婕名單中高換機率過保名單", target: "完成17筆過保名單聯繫", customerType: "舊客", itemType: "HA" },
-    { content: "忠孝Intent MNB 名單聯繫：先由書廷進行聯繫追蹤", target: "若前兩項行動方案完成再執行", customerType: "舊客", itemType: "HA" }
+    { content: "台大 HA 潛客剩餘名單聯繫", target: "完成 17 筆", customerType: "潛客", itemType: "HA" },
+    { content: "忠孝舊客分流管理：先依行事曆分配，再優先聯繫瑀婕名單中高換機率過保名單", target: "完成 17 筆過保名單聯繫", customerType: "舊客", itemType: "HA" },
+    { content: "忠孝 Intent MNB 名單聯繫：先由書廷進行聯繫追蹤", target: "若前兩項行動方案完成再執行", customerType: "舊客", itemType: "HA" }
   ],
   "陳宛妤": [
-    { content: "聯繫瑀婕交接之高/中換機機率名單（共46筆），確認安排回店", target: "5月完成46筆聯繫，回店個案給予轉介卡", customerType: "舊客", itemType: "HA" },
-    { content: "聯繫2024年RS潛客（依AHI高至低順序進行電話聯繫）", target: "5月完成20筆電話聯繫，目標產出2位個案回店暫借", customerType: "潛客", itemType: "RS" }
+    { content: "聯繫瑀婕交接之高/中換機機率名單（共46筆），確認安排回店", target: "5 月完成 46 筆聯繫，回店個案給予轉介卡", customerType: "舊客", itemType: "HA" },
+    { content: "聯繫 2024 年 RS 潛客（依AHI高至低順序進行電話聯繫）", target: "5 月完成 20 筆電話聯繫，目標產出2位個案回店暫借", customerType: "潛客", itemType: "RS" }
   ],
   "林寓葳": [
     { content: "天母 RS 潛客聯繫 2024 年名單完成", target: "38 筆完成確認", customerType: "潛客", itemType: "RS" },

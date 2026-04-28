@@ -11,8 +11,7 @@ let globalHistoryData = {};
 // 這裡可以預先輸入每位同仁的計畫，數量不限
 const monthlyData = {
   "郭孟鑫": [
-    { content: "優先聯繫 2014-2024 站前歷年成交且掛名之有效名單", target: "推估 70 筆，於月底前完成，並提供介紹卡", customerType: "舊客", itemType: "HA" },
-    { content: "癌醫駐點陳醫師轉介流程溝通", target: "聽損新客 100% 回聽檢室進行聽力衛教，創造進店", customerType: "新客", itemType: "HA" }
+    { content: "站前2019~2020年HA潛客聯繫", target: "合計八筆，五月完成", customerType: "潛客", itemType: "HA" }
   ],
   "陳詩潔": [
     { content: "執行台大 4 月份 HA 潛客追蹤", target: "完成 2 筆聯繫", customerType: "潛客", itemType: "HA" },
@@ -25,8 +24,8 @@ const monthlyData = {
     { content: "針對站前 HA 潛客持續連繫（參考 2021 年 1/3 佩戴率）", target: "五月底完成 30 筆", customerType: "潛客", itemType: "HA" }
   ],
   "李孟馨": [
-    { content: "目前缺口在RS，但用HA補。台大近一年HA潛客名單", target: "每周聯繫 5 個 (周二台大 RS 駐點 13:00~13:30 較有空檔)", customerType: "潛客", itemType: "HA" },
-    { content: "聯繫台大歷年舊客 (有效、高階、過保)，優先邀約回站前店", target: "共 57 位名單，日均致電約 4 位", customerType: "舊客", itemType: "HA" }
+    { content: "台大HA 2025/2026自己的潛客結案完畢", target: "33筆完成聯繫", customerType: "潛客", itemType: "HA" },
+    { content: "台大HA高階過保舊客持續執行", target: "48筆完成聯繫", customerType: "舊客", itemType: "HA" }
   ],
   "劉瑋婷": [
     { content: "五月份持續執行金山南 HA 潛客聯繫", target: "月目標 40 筆", customerType: "潛客", itemType: "HA" },

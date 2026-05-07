@@ -55,7 +55,7 @@ const monthlyData = {
     { content: "針對 2024 RS 潛客優先聯繫 (未借過 APAP 名單)", target: "五月份完成 50 筆", customerType: "潛客", itemType: "RS" }
   ],
   "林書廷": [
-    { content: "提升每日服務舊客數，聯繫瑀婕交接純聿名單", target: "每日成功邀約 2筆 回店，五月合計 30 筆", customerType: "舊客", itemType: "HA" },
+    { content: "提升每日服務舊客數，聯繫瑀婕交接純聿名單", target: "每日成功邀約 2 筆回店，五月合計 30 筆", customerType: "舊客", itemType: "HA" },
     { content: "每日與其他同仁一起服務用戶，交流服務方式", target: "每日 2 位", customerType: "舊客", itemType: "HA" },
     { content: "忠孝敦化 2020 ~ 2021 RS 潛客聯繫", target: "合計 52 筆，五月完成聯繫", customerType: "潛客", itemType: "RS" },
   ],

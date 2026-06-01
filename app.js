@@ -11,53 +11,50 @@ let globalHistoryData = {};
 // 這裡可以預先輸入每位同仁的計畫，數量不限
 const monthlyData = {
   "郭孟鑫": [
-    { content: "站前 2019 ~ 2020 年 HA 潛客聯繫", target: "合計 8 筆，五月完成", customerType: "潛客", itemType: "HA" }
+    { content: "2018 和2023 站前 HA 潛客追蹤", target: "6 月完成 10 筆聯繫", customerType: "潛客", itemType: "HA" }
   ],
   "陳詩潔": [
-    { content: "執行台大 4 月份 HA 潛客追蹤", target: "完成 2 筆聯繫", customerType: "潛客", itemType: "HA" },
-    { content: "確認 2025 年台大 HA 潛客關心", target: "完成 14 筆聯繫", customerType: "潛客", itemType: "HA" }
+    { content: "完成 5 月剩餘 6 筆潛客聯繫；因 2025 年潛客效益較低，另抓 2019 年名單並自行篩選適合對象優先致電", target: " 6 月底前完成 30 筆", customerType: "潛客", itemType: "HA" }
   ],
   "游瑟焄": [
-    { content: "優先聯繫站前 Intent MNB 名單 (針對非在職同仁用戶)", target: "合計 11 筆確認完畢", customerType: "潛客", itemType: "HA" }
+    { content: " 站前 2019~2023 自己名字的 HA 潛客追蹤", target: "6 月完成 8 筆聯繫", customerType: "潛客", itemType: "HA" }
   ],
   "魏頎恩": [
-    { content: "針對站前 HA 潛客持續連繫（參考 2021 年 1/3 佩戴率）", target: "五月底完成 30 筆", customerType: "潛客", itemType: "HA" }
+    { content: "2020 站前 HA 潛客追蹤（預估兩位回店）", target: "6 月完成 30 筆聯繫", customerType: "潛客", itemType: "HA" },
+    { content: "站前 2021 RS AHI > 15 潛客追蹤", target: "6 月完成 9 筆聯繫", customerType: "潛客", itemType: "RS" }
   ],
   "李孟馨": [
-    { content: "台大HA 2025 / 2026 自己的潛客結案完畢", target: "完成 33 筆聯繫", customerType: "潛客", itemType: "HA" },
-    { content: "台大 HA 高階過保舊客持續執行", target: "完成 48 筆聯繫", customerType: "舊客", itemType: "HA" }
+    { content: "2025 台大 HA 潛客追蹤", target: "6 月完成 20 筆聯繫", customerType: "潛客", itemType: "HA" }
   ],
   "劉瑋婷": [
-    { content: "五月份持續執行金山南 HA 潛客聯繫", target: "月目標 40 筆", customerType: "潛客", itemType: "HA" },
-    { content: "個人 HA Intent MNB 名單聯繫", target: "合計 8 筆，五月份確認完畢", customerType: "舊客", itemType: "HA" }
+    { content: "金山南潛客剩餘數量繼續完成(專職 HA 部分)", target: "六月底完成 30 筆", customerType: "潛客", itemType: "HA" }
   ],
   "周曉玄": [
-    { content: "持續完成忠孝 HA 潛客少量聯繫 (考量 5 月工作日有限)", target: "五月底前完成 10 筆聯繫", customerType: "潛客", itemType: "HA" }
+    { content: "主要觀察 6 月長庚轉介狀況，門市端先以成功率較高的 RS 潛客邀約為主", target: "6 月邀約 3 位回店", customerType: "潛客", itemType: "RS" }
   ],
   "蕭純聿": [
-    { content: "台大 HA 潛客剩餘名單聯繫", target: "完成 17 筆", customerType: "潛客", itemType: "HA" },
-    { content: "忠孝舊客分流管理：先依行事曆分配，再優先聯繫瑀婕名單中高換機率過保名單", target: "完成 17 筆過保名單聯繫", customerType: "舊客", itemType: "HA" },
-    { content: "忠孝 Intent MNB 名單聯繫：先由書廷進行聯繫追蹤", target: "若前兩項行動方案完成再執行", customerType: "舊客", itemType: "HA" }
+    { content: "執行忠孝 2019~2021 年潛客聯繫（因 HA/RS 已達標，本月設定少量目標）", target: "完成 25 筆聯繫", customerType: "潛客", itemType: "HA/RS" }
   ],
   "陳宛妤": [
-    { content: "聯繫瑀婕交接之高/中換機機率名單（共46筆），確認安排回店", target: "5 月完成 46 筆聯繫，回店個案給予轉介卡", customerType: "舊客", itemType: "HA" },
-    { content: "聯繫 2024 年 RS 潛客（依AHI高至低順序進行電話聯繫）", target: "5 月完成 20 筆電話聯繫，目標產出2位個案回店暫借", customerType: "潛客", itemType: "RS" }
+    { content: "提升 APAP 服務經驗，聯繫 2024 年忠孝 RS 舊客，壓力檢測、耗材銷售、舊客介紹", target: "完成 30 筆聯繫", customerType: "舊客", itemType: "RS" },
+    { content: "APAP 成交率提升", target: "每月至少一位 APAP 暫借由睡眠技師陪同服務", customerType: "潛客", itemType: "RS" }
   ],
   "林寓葳": [
-    { content: "天母 RS 潛客聯繫 2024 年名單完成", target: "38 筆完成確認", customerType: "潛客", itemType: "RS" },
-    { content: "天母 HA 潛客聯繫（2018 年名單）", target: "合計 56 筆於 5 月確認完畢", customerType: "潛客", itemType: "HA" },
-    { content: "天母 HA Intent MNB 名單聯繫", target: "剩餘 5 名聯繫完畢", customerType: "舊客", itemType: "HA" }
+    { content: "撈取過去一年內訂閱之 HA 用戶，特例申請轉買斷方案", target: "5 月底前給秉忻", customerType: "舊客", itemType: "HA" },
+    { content: "2018 年HA潛客繼續連繫", target: "6 月完成 42 筆", customerType: "潛客", itemType: "HA" },
+    { content: "重新確認歷年交貨 APAP 舊客，是否有 AS11 的預購意願", target: "不設定目標，自行完成追蹤", customerType: "舊客", itemType: "RS" },
+    { content: "2025 年RS潛客追蹤", target: "6 月完成剩餘 16 筆，但順位放後面，前三者行動方案優先", customerType: "潛客", itemType: "RS" }
   ],
   "吳欣珮": [
-    { content: "八德 HA 潛客原名單聯繫效益低，改提供 2020 年名單聯繫觀察", target: "完成 30 筆聯繫", customerType: "潛客", itemType: "HA" }
+    { content: "試聽數不足以符合目標，故需增加舊客試聽數，從歷年交貨名單中持續回店的優先", target: "6 月有 2 筆舊客試聽", customerType: "舊客", itemType: "HA" }
   ],
   "呂桂梅": [
-    { content: "針對 2024 RS 潛客優先聯繫 (未借過 APAP 名單)", target: "五月份完成 50 筆", customerType: "潛客", itemType: "RS" }
+    { content: "八德 RS 潛客 2024 年剩餘名單完成，並執行 2023 年潛客聯繫", target: "6 月完成 71 筆聯繫", customerType: "潛客", itemType: "RS" }
   ],
   "林書廷": [
-    { content: "提升每日服務舊客數，聯繫瑀婕交接純聿名單", target: "每日成功邀約 2 筆回店，五月合計 30 筆", customerType: "舊客", itemType: "HA" },
-    { content: "每日與其他同仁一起服務用戶，交流服務方式", target: "每日 2 位", customerType: "舊客", itemType: "HA" },
-    { content: "忠孝敦化 2020 ~ 2021 RS 潛客聯繫", target: "合計 52 筆，五月完成聯繫", customerType: "潛客", itemType: "RS" },
+    { content: "2025 忠孝 HA 潛客追蹤", target: "6 月邀約 3 位回門市", customerType: "潛客", itemType: "HA" },
+    { content: "5 月暫借 HST 個案追蹤(主要業績占比)", target: "6 月 APAP 暫借率 100%", customerType: "潛客", itemType: "HA" },
+    { content: "忠孝 HA 歷年交貨舊客聯繫", target: "待取得名單後，先由工讀生整理完畢再執行", customerType: "舊客", itemType: "HA" }
   ],
 };
 

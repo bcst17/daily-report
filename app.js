@@ -419,7 +419,7 @@ async function fetchAndRenderProgress() {
                 <div style="background:#EFEBE5; height:12px; border-radius:10px; overflow:hidden;">
                     <div style="background:${barColor}; width:${task.percent}%; height:100%; transition:width 1.2s cubic-bezier(0.17, 0.67, 0.83, 0.67);"></div>
                 </div>
-                <div style="text-align:right; font-size:11px; color:#A89F94; margin-top:5px; font-weight:bold;">五月達成率 ${task.percent}%</div>
+                <div style="text-align:right; font-size:11px; color:#A89F94; margin-top:5px; font-weight:bold;">達成率 ${task.percent}%</div>
             </div>
         `;
     }).join("");

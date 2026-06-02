@@ -646,34 +646,5 @@ document.addEventListener("DOMContentLoaded", () => {
     initPlanTab();
     fetchAndRenderProgress();
 
-    // === 🎂 寓葳生日彩蛋：吉伊卡哇 & 小八貓 專屬定位與邏輯 ===
-    const charTrigger = document.querySelector('.section');
-    if (charTrigger) {
-        charTrigger.addEventListener('click', (e) => {
-            const rect = charTrigger.getBoundingClientRect();
-            const x = e.clientX - rect.left; // 點擊相對於容器左側的距離
-            const y = e.clientY - rect.top;  // 點擊相對於容器頂部的距離（向上為負）
 
-            const today = new Date();
-            const isMay19 = (today.getMonth() + 1 === 5 && today.getDate() === 19);
-            const birthdayMsg = "🎂 寓葳生日快樂 🎉";
-            const waitMsg = "🎂 寓葳 5/19 生日快樂 🎉";
-
-            // 1. 左上角小八貓判定 (原本是 Marsh，現為 hachiware_zongzi.png)
-            const isHachiware = (y < 0 && y > -60 && x < 60);
-
-            // 2. 新增的吉伊卡哇龍舟圖判定 (原本是 Quokka，現為 chiikawa_dragonboat.png)
-            const centerX = rect.width / 2;
-            const isChiikawaRight = (x > centerX + 10 && x < centerX + 80 && y > -100 && y < 40);
-
-            if (isHachiware || isChiikawaRight) {
-                if (isMay19) {
-                    alert(birthdayMsg);
-                } else {
-                    alert(waitMsg);
-                }
-            }
-        });
-    }
-    // === 彩蛋結束 ===
 });

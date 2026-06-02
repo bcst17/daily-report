@@ -89,6 +89,8 @@ h1::after {
   display:flex;
   gap:8px;
   margin-bottom:60px;    
+  position: relative;     /* 新增定位，確保點擊範圍不被遮擋 */
+  z-index: 100;           /* 提高層級，強制置於最上層 */
 }
 
 .tab-header button{
@@ -125,7 +127,7 @@ h1::after {
   content: "";
   position: absolute;
   top: -130px; /* 越負越高 */
-  left: 25%;
+  left: 26%;
   transform: translateX(-50%) rotate(1deg);
   
   width: 180px; 
@@ -143,7 +145,7 @@ h1::after {
   z-index: 10;
   
   /* 位置設定：飛出邊框 */
-  top: -118px;    
+  top: -116px;    
   left: 47%;    
   
   /* 尺寸與圖片 */

@@ -1,12 +1,16 @@
-// 版本號：改一次就會強制所有裝置切到新版 Cache
-const CACHE_NAME = "daily-report-v3";
+// 快取版本號：更新至 chiikawa 端午節特別版，以強制所有裝置切到新版快取
+const CACHE_NAME = "daily-report-chiikawa-v1";
 
 const urlsToCache = [
   "./",
   "./index.html",
   "./manifest.json",
   "./icon-192-v2.png",
-  "./icon-512-v2.png"
+  "./icon-512-v2.png",
+  "./zongzi_left.png",
+  "./zongzi_right.png",
+  "./chiikawa_dragonboat.png",
+  "./hachiware_zongzi.png"
 ];
 
 // 安裝：預先把重要檔案放進快取
@@ -44,31 +48,30 @@ self.addEventListener("fetch", (event) => {
     event.respondWith(
       fetch(req)
         .then((response) => {
-          // 把最新的頁面也更新進 cache，之後可離線用
           const copy = response.clone();
           caches.open(CACHE_NAME).then((cache) => cache.put(req, copy));
           return response;
         })
         .catch(() => {
-          // 若離線或 fetch 失敗，再退回 cache
           return caches.match(req);
         })
     );
     return;
   }
 
-// 2️⃣ 其他靜態資源：stale-while-revalidate（先用快取，同時背景更新）
-event.respondWith(
-  caches.match(req).then((cached) => {
-    const network = fetch(req)
-      .then((response) => {
-        const copy = response.clone();
-        caches.open(CACHE_NAME).then((cache) => cache.put(req, copy));
-        return response;
-      })
-      .catch(() => cached);
+  // 2️⃣ 其他靜態資源：stale-while-revalidate（先用快取，同時背景更新）
+  event.respondWith(
+    caches.match(req).then((cached) => {
+      const network = fetch(req)
+        .then((response) => {
+          const copy = response.clone();
+          caches.open(CACHE_NAME).then((cache) => cache.put(req, copy));
+          return response;
+        })
+        .catch(() => cached);
 
-    // 有快取就先回快取（速度快），同時讓 network 去更新快取
-    return cached || network;
-  })
-);
+      // 有快取就先回快取（速度快），同時讓 network 去更新快取
+      return cached || network;
+    })
+  );
+});

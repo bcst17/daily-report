@@ -1,4 +1,4 @@
-console.log("🪵 May Vibe app.js loaded: Dinotaeng & Marsh Edition");
+console.log("🎋 Chiikawa & Dragon Boat Festival Edition app.js loaded!");
 
 // ✅ 測試版儲存前綴
 const STORAGE_PREFIX = "daily-report-test-";
@@ -41,7 +41,7 @@ const monthlyData = {
   ],
   "林寓葳": [
     { content: "撈取過去一年內訂閱之 HA 用戶，特例申請轉買斷方案", target: "5 月底前給秉忻", customerType: "舊客", itemType: "HA" },
-    { content: "2018 年HA潛客繼續連繫", target: "6 月完成 42 筆", customerType: "潛客", itemType: "HA" },
+    { content: "2018 年HA潛客繼續連記", target: "6 月完成 42 筆", customerType: "潛客", itemType: "HA" },
     { content: "重新確認歷年交貨 APAP 舊客，是否有 AS11 的預購意願", target: "不設定目標，自行完成追蹤", customerType: "舊客", itemType: "RS" },
     { content: "2025 年RS潛客追蹤", target: "6 月完成剩餘 16 筆，但順位放後面，前三者行動方案優先", customerType: "潛客", itemType: "RS" }
   ],
@@ -81,9 +81,6 @@ async function sendReportToSheet(payload) {
     });
     return true;
 }
-
-// ===== 【三月更新】櫻花與鈴鐺噴發特效 =====
-
 
 // ===== 日期工具 =====
 function getCurrentDateStr() {
@@ -199,7 +196,6 @@ window.recalcTotals = recalcTotals;
 
 // ===== 分頁切換邏輯 (更新以支援新分頁) =====
 function showView(view) {
-    // 確保這裡的 ID 與 HTML 中的 ID 一一對應
     const views = { 
         'huddle': $('huddle-view'), 
         'plan': $('plan-view'), 
@@ -229,8 +225,7 @@ function showView(view) {
     }
 }
 
-// ===== 當月計畫渲染邏輯 (移除 Emoji 版) =====
-// app.js 中的 initPlanTab 函式
+// ===== 當月計畫渲染邏輯 (端午節 & 吉伊卡哇主題優化) =====
 function initPlanTab() {
     const selectName = $("plan-name-select");
     const selectCustomer = $("filter-customer");
@@ -239,7 +234,7 @@ function initPlanTab() {
 
     if (!selectName || !container) return;
 
-    // 1. 生成姓名下拉選單 (維持原樣)
+    // 1. 生成姓名下拉選單
     selectName.innerHTML = '<option value="">-- 全區同仁 --</option>';
     Object.keys(monthlyData).forEach(name => {
         const opt = document.createElement("option");
@@ -256,7 +251,7 @@ function initPlanTab() {
 
         container.innerHTML = "";
 
-        // 2. 資料彙整策略 (維持原樣)
+        // 2. 資料彙整策略
         let tasksToFilter = [];
         if (selectedName === "") {
             Object.entries(monthlyData).forEach(([name, tasks]) => {
@@ -271,7 +266,7 @@ function initPlanTab() {
             tasksToFilter = individualTasks.map(task => ({ ...task, staffName: selectedName }));
         }
 
-        // 3. 執行交叉篩選 (維持原樣)
+        // 3. 執行交叉篩選
         const filteredData = tasksToFilter.filter(plan => {
             const matchCust = (filterCust === "all" || plan.customerType === filterCust);
             const matchItem = (filterItem === "all" || plan.itemType === filterItem);
@@ -283,21 +278,21 @@ function initPlanTab() {
             return;
         }
 
-        // 4. 生成任務卡片 (更新標籤樣式)
+        // 4. 生成任務卡片 (吉伊卡哇端午配色版)
         filteredData.forEach((plan, index) => {
             const planEl = document.createElement("div");
-            planEl.style.cssText = "background: #fff; border: 1px solid var(--border); border-radius: 12px; padding: 18px; margin-bottom: 18px; border-left: 6px solid var(--primary); box-shadow: 0 4px 10px rgba(0,0,0,0.05); position:relative;";
+            planEl.style.cssText = "background: #fff; border: 2px solid var(--border); border-radius: 12px; padding: 18px; margin-bottom: 18px; border-left: 6px solid var(--primary); box-shadow: 0 4px 10px rgba(127,160,116,0.1); position:relative;";
             
-            // 標籤顏色定義 (使用較明亮的顏色)
-            const custColor = plan.customerType === '潛客' ? '#FF6B6B' : (plan.customerType === '新客' ? '#4D96FF' : '#8D6E63'); // 舊客改用溫和的咖啡色
-            const itemColor = plan.itemType === 'RS' ? '#6BCB77' : '#FFA41B'; // RS綠，HA橘
+            // 標籤顏色定義 (與吉伊卡哇及端午節相符的輕柔色彩)
+            const custColor = plan.customerType === '潛客' ? '#FFB7B2' : (plan.customerType === '新客' ? '#B5E2FA' : '#E2C2C2'); 
+            const itemColor = plan.itemType === 'RS' ? '#C7E9C0' : '#FFE29A'; 
 
             // 標籤文字縮減邏輯
             const custAbbr = plan.customerType ? plan.customerType.substring(0, 1) : '?';
             const itemAbbr = plan.itemType ? plan.itemType.substring(0, 1) : '?';
 
             // 定義圓形標籤的統一 CSS 樣式
-            const tagCircleStyle = "display:inline-flex; justify-content:center; align-items:center; width:26px; height:26px; border-radius:50%; color:#fff; font-size:14px; font-weight:bold; box-sizing:border-box; box-shadow: 1px 1px 3px rgba(0,0,0,0.1);";
+            const tagCircleStyle = "display:inline-flex; justify-content:center; align-items:center; width:26px; height:26px; border-radius:50%; color:var(--primary-dark); font-size:13px; font-weight:bold; box-sizing:border-box; box-shadow: 1px 1px 3px rgba(0,0,0,0.1);";
 
             planEl.innerHTML = `
                 <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom: 15px; border-bottom: 1px dashed var(--border); padding-bottom: 10px;">
@@ -337,7 +332,6 @@ function renderHuddle() {
     const { d1, d0 } = getPrevTwoDataDates(today);
     const prevData = d1 ? loadByDate(d1) : null;
 
-    // 🚀 加上安全檢查：先確認元素存在 (if ($("..."))) 再賦值
     if ($("huddleTodayBooking")) $("huddleTodayBooking").textContent = (prevData?.tomorrowBookingTotal ?? "-") || "-";
     if ($("huddleTodayTrial")) $("huddleTodayTrial").textContent = (prevData?.tomorrowKpiTrial ?? "-") || "-";
     if ($("huddleTodayCallTotal")) $("huddleTodayCallTotal").textContent = (prevData?.tomorrowKpiCallTotal ?? "-") || "-";
@@ -363,7 +357,6 @@ function renderHuddle() {
     const actualCall = num(execData.todayCallPotential) + num(execData.todayCallOld3Y);
     const actualInvite = num(execData.todayInviteReturn);
 
-    // 🚀 這裡也是安全檢查
     if ($("checkTrialText")) $("checkTrialText").textContent = `目標 ${num(kpiSetData.tomorrowKpiTrial)} / 執行 ${actualTrial} ${okText(actualTrial >= num(kpiSetData.tomorrowKpiTrial))}`;
     if ($("checkCallText")) $("checkCallText").textContent = `目標 ${num(kpiSetData.tomorrowKpiCallTotal)} / 執行 ${actualCall} ${okText(actualCall >= num(kpiSetData.tomorrowKpiCallTotal))}`;
     if ($("checkInviteText")) $("checkInviteText").textContent = `目標 ${num(kpiSetData.tomorrowKpiCallOld3Y)} / 執行 ${actualInvite} ${okText(actualInvite >= num(kpiSetData.tomorrowKpiCallOld3Y))}`;
@@ -378,7 +371,7 @@ function renderHuddle() {
     }
 }
 
-// 🚀 修改後的 fetchAndRenderProgress：一人一個圖卡，內部顯示多個進度條
+// 一人一個圖卡，內部顯示多個進度條 (吉伊卡哇綠/橘配色調整)
 async function fetchAndRenderProgress() {
     const container = $("progress-dashboard");
     if (!container) return;
@@ -407,29 +400,29 @@ async function fetchAndRenderProgress() {
         // --- 2. 渲染邏輯：遍歷每個「同仁」生成一個大圖卡 ---
         Object.entries(groupedTasks).forEach(([staffName, staffTasks]) => {
             
-            // 生成該同仁內部的所有進度條 HTML
+            // 生成該同仁內部的所有進度條 HTML (端午艾草綠與蛋黃黃配色)
             const taskRowsHtml = staffTasks.map(task => {
-                const barColor = task.percent >= 80 ? "#A8B890" : "#E5B083"; 
-        return `
-            <div style="margin-bottom: 20px;">
-                <div style="display:flex; justify-content:space-between; align-items:end; margin-bottom:8px;">
-                    <span style="font-size:14px; font-weight:bold; color:#5C4033;">${task.taskName}</span>
-                    <span style="font-weight:900; color:${barColor}; font-size:15px;">${task.completed} / ${task.target} 筆</span>
-                </div>
-                <div style="background:#EFEBE5; height:12px; border-radius:10px; overflow:hidden;">
-                    <div style="background:${barColor}; width:${task.percent}%; height:100%; transition:width 1.2s cubic-bezier(0.17, 0.67, 0.83, 0.67);"></div>
-                </div>
-                <div style="text-align:right; font-size:11px; color:#A89F94; margin-top:5px; font-weight:bold;">達成率 ${task.percent}%</div>
-            </div>
-        `;
-    }).join("");
+                const barColor = task.percent >= 80 ? "var(--primary)" : "var(--accent-orange)"; 
+                return `
+                    <div style="margin-bottom: 20px;">
+                        <div style="display:flex; justify-content:space-between; align-items:end; margin-bottom:8px;">
+                            <span style="font-size:14px; font-weight:bold; color:var(--primary-dark);">${task.taskName}</span>
+                            <span style="font-weight:900; color:${barColor}; font-size:15px;">${task.completed} / ${task.target} 筆</span>
+                        </div>
+                        <div style="background:#EBF3ED; height:12px; border-radius:10px; overflow:hidden;">
+                            <div style="background:${barColor}; width:${task.percent}%; height:100%; transition:width 1.2s cubic-bezier(0.17, 0.67, 0.83, 0.67);"></div>
+                        </div>
+                        <div style="text-align:right; font-size:11px; color:#A89F94; margin-top:5px; font-weight:bold;">達成率 ${task.percent}%</div>
+                    </div>
+                `;
+            }).join("");
 
             // 生成外層的大圖卡容器
             const card = document.createElement("div");
-            card.style.cssText = "background:#fff; padding:18px; border-radius:14px; margin-bottom:16px; border:1px solid var(--border); box-shadow: 0 4px 12px rgba(0,0,0,0.05);";
+            card.style.cssText = "background:#fff; padding:18px; border-radius:14px; margin-bottom:16px; border:2px solid var(--border); box-shadow: 0 4px 12px rgba(127,160,116,0.08);";
             
             card.innerHTML = `
-                <div style="font-weight:800; font-size:18px; color:var(--primary-dark); margin-bottom:15px; border-bottom: 1px solid #F0F0F0; padding-bottom:8px; display:flex; align-items:center; gap:8px;">
+                <div style="font-weight:800; font-size:18px; color:var(--primary-dark); margin-bottom:15px; border-bottom: 1px solid #ECECEC; padding-bottom:8px; display:flex; align-items:center; gap:8px;">
                      ${staffName}
                 </div>
                 ${taskRowsHtml}
@@ -443,7 +436,6 @@ async function fetchAndRenderProgress() {
         container.innerHTML = `<p style="text-align:center; color:#FF6B6B; font-size:13px;">⚠️ 無法連線至中控表系統</p>`;
     }
 }
-
 
 async function renderStarryMap() {
     const container = $("starry-map-container");
@@ -460,36 +452,33 @@ async function renderStarryMap() {
 
         staffNames.forEach(name => {
             const card = document.createElement("div");
-            card.style.cssText = "background:#fff; padding:15px; border-radius:15px; margin-bottom:12px; border:1px solid var(--border); box-shadow: 2px 2px 8px rgba(0,0,0,0.05);";
+            card.style.cssText = "background:#fff; padding:15px; border-radius:15px; margin-bottom:12px; border:2px solid var(--border); box-shadow: 2px 2px 8px rgba(127,160,116,0.05);";
             
-let starsHtml = "";
-for (let i = 1; i <= 12; i++) {
-    const monthKey = `${i}月`;
-    const monthPlans = globalHistoryData[name]?.[monthKey]; // 取得該月計畫陣列
-    
-    let displayContent = ""; // 預設：完全空白 (未來月份)
+            let starsHtml = "";
+            for (let i = 1; i <= 12; i++) {
+                const monthKey = `${i}月`;
+                const monthPlans = globalHistoryData[name]?.[monthKey]; // 取得該月計畫陣列
+                
+                let displayContent = ""; // 預設：完全空白 (未來月份)
 
-    // 檢查該月是否有資料
-    if (monthPlans && monthPlans.length > 0) {
-        // 🚀 判斷邏輯：檢查陣列中是否「所有方案」的 status 都是 "⭐"
-        const isAllDone = monthPlans.every(p => p.status === "⭐" || p.status === "⭐️");
-        
-        if (isAllDone) {
-            // 狀態 A：全數完成 -> 顯示亮起的金星
-            displayContent = `<div style="font-size:20px;">⭐</div>`;
-        } else {
-            // 狀態 B：有資料但未全完成 -> 顯示「原本沒亮起的⭐」(灰色)
-            displayContent = `<div style="font-size:20px; filter:grayscale(1); opacity:0.3;">⭐</div>`;
-        }
-    }
+                // 檢查該月是否有資料
+                if (monthPlans && monthPlans.length > 0) {
+                    const isAllDone = monthPlans.every(p => p.status === "⭐" || p.status === "⭐️");
+                    
+                    if (isAllDone) {
+                        displayContent = `<div style="font-size:20px;">⭐</div>`;
+                    } else {
+                        displayContent = `<div style="font-size:20px; filter:grayscale(1); opacity:0.3;">⭐</div>`;
+                    }
+                }
 
-    starsHtml += `
-        <div onclick="openHistoryDetail('${name}', '${monthKey}')" style="text-align:center; cursor:pointer; min-height:40px;">
-            <div style="font-size:10px; color:#999; margin-bottom:2px;">${i}月</div>
-            ${displayContent}
-        </div>
-    `;
-}
+                starsHtml += `
+                    <div onclick="openHistoryDetail('${name}', '${monthKey}')" style="text-align:center; cursor:pointer; min-height:40px;">
+                        <div style="font-size:10px; color:#999; margin-bottom:2px;">${i}月</div>
+                        ${displayContent}
+                    </div>
+                `;
+            }
 
             card.innerHTML = `
                 <div style="font-weight:800; color:var(--primary-dark); margin-bottom:10px; display:flex; justify-content:space-between; align-items:center;">
@@ -507,7 +496,6 @@ for (let i = 1; i <= 12; i++) {
     }
 }
 
-
 // 點擊星星的詳細視窗邏輯
 window.openHistoryDetail = function(name, month) {
     const modal = $("history-modal");
@@ -521,14 +509,13 @@ window.openHistoryDetail = function(name, month) {
         return;
     }
 
-    // 🚀 1. 產生帶有顏色與 Emoji 的計畫清單
+    // 1. 產生帶有顏色與 Emoji 的計畫清單
     let plansListHtml = monthPlans.map((p, idx) => {
-        // 判斷是否達成
         const isAchieved = p.status === '⭐' || p.status === '⭐️';
         const statusEmoji = isAchieved ? "✔️" : "❌";
         const statusLabel = isAchieved ? "達成" : "未達標";
-        const themeColor = isAchieved ? "#248EB3" : "#FF6B6B"; // 藍色 vs 紅色
-        const bgColor = isAchieved ? "#E0F7EF" : "#FFF0F0";    // 淺綠底 vs 淺紅底
+        const themeColor = isAchieved ? "var(--primary)" : "#FF6B6B"; 
+        const bgColor = isAchieved ? "#EBF5ED" : "#FFF0F0";    
 
         return `
             <div style="background:#f9f9f9; padding:15px; border-radius:12px; margin-bottom:12px; border-left:5px solid ${themeColor}; box-shadow: 2px 2px 5px rgba(0,0,0,0.03);">
@@ -548,7 +535,7 @@ window.openHistoryDetail = function(name, month) {
     const hasFailedTask = monthPlans.some(p => !(p.status === "⭐" || p.status === "⭐️"));
     let rcaHtml = "";
     
-if (hasFailedTask) {
+    if (hasFailedTask) {
         rcaHtml = `
             <div style="border-top:2px dashed #eee; margin-top:20px; padding-top:15px;">
                 <h3 style="color:#FF6B6B; text-align:center; font-size:16px; margin-bottom:10px;">未達標原因回饋 💡</h3>
@@ -559,7 +546,7 @@ if (hasFailedTask) {
                     <option value="更好的工具">🛠️ 更好的工具</option>
                     <option value="其他">📝 其他（面談討論）</option>
                 </select>
-                <button onclick="submitRCA('${name}', '${month}')" style="width:100%; background:${hasFailedTask ? '#FF6B6B' : 'var(--primary-dark)'}; color:white; padding:14px; border-radius:50px; margin-top:15px; border:none; font-weight:bold; cursor:pointer; box-shadow: 0 4px 0px rgba(0,0,0,0.1);">送出回饋</button>
+                <button onclick="submitRCA('${name}', '${month}')" style="width:100%; background:#FF6B6B; color:white; padding:14px; border-radius:50px; margin-top:15px; border:none; font-weight:bold; cursor:pointer; box-shadow: 0 4px 0px rgba(0,0,0,0.1);">送出回饋</button>
             </div>
         `;
     }
@@ -577,18 +564,16 @@ window.submitRCA = async function(name, month) {
     if (!reasonEl) return;
     
     const reason = reasonEl.value;
-    const submitBtn = event.target; // 取得目前的按鈕
+    const submitBtn = event.target; 
 
     // 1. 防止重複點擊
     submitBtn.disabled = true;
     submitBtn.innerText = "傳送中...";
 
     try {
-        // 2. 發送 POST 請求到您的 GAS
-        // 注意：這裡必須使用 JSON.stringify 打包資料
         await fetch(PROGRESS_API_URL, {
             method: "POST",
-            mode: "no-cors", // 避免瀏覽器跨網域攔截
+            mode: "no-cors", 
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({ 
                 action: "submitRCA", 
@@ -598,9 +583,8 @@ window.submitRCA = async function(name, month) {
             })
         });
 
-        // 3. 成功後的回饋
         alert(`✔️ 紀錄成功！\n已將「${month} / ${name}」的分析原因送出：\n${reason}`);
-        closeModal(); // 關閉彈窗
+        closeModal(); 
         
     } catch (e) {
         console.error("RCA 送出失敗:", e);
@@ -615,11 +599,6 @@ window.submitRCA = async function(name, month) {
 window.closeModal = function() {
     if ($("history-modal")) $("history-modal").classList.add("hidden");
 };
-
-// ===== 產生訊息 =====
-
-
-
 
 // ===== 初始化邏輯 =====
 function bindAutoSave() {
@@ -652,13 +631,13 @@ function initDateLoad() {
 }
 
 document.addEventListener("DOMContentLoaded", () => {
-    // 綁定分頁按鈕監聽 (維持原樣)
+    // 綁定分頁按鈕監聽
     if($("tab-huddle")) $("tab-huddle").addEventListener("click", () => showView("huddle"));
     if($("tab-report")) $("tab-report").addEventListener("click", () => showView("report"));
     if($("tab-plan")) $("tab-plan").addEventListener("click", () => showView("plan"));
     if($("tab-history")) $("tab-history").addEventListener("click", () => showView("history"));
   
-  // 🚀 關鍵修正：確保網頁開啟後，主動執行一次「今日檢視」的切換與渲染
+    // 確保網頁開啟後，主動執行一次「今日檢視」的切換與渲染
     showView("huddle");
 
     bindAutoSave();
@@ -667,36 +646,34 @@ document.addEventListener("DOMContentLoaded", () => {
     initPlanTab();
     fetchAndRenderProgress();
 
-    // === 🎂 寓葳生日彩蛋：Marsh & Quokka 專屬邏輯 ===
-const charTrigger = document.querySelector('.section');
-if (charTrigger) {
-    charTrigger.addEventListener('click', (e) => {
-        const rect = charTrigger.getBoundingClientRect();
-        const x = e.clientX - rect.left; // 點擊相對於容器左側的距離
-        const y = e.clientY - rect.top;  // 點擊相對於容器頂部的距離（向上為負）
+    // === 🎂 寓葳生日彩蛋：吉伊卡哇 & 小八貓 專屬定位與邏輯 ===
+    const charTrigger = document.querySelector('.section');
+    if (charTrigger) {
+        charTrigger.addEventListener('click', (e) => {
+            const rect = charTrigger.getBoundingClientRect();
+            const x = e.clientX - rect.left; // 點擊相對於容器左側的距離
+            const y = e.clientY - rect.top;  // 點擊相對於容器頂部的距離（向上為負）
 
-        const today = new Date();
-        const isMay19 = (today.getMonth() + 1 === 5 && today.getDate() === 19);
-        const birthdayMsg = "🎂 寓葳生日快樂 🎉";
-        const waitMsg = "🎂 寓葳 5/19 生日快樂 🎉";
+            const today = new Date();
+            const isMay19 = (today.getMonth() + 1 === 5 && today.getDate() === 19);
+            const birthdayMsg = "🎂 寓葳生日快樂 🎉";
+            const waitMsg = "🎂 寓葳 5/19 生日快樂 🎉";
 
-        // 1. 原有的左上角 Marsh 判定 (x 靠近 0, y 稍微偏上)
-        const isMarsh = (y < 0 && y > -60 && x < 60);
+            // 1. 左上角小八貓判定 (原本是 Marsh，現為 hachiware_zongzi.png)
+            const isHachiware = (y < 0 && y > -60 && x < 60);
 
-        // 2. 新增的 Quokka 中間偏右判定
-        // Quokka 寬 220px, 置中於容器 (left: 50%, transform: translateX(-50%))
-        const centerX = rect.width / 2;
-        // 判定範圍：x 在中心點往右 10px ~ 80px 之間，y 在上方 -100px 到容器內 40px 之間
-        const isQuokkaRight = (x > centerX + 10 && x < centerX + 80 && y > -100 && y < 40);
+            // 2. 新增的吉伊卡哇龍舟圖判定 (原本是 Quokka，現為 chiikawa_dragonboat.png)
+            const centerX = rect.width / 2;
+            const isChiikawaRight = (x > centerX + 10 && x < centerX + 80 && y > -100 && y < 40);
 
-        if (isMarsh || isQuokkaRight) {
-            if (isMay19) {
-                alert(birthdayMsg);
-            } else {
-                alert(waitMsg);
+            if (isHachiware || isChiikawaRight) {
+                if (isMay19) {
+                    alert(birthdayMsg);
+                } else {
+                    alert(waitMsg);
+                }
             }
-        }
-    });
-}
+        });
+    }
     // === 彩蛋結束 ===
 });

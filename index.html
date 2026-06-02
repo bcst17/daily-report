@@ -89,8 +89,8 @@ h1::after {
   display:flex;
   gap:8px;
   margin-bottom:60px;    
-  position: relative;     /* 新增定位，確保點擊範圍不被遮擋 */
-  z-index: 100;           /* 提高層級，強制置於最上層 */
+  position: relative;     /* 保留定位，維持正常版面流 */
+  z-index: 1;             /* 將按鈕層級設為 1，讓可愛的圖片渲染在按鈕上方 */
 }
 
 .tab-header button{
@@ -134,15 +134,15 @@ h1::after {
   height: 180px;
   background: url("chiikawa_dragonboat.png") no-repeat center;
   background-size: contain;
-  z-index: 10;
-  pointer-events: none;
+  z-index: 10;            /* 圖片層級設為 10，高於按鈕 */
+  pointer-events: none;   /* 滑鼠事件直接穿透，100% 不擋住按鈕點擊 */
 }
 
 /* 3. 左上角角色：小八貓與粽子 (After) */
 .section::after {
   content: ""; 
   position: absolute; 
-  z-index: 10;
+  z-index: 10;            /* 圖片層級設為 10，高於按鈕 */
   
   /* 位置設定：飛出邊框 */
   top: -116px;    
@@ -154,8 +154,7 @@ h1::after {
   background: url("hachiware_zongzi.png") no-repeat center;
   background-size: contain;
   
-  /* 避免擋住滑鼠點擊 */
-  pointer-events: auto;
+  pointer-events: none;   /* 修改：改為 none 穿透！滑鼠事件直接穿透，完美點擊底下的分頁 */
 }
 
 .section h2{ margin:0 0 10px; font-size:18px; font-weight:900; color: var(--primary-dark); border-left: 5px solid var(--primary); padding-left: 8px; }

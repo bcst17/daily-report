@@ -54,7 +54,7 @@ const monthlyData = {
   "林書廷": [
     { content: "2025 忠孝 HA 潛客追蹤", target: "6 月邀約 3 位回門市", customerType: "潛客", itemType: "HA" },
     { content: "5 月暫借 HST 個案追蹤(主要業績占比)", target: "6 月 APAP 暫借率 100%", customerType: "潛客", itemType: "RS" },
-    { content: "忠孝 HA 歷年交貨舊客聯繫", target: "每日新增 2 位預約，合計 6 從名單邀約回 20 位", customerType: "舊客", itemType: "HA" }
+    { content: "忠孝 HA 歷年交貨舊客聯繫", target: "每日新增 2 位預約，合計 6 月從名單邀約回 20 位", customerType: "舊客", itemType: "HA" }
   ],
 };
 

@@ -41,7 +41,7 @@ const monthlyData = {
   ],
   "林寓葳": [
     { content: "撈取過去一年內訂閱之 HA 用戶，特例申請轉買斷方案", target: "5 月底前給秉忻", customerType: "舊客", itemType: "HA" },
-    { content: "2018 年HA潛客繼續連記", target: "6 月完成 42 筆", customerType: "潛客", itemType: "HA" },
+    { content: "2018 年HA潛客繼續聯繫", target: "6 月完成 42 筆", customerType: "潛客", itemType: "HA" },
     { content: "重新確認歷年交貨 APAP 舊客，是否有 AS11 的預購意願", target: "不設定目標，自行完成追蹤", customerType: "舊客", itemType: "RS" },
     { content: "2025 年RS潛客追蹤", target: "6 月完成剩餘 16 筆，但順位放後面，前三者行動方案優先", customerType: "潛客", itemType: "RS" }
   ],

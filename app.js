@@ -11,50 +11,53 @@ let globalHistoryData = {};
 // 這裡可以預先輸入每位同仁的計畫，數量不限
 const monthlyData = {
   "郭孟鑫": [
-    { content: "2018 和2023 站前 HA 潛客追蹤", target: "6 月完成 10 筆聯繫", customerType: "潛客", itemType: "HA" }
+    { content: "繼續完成 2024、2025 站前 HA 潛客追蹤", target: "7 月完成 15 筆聯繫", customerType: "潛客", itemType: "HA" }
   ],
   "陳詩潔": [
-    { content: "完成 5 月剩餘 6 筆潛客聯繫；因 2025 年潛客效益較低，另抓 2019 年名單並自行篩選適合對象優先致電", target: " 6 月底前完成 30 筆", customerType: "潛客", itemType: "HA" }
+    { content: "考量外站 + 聽力所時間佔比，完成 6 月份潛客及訂閱中用戶追蹤即可", target: " 潛客追蹤，設定 NS", customerType: "潛客", itemType: "HA" }
   ],
   "游瑟焄": [
-    { content: " 站前 2019~2023 自己名字的 HA 潛客追蹤", target: "6 月完成 8 筆聯繫", customerType: "潛客", itemType: "HA" }
+    { content: " 站前 2018年 自己名字的 HA 潛客追蹤", target: "7 月完成 8 筆聯繫", customerType: "潛客", itemType: "HA" },
+    { content: " 桃長 2020年 HA 舊客追蹤，確認是否有安排回店需求", target: "完成 29 位個案確認", customerType: "舊客", itemType: "HA" }
   ],
   "魏頎恩": [
-    { content: "2020 站前 HA 潛客追蹤（預估兩位回店）", target: "6 月完成 30 筆聯繫", customerType: "潛客", itemType: "HA" },
-    { content: "站前 2021 RS AHI > 15 潛客追蹤", target: "6 月完成 9 筆聯繫", customerType: "潛客", itemType: "RS" }
+    { content: "站前 2020 RS AHI > 15 潛客追蹤", target: "7 月完成 13 筆聯繫", customerType: "潛客", itemType: "RS" },
+    { content: "保健每月完成當月目標", target: "7 月保健營收 3000 元", customerType: "舊客", itemType: "HA" }
   ],
   "李孟馨": [
     { content: "2025 台大 HA 潛客追蹤", target: "6 月完成 20 筆聯繫", customerType: "潛客", itemType: "HA" }
   ],
   "劉瑋婷": [
-    { content: "金山南潛客剩餘數量繼續完成(專職 HA 部分)", target: "六月底完成 30 筆", customerType: "潛客", itemType: "HA" }
+    { content: "2026 年聽檢後未追蹤、試聽後未成交名單確認 NS", target: "七月底完成 18 筆", customerType: "潛客", itemType: "HA" }
   ],
   "周曉玄": [
-    { content: "主要觀察 6 月長庚轉介狀況，門市端先以成功率較高的 RS 潛客邀約為主", target: "6 月邀約 3 位回店", customerType: "潛客", itemType: "RS" }
+    { content: "今年舊客試聽率低於平均，提供試聽贈 5 點方案做應用", target: "達成率在進度上，先不額外設定目標", customerType: "舊客", itemType: "HA" },
+    { content: "針對現有預約舊客給予轉介卡加名片，並於兩周後關心發送狀況", target: "每周至少 1 位", customerType: "舊客", itemType: "HA" },
+    { content: "Google Map 評論", target: "每月至少 1 篇", customerType: "舊客", itemType: "HA" }
   ],
   "蕭純聿": [
-    { content: "執行忠孝 2019~2021 年潛客聯繫（因 HA/RS 已達標，本月設定少量目標）", target: "完成 25 筆聯繫", customerType: "潛客", itemType: "HA/RS" }
+    { content: "考量預約數量和達成率，針對現有預約，過保舊客給予轉介卡加名片，並於兩周後關心發送狀況", target: "每周至少 1 位", customerType: "舊客", itemType: "HA" },
+    { content: "Google Map 評論", target: "每月至少 1 篇", customerType: "舊客", itemType: "HA" }
   ],
   "陳宛妤": [
     { content: "提升 APAP 服務經驗，聯繫 2024 年忠孝 RS 舊客，壓力檢測、耗材銷售、舊客介紹", target: "完成 30 筆聯繫", customerType: "舊客", itemType: "RS" },
     { content: "APAP 成交率提升", target: "每月至少一位 APAP 暫借由睡眠技師陪同服務", customerType: "潛客", itemType: "RS" }
   ],
   "林寓葳": [
-    { content: "撈取過去一年內訂閱之 HA 用戶，特例申請轉買斷方案", target: "5 月底前給秉忻", customerType: "舊客", itemType: "HA" },
-    { content: "2018 年HA潛客繼續聯繫", target: "6 月完成 42 筆", customerType: "潛客", itemType: "HA" },
-    { content: "重新確認歷年交貨 APAP 舊客，是否有 AS11 的預購意願", target: "不設定目標，自行完成追蹤", customerType: "舊客", itemType: "RS" },
-    { content: "2025 年RS潛客追蹤", target: "6 月完成剩餘 16 筆，但順位放後面，前三者行動方案優先", customerType: "潛客", itemType: "RS" }
+    { content: "訂閱中 HA 用戶轉買斷方案，剩餘 3 筆有機會的繼續追", target: "7 月底前完成聯繫", customerType: "舊客", itemType: "HA" },
+    { content: "2018~2019 年 HA 潛客，工讀生先協助排除「個資不同意/無聯繫方式/多次去電未接」", target: "7 月完成 30 筆", customerType: "潛客", itemType: "HA" },
+    { content: "2025 年 RS 潛客，針對有發送過簡訊的名單聯繫", target: "7 月完成剩餘 16 筆", customerType: "潛客", itemType: "RS" }
   ],
   "吳欣珮": [
-    { content: "試聽數不足以符合目標，故需增加舊客試聽數，從歷年交貨名單中持續回店的優先", target: "6 月有 2 筆舊客試聽", customerType: "舊客", itemType: "HA" }
+    { content: "上半年聽檢有聽損的個案，7月完成追蹤。若有聽檢需求，再確認是否由書廷安排試聽", target: "合計 10 筆完成確認", customerType: "舊客", itemType: "HA" }
   ],
   "呂桂梅": [
-    { content: "八德 RS 潛客 2024 年剩餘名單完成，並執行 2023 年潛客聯繫", target: "6 月完成 71 筆聯繫", customerType: "潛客", itemType: "RS" }
+    { content: "八德 RS 潛客 2022 年潛客聯繫", target: "7 月完成 65 筆聯繫", customerType: "潛客", itemType: "RS" }
   ],
   "林書廷": [
-    { content: "2025 忠孝 HA 潛客追蹤", target: "6 月邀約 3 位回門市", customerType: "潛客", itemType: "HA" },
-    { content: "5 月暫借 HST 個案追蹤(主要業績占比)", target: "6 月 APAP 暫借率 100%", customerType: "潛客", itemType: "RS" },
-    { content: "忠孝 HA 歷年交貨舊客聯繫", target: "每日新增 2 位預約，合計 6 月從名單邀約回 20 位", customerType: "舊客", itemType: "HA" }
+    { content: "2024 忠孝 HA 潛客追蹤", target: "7 月邀約 1 位回門市", customerType: "潛客", itemType: "HA" },
+    { content: "CROS 個案與教育訓練討論", target: "6/29 前提供討論結果給秉忻", customerType: "潛客", itemType: "HA" },
+    { content: "忠孝 HA 2021年交貨舊客聯繫，針對非退輔會、半年以上未進店邀約", target: "7 月邀約 10 位進店", customerType: "舊客", itemType: "HA" }
   ],
 };
 

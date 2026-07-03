@@ -40,8 +40,9 @@ const monthlyData = {
     { content: "Google Map 評論", target: "每月至少 1 篇", customerType: "舊客", itemType: "HA" }
   ],
   "陳宛妤": [
-    { content: "提升 APAP 服務經驗，聯繫 2024 年忠孝 RS 舊客，壓力檢測、耗材銷售、舊客介紹", target: "完成 30 筆聯繫", customerType: "舊客", itemType: "RS" },
-    { content: "APAP 成交率提升", target: "每月至少一位 APAP 暫借由睡眠技師陪同服務", customerType: "潛客", itemType: "RS" }
+    { content: "聯繫 2024 年桃長 HA 舊客，針對半年以上未回院，安排到週二服務，提升週二流量", target: "完成 12 筆聯繫", customerType: "舊客", itemType: "HA" },
+    { content: "保健食品業績，每月達標，優先針對淨耳棉片，每位舊客回店追蹤皆把棉片加入到服務中", target: "月達成率 100 %", customerType: "舊客", itemType: "HA" },
+    { content: "Google Map 評論", target: "每月至少 1 篇", customerType: "舊客", itemType: "HA" }
   ],
   "林寓葳": [
     { content: "訂閱中 HA 用戶轉買斷方案，剩餘 3 筆有機會的繼續追", target: "7 月底前完成聯繫", customerType: "舊客", itemType: "HA" },

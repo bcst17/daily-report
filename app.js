@@ -1,4 +1,4 @@
-console.log("🎋 Chiikawa & Dragon Boat Festival Edition app.js loaded!");
+console.log("🌱 Pikmin Bloom Edition app.js loaded!");
 
 // ✅ 測試版儲存前綴
 const STORAGE_PREFIX = "daily-report-test-";
@@ -198,7 +198,7 @@ function recalcTotals(doSave = true) {
 }
 window.recalcTotals = recalcTotals;
 
-// ===== 分頁切換邏輯 (更新以支援新分頁) =====
+// ===== 分頁切換邏輯 =====
 function showView(view) {
     const views = { 
         'huddle': $('huddle-view'), 
@@ -229,7 +229,7 @@ function showView(view) {
     }
 }
 
-// ===== 當月計畫渲染邏輯 (端午節 & 吉伊卡哇主題優化) =====
+// ===== 當月計畫渲染邏輯 (皮克敏鮮豔色彩主題優化) =====
 function initPlanTab() {
     const selectName = $("plan-name-select");
     const selectCustomer = $("filter-customer");
@@ -282,14 +282,14 @@ function initPlanTab() {
             return;
         }
 
-        // 4. 生成任務卡片 (吉伊卡哇端午配色版)
+        // 4. 生成任務卡片 (皮克敏與大自然繽紛配色版)
         filteredData.forEach((plan, index) => {
             const planEl = document.createElement("div");
-            planEl.style.cssText = "background: #fff; border: 2px solid var(--border); border-radius: 12px; padding: 18px; margin-bottom: 18px; border-left: 6px solid var(--primary); box-shadow: 0 4px 10px rgba(127,160,116,0.1); position:relative;";
+            planEl.style.cssText = "background: #fff; border: 2px solid var(--border); border-radius: 12px; padding: 18px; margin-bottom: 18px; border-left: 6px solid var(--primary); box-shadow: 0 4px 10px rgba(101,179,58,0.1); position:relative;";
             
-            // 標籤顏色定義 (與吉伊卡哇及端午節相符的輕柔色彩)
-            const custColor = plan.customerType === '潛客' ? '#FFB7B2' : (plan.customerType === '新客' ? '#B5E2FA' : '#E2C2C2'); 
-            const itemColor = plan.itemType === 'RS' ? '#C7E9C0' : '#FFE29A'; 
+            // 標籤顏色定義 (對應皮克敏的代表色彩)
+            const custColor = plan.customerType === '潛客' ? '#FF8A80' : (plan.customerType === '新客' ? '#80D8FF' : '#E040FB'); // 紅色皮克敏、藍色皮克敏、紫色皮克敏
+            const itemColor = plan.itemType === 'RS' ? '#CCFF90' : '#FFE57F'; // 嫩綠色與朝氣黃色
 
             // 標籤文字縮減邏輯
             const custAbbr = plan.customerType ? plan.customerType.substring(0, 1) : '?';
@@ -327,7 +327,7 @@ function initPlanTab() {
     // 監聽變更
     [selectName, selectCustomer, selectItem].forEach(el => el.addEventListener("change", renderPlans));
     
-    // 初始化執行一次渲染（預設顯示全區）
+    // 初始化執行一次渲染
     renderPlans();
 }
 
@@ -375,7 +375,7 @@ function renderHuddle() {
     }
 }
 
-// 一人一個圖卡，內部顯示多個進度條 (吉伊卡哇綠/橘配色調整)
+// 一人一個圖卡，內部顯示多個進度條 (皮克敏草地綠與花蜜橘色調整)
 async function fetchAndRenderProgress() {
     const container = $("progress-dashboard");
     if (!container) return;
@@ -404,7 +404,7 @@ async function fetchAndRenderProgress() {
         // --- 2. 渲染邏輯：遍歷每個「同仁」生成一個大圖卡 ---
         Object.entries(groupedTasks).forEach(([staffName, staffTasks]) => {
             
-            // 生成該同仁內部的所有進度條 HTML (端午艾草綠與蛋黃黃配色)
+            // 生成該同仁內部的所有進度條 HTML (鮮豔的皮克敏草地綠與探險橘)
             const taskRowsHtml = staffTasks.map(task => {
                 const barColor = task.percent >= 80 ? "var(--primary)" : "var(--accent-orange)"; 
                 return `
@@ -413,7 +413,7 @@ async function fetchAndRenderProgress() {
                             <span style="font-size:14px; font-weight:bold; color:var(--primary-dark);">${task.taskName}</span>
                             <span style="font-weight:900; color:${barColor}; font-size:15px;">${task.completed} / ${task.target} 筆</span>
                         </div>
-                        <div style="background:#EBF3ED; height:12px; border-radius:10px; overflow:hidden;">
+                        <div style="background:#F0F4EE; height:12px; border-radius:10px; overflow:hidden;">
                             <div style="background:${barColor}; width:${task.percent}%; height:100%; transition:width 1.2s cubic-bezier(0.17, 0.67, 0.83, 0.67);"></div>
                         </div>
                         <div style="text-align:right; font-size:11px; color:#A89F94; margin-top:5px; font-weight:bold;">達成率 ${task.percent}%</div>
@@ -423,7 +423,7 @@ async function fetchAndRenderProgress() {
 
             // 生成外層的大圖卡容器
             const card = document.createElement("div");
-            card.style.cssText = "background:#fff; padding:18px; border-radius:14px; margin-bottom:16px; border:2px solid var(--border); box-shadow: 0 4px 12px rgba(127,160,116,0.08);";
+            card.style.cssText = "background:#fff; padding:18px; border-radius:14px; margin-bottom:16px; border:2px solid var(--border); box-shadow: 0 4px 12px rgba(101,179,58,0.08);";
             
             card.innerHTML = `
                 <div style="font-weight:800; font-size:18px; color:var(--primary-dark); margin-bottom:15px; border-bottom: 1px solid #ECECEC; padding-bottom:8px; display:flex; align-items:center; gap:8px;">
@@ -445,7 +445,7 @@ async function renderStarryMap() {
     const container = $("starry-map-container");
     if (!container) return;
     
-    container.innerHTML = "<p style='text-align:center; color:#999; font-size:14px;'>正在讀取星圖資料...</p>";
+    container.innerHTML = "<p style='text-align:center; color:#999; font-size:14px;'>正在讀取花朵星圖資料...</p>";
 
     try {
         const response = await fetch(`${PROGRESS_API_URL}?action=getHistory`);
@@ -456,7 +456,7 @@ async function renderStarryMap() {
 
         staffNames.forEach(name => {
             const card = document.createElement("div");
-            card.style.cssText = "background:#fff; padding:15px; border-radius:15px; margin-bottom:12px; border:2px solid var(--border); box-shadow: 2px 2px 8px rgba(127,160,116,0.05);";
+            card.style.cssText = "background:#fff; padding:15px; border-radius:15px; margin-bottom:12px; border:2px solid var(--border); box-shadow: 2px 2px 8px rgba(101,179,58,0.05);";
             
             let starsHtml = "";
             for (let i = 1; i <= 12; i++) {
@@ -469,10 +469,11 @@ async function renderStarryMap() {
                 if (monthPlans && monthPlans.length > 0) {
                     const isAllDone = monthPlans.every(p => p.status === "⭐" || p.status === "⭐️");
                     
+                    // 皮克敏精神：達成目標即開出燦爛美麗的櫻花 🌸
                     if (isAllDone) {
-                        displayContent = `<div style="font-size:20px;">⭐</div>`;
+                        displayContent = `<div style="font-size:20px;">🌸</div>`;
                     } else {
-                        displayContent = `<div style="font-size:20px; filter:grayscale(1); opacity:0.3;">⭐</div>`;
+                        displayContent = `<div style="font-size:20px; filter:grayscale(1); opacity:0.3;">🌸</div>`;
                     }
                 }
 
@@ -500,7 +501,7 @@ async function renderStarryMap() {
     }
 }
 
-// 點擊星星的詳細視窗邏輯
+// 點擊星星/花朵的詳細視窗邏輯
 window.openHistoryDetail = function(name, month) {
     const modal = $("history-modal");
     const content = $("modal-content");
@@ -516,10 +517,10 @@ window.openHistoryDetail = function(name, month) {
     // 1. 產生帶有顏色與 Emoji 的計畫清單
     let plansListHtml = monthPlans.map((p, idx) => {
         const isAchieved = p.status === '⭐' || p.status === '⭐️';
-        const statusEmoji = isAchieved ? "✔️" : "❌";
-        const statusLabel = isAchieved ? "達成" : "未達標";
+        const statusEmoji = isAchieved ? "🌸" : "❌";
+        const statusLabel = isAchieved ? "綻放" : "未達標";
         const themeColor = isAchieved ? "var(--primary)" : "#FF6B6B"; 
-        const bgColor = isAchieved ? "#EBF5ED" : "#FFF0F0";    
+        const bgColor = isAchieved ? "#F1F8E9" : "#FFF0F0";    
 
         return `
             <div style="background:#f9f9f9; padding:15px; border-radius:12px; margin-bottom:12px; border-left:5px solid ${themeColor}; box-shadow: 2px 2px 5px rgba(0,0,0,0.03);">
@@ -545,9 +546,9 @@ window.openHistoryDetail = function(name, month) {
                 <h3 style="color:#FF6B6B; text-align:center; font-size:16px; margin-bottom:10px;">未達標原因回饋 💡</h3>
                 <select id="rca-reason" style="width:100%; padding:12px; border-radius:10px; border:2px solid #eee; font-size:16px; background:#fff;">
                     <option value="多一點時間">⏳ 多一點時間</option>
-                    <option value="同事的支援">🏃 同事的支援</option>
-                    <option value="外部資源協助">🏔️ 外部資源協助</option>
-                    <option value="更好的工具">🛠️ 更好的工具</option>
+                    <option value="同事的支援">🌱 皮克敏同伴的支援 (同事支援)</option>
+                    <option value="外部資源協助">🍄 挑戰巨大蘑菇 (外部資源協助)</option>
+                    <option value="更好的工具">🎒 探險背包升級 (更好的工具)</option>
                     <option value="其他">📝 其他（面談討論）</option>
                 </select>
                 <button onclick="submitRCA('${name}', '${month}')" style="width:100%; background:#FF6B6B; color:white; padding:14px; border-radius:50px; margin-top:15px; border:none; font-weight:bold; cursor:pointer; box-shadow: 0 4px 0px rgba(0,0,0,0.1);">送出回饋</button>
@@ -556,7 +557,7 @@ window.openHistoryDetail = function(name, month) {
     }
 
     content.innerHTML = `
-        <h3 style="color:var(--primary-dark); text-align:center; margin:0 0 15px 0; font-weight:900;">${month} 行動方案回顧</h3>
+        <h3 style="color:var(--primary-dark); text-align:center; margin:0 0 15px 0; font-weight:900;">${month} 行動方案花朵回顧 🌸</h3>
         <div style="max-height:350px; overflow-y:auto; padding-right:5px;">${plansListHtml}</div>
         ${rcaHtml}
     `;
@@ -649,6 +650,4 @@ document.addEventListener("DOMContentLoaded", () => {
     renderHuddle();
     initPlanTab();
     fetchAndRenderProgress();
-
-
 });

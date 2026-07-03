@@ -16,16 +16,16 @@
 
 <style>
 :root {
-  /* 吉伊卡哇 與 端午節 溫馨配色 */
-  --bg: #F5FAF6;             /* 淺竹葉綠底色，清爽端午氛圍 */
-  --primary-dark: #4A3C31;    /* 溫馨可可深褐 (吉伊卡哇手繪風輪廓) */
-  --primary: #7FA074;         /* 柔和端午艾草綠 */
-  --accent-orange: #FFD275;   /* 甜美蛋黃金黃色 */
-  --border: #CFDFD2;         /* 淺綠邊框 */
+  /* 皮克敏 Pikmin Bloom 繽紛自然配色 */
+  --bg: #F4FAF1;             /* 嫩綠草原背景，展現皮克敏探險氣息 */
+  --primary-dark: #2C5E2E;    /* 質感森林深綠 (皮克敏大自然輪廓線與文字) */
+  --primary: #65B33A;         /* 鮮豔皮克敏嫩芽綠 */
+  --accent-orange: #FF9800;   /* 朝氣活力皮克敏黃花蜜色 */
+  --border: #C2E2C4;         /* 柔和草地邊框 */
   --card-bg: #FFFFFF;
-  --btn-generate: #7FA074;
-  --btn-copy: #FFD275;
-  --secondary: #FFD275;
+  --btn-generate: #65B33A;
+  --btn-copy: #FF9800;
+  --secondary: #E91E63;       /* 豔麗皮克敏紅色花朵 */
 }
 
 *,*::before,*::after{ box-sizing:border-box; }
@@ -59,7 +59,7 @@ h1 {
   align-items: center;
   gap: 12px; 
   color: var(--primary-dark);
-  text-shadow: 2px 2px 0px rgba(127, 160, 116, 0.2);
+  text-shadow: 2px 2px 0px rgba(101, 179, 58, 0.15);
 }
 
 h1::before {
@@ -67,7 +67,7 @@ h1::before {
   display: block;
   width: 50px;  /* 調整圖片寬度 */
   height: 50px; /* 調整圖片高度 */
-  background: url("zongzi_left.png") no-repeat center;
+  background: url("pikmin_left.png") no-repeat center;
   background-size: contain;
   flex-shrink: 0;
 }
@@ -77,7 +77,7 @@ h1::after {
   display: block;
   width: 50px;
   height: 50px;
-  background: url("zongzi_right.png") no-repeat center;
+  background: url("pikmin_right.png") no-repeat center;
   background-size: contain;
   flex-shrink: 0;
 }
@@ -119,10 +119,10 @@ h1::after {
   margin-bottom:12px;
   position:relative;
   overflow: visible !important; /* 確保角色可以飛出邊框 */
-  box-shadow: 4px 4px 0px rgba(127, 160, 116, 0.15);
+  box-shadow: 4px 4px 0px rgba(101, 179, 58, 0.15);
 }
 
-/* 2. 右上角角色：吉伊卡哇與龍舟 (Before) */
+/* 2. 右上角角色：皮克敏與大自然 1 */
 .section::before {
   content: "";
   position: absolute;
@@ -132,13 +132,13 @@ h1::after {
   
   width: 180px; 
   height: 180px;
-  background: url("chiikawa_dragonboat.png") no-repeat center;
+  background: url("pikmin_character1.png") no-repeat center;
   background-size: contain;
   z-index: 10;            /* 圖片層級設為 10，高於按鈕 */
-  pointer-events: none;   /* 滑鼠事件直接穿透，100% 不擋住按鈕點擊 */
+  pointer-events: none;   /* 滑鼠事件直接穿透 */
 }
 
-/* 3. 左上角角色：小八貓與粽子 (After) */
+/* 3. 左上角角色：皮克敏與大自然 2 */
 .section::after {
   content: ""; 
   position: absolute; 
@@ -151,10 +151,10 @@ h1::after {
   /* 尺寸與圖片 */
   width: 200px;   
   height: 200px; 
-  background: url("hachiware_zongzi.png") no-repeat center;
+  background: url("pikmin_character2.png") no-repeat center;
   background-size: contain;
   
-  pointer-events: none;   /* 修改：改為 none 穿透！滑鼠事件直接穿透，完美點擊底下的分頁 */
+  pointer-events: none;   /* 滑鼠事件直接穿透，完美點擊底下的分頁 */
 }
 
 .section h2{ margin:0 0 10px; font-size:18px; font-weight:900; color: var(--primary-dark); border-left: 5px solid var(--primary); padding-left: 8px; }
@@ -172,7 +172,7 @@ input,select{
 input:focus, select:focus{
   outline: none;
   border-color: var(--primary);
-  box-shadow: 0 0 0 3px rgba(127, 160, 116, 0.15);
+  box-shadow: 0 0 0 3px rgba(101, 179, 58, 0.15);
 }
 
 .actions{
@@ -196,7 +196,7 @@ button{
 .btn-primary{ flex:1; background:var(--btn-generate); color:#fff; }
 .btn-secondary{ flex:1; background:var(--btn-copy); color:#fff; }
 
-/* =============== 🌟 Action Animation =============== */
+/* =============== 🌟 Action Animation (皮克敏櫻花花瓣飄落特效) =============== */
 .leaves span {
   position:absolute;
   top:-20px;
@@ -204,6 +204,8 @@ button{
   font-size: 20px;
   animation: leafFall 8s linear infinite;
   opacity: 0;
+  z-index: 0;
+  pointer-events: none;
 }
 
 /* 🎨 讓 6 個 Emoji 分散在螢幕各處 */
@@ -232,6 +234,16 @@ button{
 </head>
 
 <body>
+<!-- 🌸 補上飄落皮克敏花瓣與探險嫩芽的動態特效容器 🌸 -->
+<div class="leaves">
+  <span>🌸</span>
+  <span>🌱</span>
+  <span>🌼</span>
+  <span>🌸</span>
+  <span>🍃</span>
+  <span>🌱</span>
+</div>
+
 <div class="container">
   <h1>台北一區上班小助手</h1>
   
@@ -280,7 +292,7 @@ button{
 
   <section id="history-view" class="section hidden">
     <h2>每月成果回顧</h2>
-    <p class="subtitle">點擊星星查看紀錄，點擊空白處分析原因</p>
+    <p class="subtitle">點擊花朵查看紀錄，點擊空白處分析原因</p>
     <div id="starry-map-container" style="margin-top: 20px;">
       <p style="text-align:center; color:#999; font-size:14px;">資料載入中...</p>
     </div>
@@ -293,8 +305,6 @@ button{
     </div>
   </div>
 </div>
-
-
 
 <script src="app.js?v=18"></script>
 

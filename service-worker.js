@@ -1,5 +1,5 @@
-// 快取版本號：更新至 chiikawa 端午節特別版，以強制所有裝置切到新版快取
-const CACHE_NAME = "daily-report-chiikawa-v1";
+// 快取版本號：更新至 Pikmin Bloom 特別版，以強制所有裝置切到新版快取
+const CACHE_NAME = "daily-report-pikmin-v1";
 
 const urlsToCache = [
   "./",
@@ -7,10 +7,10 @@ const urlsToCache = [
   "./manifest.json",
   "./icon-192-v2.png",
   "./icon-512-v2.png",
-  "./zongzi_left.png",
-  "./zongzi_right.png",
-  "./chiikawa_dragonboat.png",
-  "./hachiware_zongzi.png"
+  "./pikmin_left.png",
+  "./pikmin_right.png",
+  "./pikmin_character1.png",
+  "./pikmin_character2.png"
 ];
 
 // 安裝：預先把重要檔案放進快取

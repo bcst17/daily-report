@@ -25,7 +25,7 @@ const monthlyData = {
     { content: "保健每月完成當月目標", target: "7 月保健營收 3000 元", customerType: "舊客", itemType: "HA" }
   ],
   "李孟馨": [
-    { content: "2025 台大 HA 潛客追蹤", target: "6 月完成 20 筆聯繫", customerType: "潛客", itemType: "HA" }
+    { content: "2025 年台大自己試聽過的 HA 潛客追蹤", target: "7 月完成 23 筆聯繫", customerType: "潛客", itemType: "HA" }
   ],
   "劉瑋婷": [
     { content: "2026 年聽檢後未追蹤、試聽後未成交名單確認 NS", target: "七月底完成 18 筆", customerType: "潛客", itemType: "HA" }

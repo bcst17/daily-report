@@ -518,7 +518,7 @@ window.openHistoryDetail = function(name, month) {
     let plansListHtml = monthPlans.map((p, idx) => {
         const isAchieved = p.status === '⭐' || p.status === '⭐️';
         const statusEmoji = isAchieved ? "🌸" : "❌";
-        const statusLabel = isAchieved ? "綻放" : "未達標";
+        const statusLabel = isAchieved ? "達標" : "未達標";
         const themeColor = isAchieved ? "var(--primary)" : "#FF6B6B"; 
         const bgColor = isAchieved ? "#F1F8E9" : "#FFF0F0";    
 

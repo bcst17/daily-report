@@ -1,11 +1,11 @@
 {
   "name": "科林門市每日回報",
   "short_name": "每日回報",
-  "version": "2",                        
+  "version": "3",                        
   "start_url": ".",
   "display": "standalone",
   "background_color": "#ffffff",
-  "theme_color": "#f4a300",
+  "theme_color": "#65B33A",
   "icons": [
     {
       "src": "icon-192-v2.png",

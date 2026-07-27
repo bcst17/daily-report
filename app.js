@@ -22,7 +22,7 @@ const monthlyData = {
   ],
   "魏頎恩": [
     { content: "站前 2020 RS AHI > 15 潛客追蹤", target: "7 月完成 13 筆聯繫", customerType: "潛客", itemType: "RS" },
-    { content: "保健每月完成當月目標", target: "7 月保健營收 3000 元", customerType: "舊客", itemType: "HA" }
+    { content: "保健每月完成當月目標", target: "7 月保健營收 3000 元", customerType: "舊客", itemType: "保健" }
   ],
   "李孟馨": [
     { content: "2025 年台大自己試聽過的 HA 潛客追蹤", target: "7 月完成 23 筆聯繫", customerType: "潛客", itemType: "HA" }
@@ -41,7 +41,7 @@ const monthlyData = {
   ],
   "陳宛妤": [
     { content: "聯繫 2024 年桃長 HA 舊客，針對半年以上未回院，安排到週二服務，提升週二流量", target: "完成 12 筆聯繫", customerType: "舊客", itemType: "HA" },
-    { content: "保健食品業績，每月達標，優先針對淨耳棉片，每位舊客回店追蹤皆把棉片加入到服務中", target: "月達成率 100 %", customerType: "舊客", itemType: "HA" },
+    { content: "保健食品業績，每月達標，優先針對淨耳棉片，每位舊客回店追蹤皆把棉片加入到服務中", target: "月達成率 100 %", customerType: "舊客", itemType: "保健" },
     { content: "Google Map 評論", target: "每月至少 1 篇", customerType: "舊客", itemType: "HA" }
   ],
   "林寓葳": [
@@ -289,7 +289,9 @@ function initPlanTab() {
             
             // 標籤顏色定義 (對應皮克敏的代表色彩)
             const custColor = plan.customerType === '潛客' ? '#FF8A80' : (plan.customerType === '新客' ? '#80D8FF' : '#E040FB'); // 紅色皮克敏、藍色皮克敏、紫色皮克敏
-            const itemColor = plan.itemType === 'RS' ? '#CCFF90' : '#FFE57F'; // 嫩綠色與朝氣黃色
+            
+            // 品項標籤顏色：RS (嫩綠色)、保健 (活力橘黃色)、其他/HA (朝氣黃色)
+            const itemColor = plan.itemType === 'RS' ? '#CCFF90' : (plan.itemType === '保健' ? '#FFD180' : '#FFE57F');
 
             // 標籤文字縮減邏輯
             const custAbbr = plan.customerType ? plan.customerType.substring(0, 1) : '?';

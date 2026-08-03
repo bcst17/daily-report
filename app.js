@@ -11,54 +11,58 @@ let globalHistoryData = {};
 // 這裡可以預先輸入每位同仁的計畫，數量不限
 const monthlyData = {
   "郭孟鑫": [
-    { content: "繼續完成 2024、2025 站前 HA 潛客追蹤", target: "7 月完成 15 筆聯繫", customerType: "潛客", itemType: "HA" }
+    { content: "26 年指定舊客名單完成聽力師追蹤結案", target: "8 月完成 22 筆聯繫，回店 + 聽檢為主", customerType: "舊客", itemType: "HA" },
+    { content: "保健食品落實舊客棉片加入服務流程", target: "8 月達月目標", customerType: "舊客", itemType: "保健" }
+
   ],
   "陳詩潔": [
-    { content: "考量外站 + 聽力所時間佔比，完成 6 月份潛客及訂閱中用戶追蹤即可", target: " 潛客追蹤，設定 NS", customerType: "潛客", itemType: "HA" }
+    { content: "26 年指定舊客名單，考量門市時間有限，先針對嬰幼兒結案", target: "8 月完成 8 筆聯繫，回店 + 聽檢為主", customerType: "舊客", itemType: "HA" },
+    { content: "保健食品落實舊客棉片加入服務流程、其餘品項隨口行銷", target: "8 月達月目標", customerType: "舊客", itemType: "保健" }
   ],
   "游瑟焄": [
-    { content: " 站前 2018年 自己名字的 HA 潛客追蹤", target: "7 月完成 8 筆聯繫", customerType: "潛客", itemType: "HA" },
-    { content: " 桃長 2020年 HA 舊客追蹤，確認是否有安排回店需求", target: "完成 29 位個案確認", customerType: "舊客", itemType: "HA" }
+    { content: "26 年指定舊客名單完成聽力師追蹤結案", target: "8 月完成 13 筆聯繫，回店 + 聽檢為主", customerType: "舊客", itemType: "HA" },
+    { content: " 桃長 2021年 HA 舊客追蹤", target: "完成 20 位個案確認", customerType: "舊客", itemType: "HA" }
   ],
   "魏頎恩": [
-    { content: "站前 2020 RS AHI > 15 潛客追蹤", target: "7 月完成 13 筆聯繫", customerType: "潛客", itemType: "RS" },
-    { content: "保健每月完成當月目標", target: "7 月保健營收 3000 元", customerType: "舊客", itemType: "保健" }
+    { content: "站前舊客預約量過少，RS 預約量過多，考量後續有新人安排，須提高舊客預約數", target: "8~10 月新增 60 筆舊客預約", customerType: "舊客", itemType: "HA" }
   ],
   "李孟馨": [
-    { content: "2025 年台大自己試聽過的 HA 潛客追蹤", target: "7 月完成 23 筆聯繫", customerType: "潛客", itemType: "HA" }
+    { content: " ", target: " ", customerType: " ", itemType: " " }
   ],
   "劉瑋婷": [
-    { content: "2026 年聽檢後未追蹤、試聽後未成交名單確認 NS", target: "七月底完成 18 筆", customerType: "潛客", itemType: "HA" }
+    { content: "26 年指定舊客名單完成聽力師追蹤結案", target: "8 月完成 5 筆聯繫，回店 + 聽檢為主", customerType: "舊客", itemType: "HA" },
+    { content: "2024 年 RS 進店潛客，重新邀約進店 HST，提高門市流量", target: "8 月完成 10 筆聯繫", customerType: "潛客", itemType: "RS" },
+    { content: "2024 年 HA 進店潛客，重新邀約進店 PTA，並讓宜甄練習諮商", target: "8 月完成 15 筆聯繫", customerType: "潛客", itemType: "HA" },
   ],
   "周曉玄": [
-    { content: "今年舊客試聽率低於平均，提供試聽贈 5 點方案做應用", target: "達成率在進度上，先不額外設定目標", customerType: "舊客", itemType: "HA" },
-    { content: "針對現有預約舊客給予轉介卡加名片，並於兩周後關心發送狀況", target: "每周至少 1 位", customerType: "舊客", itemType: "HA" },
-    { content: "Google Map 評論", target: "每月至少 1 篇", customerType: "舊客", itemType: "HA" }
+    { content: "26 年指定舊客名單完成聽力師追蹤結案", target: "8 月完成 9 筆聯繫，回店 + 聽檢為主", customerType: "舊客", itemType: "HA" },
+    { content: "保健提醒隨口行銷", target: "月達成率 80 %", customerType: "舊客", itemType: "保健" },
+    { content: "Play SI 名單優先整理", target: "先自行確認客戶名單，後續由秉忻提供", customerType: "舊客", itemType: "HA" }
   ],
   "蕭純聿": [
-    { content: "考量預約數量和達成率，針對現有預約，過保舊客給予轉介卡加名片，並於兩周後關心發送狀況", target: "每周至少 1 位", customerType: "舊客", itemType: "HA" },
-    { content: "Google Map 評論", target: "每月至少 1 篇", customerType: "舊客", itemType: "HA" }
+    { content: " ", target: " ", customerType: " ", itemType: " " }
   ],
   "陳宛妤": [
-    { content: "聯繫 2024 年桃長 HA 舊客，針對半年以上未回院，安排到週二服務，提升週二流量", target: "完成 12 筆聯繫", customerType: "舊客", itemType: "HA" },
-    { content: "保健食品業績，每月達標，優先針對淨耳棉片，每位舊客回店追蹤皆把棉片加入到服務中", target: "月達成率 100 %", customerType: "舊客", itemType: "保健" },
+    { content: "26 年指定舊客名單完成聽力師追蹤結案", target: "8 月完成 10 筆聯繫，回店 + 聽檢為主", customerType: "舊客", itemType: "HA" },
+    { content: "保健淨耳棉片持續運用，電話追蹤離店個案是否有維持使用習慣，以利下次回購", target: "月達成率 50 %", customerType: "舊客", itemType: "保健" },
     { content: "Google Map 評論", target: "每月至少 1 篇", customerType: "舊客", itemType: "HA" }
   ],
   "林寓葳": [
-    { content: "訂閱中 HA 用戶轉買斷方案，剩餘 3 筆有機會的繼續追", target: "7 月底前完成聯繫", customerType: "舊客", itemType: "HA" },
-    { content: "2018~2019 年 HA 潛客，工讀生先協助排除「個資不同意/無聯繫方式/多次去電未接」", target: "7 月完成 30 筆", customerType: "潛客", itemType: "HA" },
-    { content: "2025 年 RS 潛客，針對有發送過簡訊的名單聯繫", target: "7 月完成剩餘 16 筆", customerType: "潛客", itemType: "RS" }
+    { content: "依照前幾個月行事曆，縮短舊客回店區間，提升 8 月份舊客預約數", target: "8 月新增 30 位舊客預約數", customerType: "舊客", itemType: "HA" },
+    { content: "2025 年 HA 潛客完成結案", target: "8 月完成剩餘 23 筆", customerType: "潛客", itemType: "HA" }
   ],
   "吳欣珮": [
-    { content: "上半年聽檢有聽損的個案，7月完成追蹤。若有聽檢需求，再確認是否由書廷安排試聽", target: "合計 10 筆完成確認", customerType: "舊客", itemType: "HA" }
+    { content: "暫借中、待交貨名單、特殊需求個案名單整理", target: "7/31 前列出交接名單給書廷", customerType: "潛客", itemType: "HA" },
+    { content: "整理近三個月有試聽新機機會的舊客名單", target: "7/31 前列出交接名單給書廷", customerType: "舊客", itemType: "HA" }
   ],
   "呂桂梅": [
-    { content: "八德 RS 潛客 2022 年潛客聯繫", target: "7 月完成 65 筆聯繫", customerType: "潛客", itemType: "RS" }
+    { content: " ", target: " ", customerType: " ", itemType: " " }
   ],
   "林書廷": [
-    { content: "2024 忠孝 HA 潛客追蹤", target: "7 月邀約 1 位回門市", customerType: "潛客", itemType: "HA" },
-    { content: "CROS 個案與教育訓練討論", target: "6/29 前提供討論結果給秉忻", customerType: "潛客", itemType: "HA" },
-    { content: "忠孝 HA 2021年交貨舊客聯繫，針對非退輔會、半年以上未進店邀約", target: "7 月邀約 10 位進店", customerType: "舊客", itemType: "HA" }
+    { content: "退輔會交貨，約好後續追蹤時間", target: "Next Stage 落實度 100% ", customerType: "舊客", itemType: "HA" },
+    { content: "26 年指定舊客名單完成聽力師追蹤結案", target: "8 月完成 9 筆結案，回店 + 聽檢為主", customerType: "舊客", itemType: "HA" },
+    { content: "忠孝 HA 2021年交貨舊客聯繫，針對非退輔會、半年以上未進店邀約", target: "8 月邀約 10 位進店", customerType: "舊客", itemType: "HA" },
+    { content: "若門市有遇到試聽，試聽前或後通知秉忻，提早個案討論", target: "無", customerType: "新客", itemType: "HA" }
   ],
 };
 

@@ -13,7 +13,6 @@ const monthlyData = {
   "郭孟鑫": [
     { content: "26 年指定舊客名單完成聽力師追蹤結案", target: "8 月完成 22 筆聯繫，回店 + 聽檢為主", customerType: "舊客", itemType: "HA" },
     { content: "保健食品落實舊客棉片加入服務流程", target: "8 月達月目標", customerType: "舊客", itemType: "保健" }
-
   ],
   "陳詩潔": [
     { content: "26 年指定舊客名單，考量門市時間有限，先針對嬰幼兒結案", target: "8 月完成 8 筆聯繫，回店 + 聽檢為主", customerType: "舊客", itemType: "HA" },
@@ -27,7 +26,9 @@ const monthlyData = {
     { content: "站前舊客預約量過少，RS 預約量過多，考量後續有新人安排，須提高舊客預約數", target: "8~10 月新增 60 筆舊客預約", customerType: "舊客", itemType: "HA" }
   ],
   "李孟馨": [
-    { content: " ", target: " ", customerType: " ", itemType: " " }
+    { content: "26 年指定舊客名單完成聽力師追蹤結案", target: "8 月完成 10 筆聯繫，回店 + 聽檢為主", customerType: "舊客", itemType: "HA" },
+    { content: "Play SI 名單聯繫", target: "待秉忻提供", customerType: "舊客", itemType: "HA" },
+    { content: "保健食品落實舊客棉片加入服務流程", target: "8 月達月目標", customerType: "舊客", itemType: "保健" }
   ],
   "劉瑋婷": [
     { content: "26 年指定舊客名單完成聽力師追蹤結案", target: "8 月完成 5 筆聯繫，回店 + 聽檢為主", customerType: "舊客", itemType: "HA" },

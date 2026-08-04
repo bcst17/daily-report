@@ -47,7 +47,7 @@ body{
   margin-right:auto;
 }
 
-/* 👔 標題配置（支援自行上傳 father_left.png 與 father_right.png） */
+/* 👔 標題配置（支援自行上傳 father_left.gif 與 father_right.gif） */
 h1 { 
   text-align: center; 
   margin: 10px 0 25px; 
@@ -66,7 +66,7 @@ h1::before {
   display: block;
   width: 65px;
   height: 65px;
-  background: url("father_left.png") no-repeat center;
+  background: url("father_left.gif") no-repeat center;
   background-size: contain;
   flex-shrink: 0;
 }
@@ -76,7 +76,7 @@ h1::after {
   display: block;
   width: 65px;
   height: 65px;
-  background: url("father_right.png") no-repeat center;
+  background: url("father_right.gif") no-repeat center;
   background-size: contain;
   flex-shrink: 0;
 }
@@ -119,7 +119,7 @@ h1::after {
   padding:18px;
   margin-bottom:14px;
   position:relative;
-  overflow: visible !important; /* 確保 PNG 角色可以飛出邊框 */
+  overflow: visible !important; /* 確保角色可以飛出邊框 */
   box-shadow: 4px 4px 0px rgba(30, 58, 138, 0.12);
 }
 
@@ -135,7 +135,7 @@ h1::after {
   background: url("father_character1.png") no-repeat center;
   background-size: contain;
   z-index: 10;            /* 圖層置頂高於按鈕 */
-  pointer-events: none;   /* 滑鼠事件穿透，點擊穿透至下方按鈕 */
+  pointer-events: none;   /* 滑鼠事件穿透 */
 }
 
 /* 🖼️ 上方角色 2：支援自行上傳 father_character2.png */
@@ -202,33 +202,6 @@ button{
 .btn-primary{ flex:1; background:var(--btn-generate); color:#fff; }
 .btn-secondary{ flex:1; background:var(--btn-copy); color:#fff; }
 
-/* =============== 🌟 Action Animation (父親節向日葵與紳士勳章飄落特效) =============== */
-.floating-decorations span {
-  position:fixed;
-  top:-30px;
-  display:block;
-  font-size: 22px;
-  animation: itemFall 9s linear infinite;
-  opacity: 0;
-  z-index: 0;
-  pointer-events: none;
-}
-
-/* 🎨 讓 6 個 Emoji 分散在螢幕各處 */
-.floating-decorations span:nth-child(1) { left: 5%;  animation-delay: 0s;   animation-duration: 10s; }
-.floating-decorations span:nth-child(2) { left: 22%; animation-delay: 3s;   animation-duration: 13s; }
-.floating-decorations span:nth-child(3) { left: 45%; animation-delay: 1.5s; animation-duration: 11s; }
-.floating-decorations span:nth-child(4) { left: 68%; animation-delay: 5s;   animation-duration: 14s; }
-.floating-decorations span:nth-child(5) { left: 82%; animation-delay: 0.5s; animation-duration: 12s; }
-.floating-decorations span:nth-child(6) { left: 93%; animation-delay: 4s;   animation-duration: 15s; }
-
-@keyframes itemFall {
-  0%   { transform: translate(0, 0) rotate(0deg); opacity: 0; }
-  10%  { opacity: 0.6; }
-  90%  { opacity: 0.6; }
-  100% { transform: translate(50px, 105vh) rotate(360deg); opacity: 0; }
-}
-
 .badge.green{ background:#DBEAFE; color:#1E40AF; border: 1px solid #93C5FD; }
 .badge.yellow{ background:#FEF3C7; color:#92400E; border: 1px solid #FDE68A; }
 .badge.red{ background:#FEE2E2; color:#991B1B; border: 1px solid #FCA5A5; }
@@ -240,15 +213,6 @@ button{
 </head>
 
 <body>
-<!-- 👔 飄落向日葵與父親節紳士勳章動態特效 🌻 -->
-<div class="floating-decorations">
-  <span>🌻</span>
-  <span>👔</span>
-  <span>💙</span>
-  <span>🏆</span>
-  <span>🎩</span>
-  <span>🌻</span>
-</div>
 
 <div class="container">
   <h1>台北一區小助手</h1>
@@ -314,13 +278,13 @@ button{
 </div>
 
 <script>
-console.log("👔 August Father's Day Edition loaded!");
+console.log("August Father's Day Single-File Version loaded!");
 
-// ✅ 測試版儲存前綴
+// ✅ 測試版儲存前綴與 API 設定
 const STORAGE_PREFIX = "daily-report-test-";
 const PROGRESS_API_URL = "https://script.google.com/macros/s/AKfycbyrm3inO0h3qQf3hpKGCuQrNk68clolrYTXo5ncwEblDghytWB29dMIKA1LenjyIAr0qw/exec";
 
-// 💡 存放抓回來的歷史資料
+// 存放歷史資料
 let globalHistoryData = {};
 
 // ===== ↓↓↓ 當月計畫資料庫 (後台輸入區) ↓↓↓ =====
@@ -383,7 +347,6 @@ const monthlyData = {
   ],
 };
 
-// ===== 日期工具 =====
 function getCurrentDateStr() {
     const input = document.getElementById("date");
     let value = input && input.value;
@@ -415,9 +378,8 @@ function num(val) {
     const x = Number(s);
     return Number.isFinite(x) ? x : 0;
 }
-function okText(ok) { return ok ? "✔️ 達成" : "✖️ 未達成"; }
+function okText(ok) { return ok ? "達成" : "未達成"; }
 
-// ===== 儲存/讀取邏輯 =====
 function saveToday() {
     const date = getCurrentDateStr();
     recalcTotals(false);
@@ -490,7 +452,6 @@ function recalcTotals(doSave = true) {
 }
 window.recalcTotals = recalcTotals;
 
-// ===== 分頁切換邏輯 =====
 function showView(view) {
     const views = { 
         'huddle': $('huddle-view'), 
@@ -521,7 +482,6 @@ function showView(view) {
     }
 }
 
-// ===== 當月計畫渲染邏輯 (八月父親節 紳士帥氣主題) =====
 function initPlanTab() {
     const selectName = $("plan-name-select");
     const selectCustomer = $("filter-customer");
@@ -585,9 +545,7 @@ function initPlanTab() {
             planEl.innerHTML = `
                 <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom: 14px; border-bottom: 1px dashed var(--border); padding-bottom: 10px;">
                     <div>
-                        <div style="font-weight: 800; color: var(--primary-dark); font-size: 18px; display:flex; align-items:center; gap:6px;">
-                          ${plan.staffName}
-                        </div>
+                        <div style="font-weight: 800; color: var(--primary-dark); font-size: 18px;">${plan.staffName}</div>
                         <div style="font-size: 12px; color: #9CA3AF; margin-top: 2px;">任務序號 #${index + 1}</div>
                     </div>
                     <div style="display:flex; gap: 6px; align-items:center;">
@@ -658,7 +616,6 @@ function renderHuddle() {
     }
 }
 
-// 一人一個圖卡，內部顯示多個進度條 (父親節海軍藍與向日葵金)
 async function fetchAndRenderProgress() {
     const container = $("progress-dashboard");
     if (!container) return;
@@ -715,7 +672,7 @@ async function fetchAndRenderProgress() {
 
     } catch (error) {
         console.error("進度抓取失敗:", error);
-        container.innerHTML = `<p style="text-align:center; color:#EF4444; font-size:13px;">⚠️ 無法連線至中控表系統</p>`;
+        container.innerHTML = `<p style="text-align:center; color:#EF4444; font-size:13px;">無法連線至中控表系統</p>`;
     }
 }
 
@@ -791,7 +748,6 @@ window.openHistoryDetail = function(name, month) {
 
     let plansListHtml = monthPlans.map((p, idx) => {
         const isAchieved = p.status === '⭐' || p.status === '⭐️';
-        const statusEmoji = isAchieved ? "⭐" : "❌";
         const statusLabel = isAchieved ? "達標" : "未達標";
         const themeColor = isAchieved ? "var(--primary)" : "#EF4444"; 
         const bgColor = isAchieved ? "#EFF6FF" : "#FEF2F2";    
@@ -801,7 +757,7 @@ window.openHistoryDetail = function(name, month) {
                 <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px;">
                     <span style="font-size:12px; font-weight:bold; color:#6B7280;">方案 ${idx + 1}</span>
                     <span style="background:${bgColor}; color:${themeColor}; padding:2px 10px; border-radius:20px; font-size:11px; font-weight:800; border: 1px solid ${themeColor}44;">
-                        ${statusEmoji} ${statusLabel}
+                        ${statusLabel}
                     </span>
                 </div>
                 <div style="font-size:15px; color:#1F2937; line-height:1.5;"><strong>計畫：</strong>${p.plan}</div>
@@ -819,9 +775,9 @@ window.openHistoryDetail = function(name, month) {
                 <h3 style="color:#D97706; text-align:center; font-size:16px; margin-bottom:10px;">未達標原因檢討</h3>
                 <select id="rca-reason" style="width:100%; padding:12px; border-radius:10px; border:2px solid #E5E7EB; font-size:15px; background:#fff;">
                     <option value="多一點時間">多一點時間</option>
-                    <option value="同事的支援">隊友神隊友支援 (同事支援)</option>
-                    <option value="外部資源協助">突破關鍵考驗 (外部資源協助)</option>
-                    <option value="更好的工具">裝備工具升級 (更好的工具)</option>
+                    <option value="同事支援">同事支援</option>
+                    <option value="外部資源協助">外部資源協助</option>
+                    <option value="更好的工具">更好的工具</option>
                     <option value="其他">其他（面談討論）</option>
                 </select>
                 <button onclick="submitRCA('${name}', '${month}')" style="width:100%; background:var(--accent-orange); color:white; padding:14px; border-radius:50px; margin-top:15px; border:none; font-weight:bold; cursor:pointer; box-shadow: 0 4px 0px rgba(0,0,0,0.1);">送出回饋</button>
@@ -859,12 +815,12 @@ window.submitRCA = async function(name, month) {
             })
         });
 
-        alert(`✔️ 紀錄成功！\n已將「${month} / ${name}」的分析原因送出：\n${reason}`);
+        alert(`紀錄成功！\n已將「${month} / ${name}」的分析原因送出：\n${reason}`);
         closeModal(); 
         
     } catch (e) {
         console.error("RCA 送出失敗:", e);
-        alert("❌ 傳送失敗，請檢查網路連線或 GAS 部署狀態");
+        alert("傳送失敗，請檢查網路連線或 GAS 部署狀態");
     } finally {
         submitBtn.disabled = false;
         submitBtn.innerText = "送出回饋";

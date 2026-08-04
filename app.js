@@ -27,7 +27,7 @@ const monthlyData = {
   ],
   "李孟馨": [
     { content: "26 年指定舊客名單完成聽力師追蹤結案", target: "8 月完成 10 筆聯繫，回店 + 聽檢為主", customerType: "舊客", itemType: "HA" },
-    { content: "Play SI 名單聯繫", target: "待秉忻提供", customerType: "舊客", itemType: "HA" },
+    { content: "Play SI 名單聯繫", target: "8 月完成 12 筆聯繫", customerType: "舊客", itemType: "HA" },
     { content: "保健食品落實舊客棉片加入服務流程", target: "8 月達月目標", customerType: "舊客", itemType: "保健" }
   ],
   "劉瑋婷": [
@@ -38,7 +38,7 @@ const monthlyData = {
   "周曉玄": [
     { content: "26 年指定舊客名單完成聽力師追蹤結案", target: "8 月完成 9 筆聯繫，回店 + 聽檢為主", customerType: "舊客", itemType: "HA" },
     { content: "保健提醒隨口行銷", target: "月達成率 80 %", customerType: "舊客", itemType: "保健" },
-    { content: "Play SI 名單優先整理", target: "先自行確認客戶名單，後續由秉忻提供", customerType: "舊客", itemType: "HA" }
+    { content: "Play SI 名單優先整理", target: "8 月完成 5 筆聯繫", customerType: "舊客", itemType: "HA" }
   ],
   "蕭純聿": [
     { content: " ", target: " ", customerType: " ", itemType: " " }

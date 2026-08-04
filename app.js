@@ -57,7 +57,8 @@ const monthlyData = {
     { content: "整理近三個月有試聽新機機會的舊客名單", target: "7/31 前列出交接名單給書廷", customerType: "舊客", itemType: "HA" }
   ],
   "呂桂梅": [
-    { content: "八德 2017 年 RS 舊客往後聯繫，目標邀約進店壓力檢測加新機分享", target: "8 月完成 30 筆聯繫", customerType: "舊客", itemType: "RS" }
+    { content: "八德 2017 年 RS 舊客往後聯繫，目標邀約進店壓力檢測加新機分享", target: "8 月完成 30 筆聯繫", customerType: "舊客", itemType: "RS" },
+    { content: "台北一區嬰幼兒名單資料整理", target: "第一個行動方案優先，非現職人員優先 ", customerType: "舊客", itemType: "HA" }
   ],
   "林書廷": [
     { content: "退輔會交貨，約好後續追蹤時間", target: "Next Stage 落實度 100% ", customerType: "舊客", itemType: "HA" },

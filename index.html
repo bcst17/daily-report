@@ -127,12 +127,12 @@ h1::after {
 .section::before {
   content: "";
   position: absolute;
-  top: -170px; 
-  left: 50%;
+  top: -163px; 
+  left: 33%;
   transform: translateX(-50%) rotate(1deg);
   
-  width: 230px; 
-  height: 230px;
+  width: 255px; 
+  height: 255px;
   background: url("atashinchi_character1.png") no-repeat center;
   background-size: contain;
   z-index: 10;            
@@ -292,7 +292,7 @@ button{
 
   <section id="history-view" class="section hidden">
     <h2>每月成果回顧</h2>
-    <p class="subtitle">點擊花朵查看紀錄，點擊空白處分析原因</p>
+    <p class="subtitle">點擊橘子查看紀錄，點擊空白處分析原因</p>
     <div id="starry-map-container" style="margin-top: 20px;">
       <p style="text-align:center; color:#8D4B36; font-size:14px;">資料載入中...</p>
     </div>
@@ -787,11 +787,11 @@ async function renderStarryMap() {
                 if (monthPlans && monthPlans.length > 0) {
                     const isAllDone = monthPlans.every(p => p.status === "⭐" || p.status === "⭐️");
                     
-                    // 花媽精神：達成目標就有一頓豐盛的晚餐或美麗的花朵 🌸
+                    // 花媽精神：達成目標就有一頓豐盛的晚餐或美麗的橘子 🍊
                     if (isAllDone) {
-                        displayContent = `<div style="font-size:20px;">🌸</div>`;
+                        displayContent = `<div style="font-size:20px;">🍊</div>`;
                     } else {
-                        displayContent = `<div style="font-size:20px; filter:grayscale(1); opacity:0.3;">🌸</div>`;
+                        displayContent = `<div style="font-size:20px; filter:grayscale(1); opacity:0.3;">🍊</div>`;
                     }
                 }
 
@@ -835,7 +835,7 @@ window.openHistoryDetail = function(name, month) {
     // 1. 產生帶有顏色與 Emoji 的計畫清單
     let plansListHtml = monthPlans.map((p, idx) => {
         const isAchieved = p.status === '⭐' || p.status === '⭐️';
-        const statusEmoji = isAchieved ? "🌸" : "❌";
+        const statusEmoji = isAchieved ? "🍊" : "❌";
         const statusLabel = isAchieved ? "達標" : "未達標";
         const themeColor = isAchieved ? "var(--primary)" : "#FF6B81"; 
         const bgColor = isAchieved ? "#FFF0EB" : "#FFF0F0";    
@@ -875,7 +875,7 @@ window.openHistoryDetail = function(name, month) {
     }
 
     content.innerHTML = `
-        <h3 style="color:var(--primary-dark); text-align:center; margin:0 0 15px 0; font-weight:900;">${month} 行動方案溫馨回顧 🌸</h3>
+        <h3 style="color:var(--primary-dark); text-align:center; margin:0 0 15px 0; font-weight:900;">${month} 行動方案溫馨回顧 🍊</h3>
         <div style="max-height:350px; overflow-y:auto; padding-right:5px;">${plansListHtml}</div>
         ${rcaHtml}
     `;

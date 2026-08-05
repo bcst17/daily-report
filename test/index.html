@@ -3,9 +3,10 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
-<title>台北一區小助手 - 父親節特別版</title>
+<title>台北一區小助手 - 我們這一家</title>
 
 <link rel="manifest" href="manifest.json">
+
 <link rel="apple-touch-icon" sizes="192x192" href="icon-192.png">
 <link rel="apple-touch-icon" sizes="512x512" href="icon-512.png">
 
@@ -15,16 +16,16 @@
 
 <style>
 :root {
-  /* 👔 八月父親節 溫馨紳士風格配色 */
-  --bg: #F0F4F8;               /* 質感藍灰/晨藍背景 */
-  --primary-dark: #1E3A8A;     /* 深海軍藍 (紳士西服風格) */
-  --primary: #2563EB;          /* 活力湛藍 */
-  --accent-orange: #D97706;    /* 溫暖向日葵金 / 琥珀色 */
-  --border: #BFDBFE;            /* 柔和藍邊框 */
+  /* 我們這一家 (Atashin'chi) 溫馨家庭配色 */
+  --bg: #FFF5E1;             /* 溫暖的奶油鵝黃背景，展現家庭溫馨氣息 */
+  --primary-dark: #8D4B36;    /* 溫暖深棕色 (輪廓線與文字) */
+  --primary: #FF7E67;         /* 花媽代表的珊瑚紅/粉紅色 */
+  --accent-orange: #FFA726;   /* 橘子的亮橘色 */
+  --border: #FFD8A8;         /* 柔和的橘黃色邊框 */
   --card-bg: #FFFFFF;
-  --btn-generate: #2563EB;
-  --btn-copy: #D97706;
-  --secondary: #0284C7;        /* 天空藍輔助色 */
+  --btn-generate: #FF7E67;    /* 按鈕主色 - 花媽粉紅 */
+  --btn-copy: #64B5F6;        /* 按鈕次色 - 花爸水藍 */
+  --secondary: #81C784;       /* 柚子的青綠色 */
 }
 
 *,*::before,*::after{ box-sizing:border-box; }
@@ -36,7 +37,7 @@ body{
   background: var(--bg);
   display:flex;
   justify-content:center;
-  color:#1F2937;
+  color:#333;
   overflow-x:hidden;
 }
 
@@ -47,10 +48,10 @@ body{
   margin-right:auto;
 }
 
-/* 👔 標題配置（支援自行上傳 father_left.gif 與 father_right.gif） */
+/* 🖍️ 標題配置 */
 h1 { 
   text-align: center; 
-  margin: 10px 0 25px; 
+  margin: 10px 0 30px; 
   font-size: 24px; 
   font-weight: 900;
   display: flex;
@@ -58,15 +59,15 @@ h1 {
   align-items: center;
   gap: 12px; 
   color: var(--primary-dark);
-  text-shadow: 1px 1px 0px rgba(37, 99, 235, 0.15);
+  text-shadow: 2px 2px 0px rgba(255, 126, 103, 0.15);
 }
 
 h1::before {
   content: "";
   display: block;
-  width: 65px;
-  height: 65px;
-  background: url("father_left.gif") no-repeat center;
+  width: 70px;  /* 調整圖片寬度 */
+  height: 70px; /* 調整圖片高度 */
+  background: url("atashinchi_left.png") no-repeat center;
   background-size: contain;
   flex-shrink: 0;
 }
@@ -74,111 +75,103 @@ h1::before {
 h1::after {
   content: "";
   display: block;
-  width: 65px;
-  height: 65px;
-  background: url("father_right.gif") no-repeat center;
+  width: 70px;
+  height: 70px;
+  background: url("atashinchi_right.png") no-repeat center;
   background-size: contain;
   flex-shrink: 0;
 }
 
-.subtitle{ text-align:center; font-size:13px; color:#4B5563; margin-bottom:8px; font-weight: bold; }
+.subtitle{ text-align:center; font-size:13px; color:#666; margin-bottom:8px; font-weight: bold; }
 
 /* 🔹 分頁標籤 */
 .tab-header{
   display:flex;
   gap:8px;
-  margin-bottom:60px;   /* 預留空間供上方浮動 PNG 角色顯示 */
+  margin-bottom:60px;    
   position: relative;     
   z-index: 1;             
 }
 
 .tab-header button{
   flex:1;
-  padding:11px 0;
-  border-radius:12px;
+  padding:10px 0;
+  border-radius:15px;
   border:2px solid var(--primary-dark);
   background:#fff;
   font-size:14px;
   font-weight: bold;
   color: var(--primary-dark);
   cursor: pointer;
-  transition: all 0.2s ease;
+  transition: all 0.3s;
 }
 
 .tab-header button.active {
   background: var(--primary-dark) !important;
   color: #FFFFFF !important;
   border-color: var(--primary-dark);
-  box-shadow: 0 4px 10px rgba(30, 58, 138, 0.2);
 }
 
 .section{
   background: var(--card-bg);
-  border-radius:16px;
+  border-radius:15px;
   border:3px solid var(--primary-dark);
-  padding:18px;
-  margin-bottom:14px;
+  padding:16px;
+  margin-bottom:12px;
   position:relative;
-  overflow: visible !important; /* 確保角色可以飛出邊框 */
-  box-shadow: 4px 4px 0px rgba(30, 58, 138, 0.12);
+  overflow: visible !important; 
+  box-shadow: 4px 4px 0px rgba(141, 75, 54, 0.15);
 }
 
-/* 🖼️ 上方角色 1：支援自行上傳 father_character1.png */
+/* 2. 左邊角色：花媽與橘子等角色素材1 */
 .section::before {
   content: "";
   position: absolute;
-  top: -280px; 
-  left: 60%;
+  top: -163px; 
+  left: 33%;
   transform: translateX(-50%) rotate(1deg);
-  width: 380px; 
-  height: 380px;
-  background: url("father_character1.png") no-repeat center;
+  
+  width: 255px; 
+  height: 255px;
+  background: url("atashinchi_character1.png") no-repeat center;
   background-size: contain;
-  z-index: 10;            /* 圖層置頂高於按鈕 */
-  pointer-events: none;   /* 滑鼠事件穿透 */
+  z-index: 10;            
+  pointer-events: none;   
 }
 
-/* 🖼️ 上方角色 2：支援自行上傳 father_character2.png */
+/* 3. 右邊角色：花爸與柚子等角色素材2 */
 .section::after {
   content: ""; 
   position: absolute; 
   z-index: 10;            
-  top: -120px;    
-  left: 58%;    
+  
+  top: -121px;    
+  left: 56%;    
+  
   width: 160px;   
   height: 160px; 
-  background: url("father_character2.png") no-repeat center;
+  background: url("atashinchi_character2.png") no-repeat center;
   background-size: contain;
+  
   pointer-events: none;   
 }
 
-.section h2{ 
-  margin:0 0 12px; 
-  font-size:18px; 
-  font-weight:900; 
-  color: var(--primary-dark); 
-  border-left: 5px solid var(--primary); 
-  padding-left: 10px; 
-  display: flex;
-  align-items: center;
-  gap: 6px;
-}
+.section h2{ margin:0 0 10px; font-size:18px; font-weight:900; color: var(--primary-dark); border-left: 5px solid var(--primary); padding-left: 8px; }
 
-label{ display:block;font-size:14px;margin-top:4px; color: #374151; font-weight: bold; }
+label{ display:block;font-size:14px;margin-top:4px; color: #555; font-weight: bold; }
 
 input,select{
   width:100%;
   padding:10px; font-size:16px;
   margin-top:4px; margin-bottom:10px;
-  border-radius:10px; border:2px solid var(--border);
+  border-radius:12px; border:2px solid var(--border);
   background:#fff;
-  color: #1F2937;
 }
 
 input:focus, select:focus{
   outline: none;
   border-color: var(--primary);
-  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.15);
+  box-shadow: 0 0 0 3px rgba(255, 126, 103, 0.2);
 }
 
 .actions{
@@ -202,9 +195,36 @@ button{
 .btn-primary{ flex:1; background:var(--btn-generate); color:#fff; }
 .btn-secondary{ flex:1; background:var(--btn-copy); color:#fff; }
 
-.badge.green{ background:#DBEAFE; color:#1E40AF; border: 1px solid #93C5FD; }
-.badge.yellow{ background:#FEF3C7; color:#92400E; border: 1px solid #FDE68A; }
-.badge.red{ background:#FEE2E2; color:#991B1B; border: 1px solid #FCA5A5; }
+/* =============== 🌟 Action Animation (我們這一家生活元素飄落特效) =============== */
+.leaves span {
+  position:absolute;
+  top:-20px;
+  display:block;
+  font-size: 24px;
+  animation: leafFall 8s linear infinite;
+  opacity: 0;
+  z-index: 0;
+  pointer-events: none;
+}
+
+/* 🎨 讓 6 個 Emoji 分散在螢幕各處 */
+.leaves span:nth-child(1) { left: 5%;  animation-delay: 0s;   animation-duration: 10s; }
+.leaves span:nth-child(2) { left: 20%; animation-delay: 3s;   animation-duration: 14s; }
+.leaves span:nth-child(3) { left: 40%; animation-delay: 1.5s; animation-duration: 12s; }
+.leaves span:nth-child(4) { left: 65%; animation-delay: 5s;   animation-duration: 15s; }
+.leaves span:nth-child(5) { left: 80%; animation-delay: 0.5s; animation-duration: 11s; }
+.leaves span:nth-child(6) { left: 92%; animation-delay: 4s;   animation-duration: 13s; }
+
+@keyframes leafFall {
+  0%   { transform: translate(0, 0) rotate(0deg); opacity: 0; }
+  10%  { opacity: 0.7; }
+  90%  { opacity: 0.7; }
+  100% { transform: translate(80px, 105vh) rotate(360deg); opacity: 0; }
+}
+
+.badge.green{ background:#E8F5E9; color:#2E7D32; border: 1px solid; }
+.badge.yellow{ background:#FFF8E1; color:#F57F17; border: 1px solid; }
+.badge.red{ background:#FFEBEE; color:#C62828; border: 1px solid; }
 
 .hidden {
   display: none !important;
@@ -213,6 +233,15 @@ button{
 </head>
 
 <body>
+<!-- 🌸 補上我們這一家生活元素的動態特效容器 🌸 -->
+<div class="leaves">
+  <span>🍊</span>
+  <span>🌸</span>
+  <span>🍳</span>
+  <span>🍵</span>
+  <span>🛒</span>
+  <span>🍱</span>
+</div>
 
 <div class="container">
   <h1>台北一區小助手</h1>
@@ -226,7 +255,7 @@ button{
   <section id="huddle-view" class="section">
     <h2>當月行動方案完成度</h2>
     <div id="progress-dashboard">
-      <p style="text-align:center; color:#9CA3AF; font-size:14px;">資料載入中...</p>
+      <p style="text-align:center; color:#8D4B36; font-size:14px;">資料載入中...</p>
     </div>
   </section>
 
@@ -234,7 +263,7 @@ button{
     <h2>個人月度行動計畫</h2>
     <label for="plan-name-select">1. 選擇姓名：</label>
     <select id="plan-name-select">
-      <option value="">-- 請選擇 --</option>
+      <option value="">-- 全區同仁 --</option>
     </select>
 
     <div style="display: flex; gap: 10px; margin-top: 10px;">
@@ -263,28 +292,30 @@ button{
 
   <section id="history-view" class="section hidden">
     <h2>每月成果回顧</h2>
-    <p class="subtitle">點擊月份卡片查看紀錄，點擊空白處進行原因回饋</p>
+    <p class="subtitle">點擊花朵查看紀錄，點擊空白處分析原因</p>
     <div id="starry-map-container" style="margin-top: 20px;">
-      <p style="text-align:center; color:#9CA3AF; font-size:14px;">資料載入中...</p>
+      <p style="text-align:center; color:#8D4B36; font-size:14px;">資料載入中...</p>
     </div>
   </section>
 
-  <div id="history-modal" class="hidden" style="position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(15, 23, 42, 0.6); z-index:1000; display:flex; justify-content:center; align-items:center; padding:20px;">
-    <div style="background:white; width:100%; max-width:400px; border-radius:20px; padding:25px; position:relative; border: 3px solid var(--primary-dark); box-shadow: 0 10px 25px rgba(0,0,0,0.25);">
+  <div id="history-modal" class="hidden" style="position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.6); z-index:1000; display:flex; justify-content:center; align-items:center; padding:20px;">
+    <div style="background:white; width:100%; max-width:400px; border-radius:20px; padding:25px; position:relative; border: 3px solid var(--primary-dark); box-shadow: 0 10px 25px rgba(0,0,0,0.2);">
       <div id="modal-content"></div>
-      <button onclick="closeModal()" style="margin-top:20px; width:100%; background:#F3F4F6; color:#4B5563; border:none; padding:12px; border-radius:10px; font-weight:bold; cursor:pointer;">關閉</button>
+      <button onclick="closeModal()" style="margin-top:20px; width:100%; background:#FFF0EB; color:var(--primary-dark); border:2px solid var(--border); padding:12px; border-radius:10px; font-weight:bold; cursor:pointer;">關閉視窗</button>
     </div>
   </div>
 </div>
 
+<!-- 合併後的 JavaScript 邏輯 -->
 <script>
-console.log("August Father's Day Single-File Version loaded!");
+// 🏡 這裡加上你要求的載入測試訊息！
+console.log("🏡 Atashin'chi Edition app.js loaded!");
 
-// ✅ 測試版儲存前綴與 API 設定
+// ✅ 測試版儲存前綴
 const STORAGE_PREFIX = "daily-report-test-";
 const PROGRESS_API_URL = "https://script.google.com/macros/s/AKfycbyrm3inO0h3qQf3hpKGCuQrNk68clolrYTXo5ncwEblDghytWB29dMIKA1LenjyIAr0qw/exec";
 
-// 存放歷史資料
+// 💡 用來存放抓回來的歷史資料
 let globalHistoryData = {};
 
 // ===== ↓↓↓ 當月計畫資料庫 (後台輸入區) ↓↓↓ =====
@@ -347,6 +378,31 @@ const monthlyData = {
   ],
 };
 
+// ===== ↓↓↓ Google Sheet 串接（測試版）↓↓↓ =====
+const SHEET_INGEST_URL = "https://script.google.com/macros/s/AKfycbxwYN_YGa5W8Fqg8YrSPTFkhkqnLB61hZ3lFgU-5kIHTSK_DmasH573pv7GutF8wf8S/exec";
+const INGEST_KEY = "dailyreport-key-2025";
+
+function sheetSentKey(dateStr) { return `${STORAGE_PREFIX}sheet-sent-${dateStr}`; }
+function simpleHash(str) {
+    let h = 0;
+    for (let i = 0; i < str.length; i++) {
+        h = (h << 5) - h + str.charCodeAt(i);
+        h |= 0;
+    }
+    return String(h);
+}
+
+async function sendReportToSheet(payload) {
+    fetch(SHEET_INGEST_URL, {
+        method: "POST",
+        mode: "no-cors",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ key: INGEST_KEY, env: "test", ...payload })
+    });
+    return true;
+}
+
+// ===== 日期工具 =====
 function getCurrentDateStr() {
     const input = document.getElementById("date");
     let value = input && input.value;
@@ -378,8 +434,9 @@ function num(val) {
     const x = Number(s);
     return Number.isFinite(x) ? x : 0;
 }
-function okText(ok) { return ok ? "達成" : "未達成"; }
+function okText(ok) { return ok ? "✔️ 達成" : "✖️ 未達成"; }
 
+// ===== 儲存/讀取邏輯 =====
 function saveToday() {
     const date = getCurrentDateStr();
     recalcTotals(false);
@@ -408,6 +465,11 @@ function getPrevTwoDataDates(todayStr) {
     const d1 = findPrevDateWithData(todayStr);
     const d0 = d1 ? findPrevDateWithData(d1) : null;
     return { d1, d0 };
+}
+
+function getKpiSourceDateForToday(todayStr) {
+    const yesterday = addDaysToDateStr(todayStr, -1);
+    return hasDataOnDate(yesterday) ? yesterday : findPrevDateWithData(todayStr);
 }
 
 function collectForm() {
@@ -452,6 +514,7 @@ function recalcTotals(doSave = true) {
 }
 window.recalcTotals = recalcTotals;
 
+// ===== 分頁切換邏輯 =====
 function showView(view) {
     const views = { 
         'huddle': $('huddle-view'), 
@@ -482,6 +545,7 @@ function showView(view) {
     }
 }
 
+// ===== 當月計畫渲染邏輯 (我們這一家溫馨主題優化) =====
 function initPlanTab() {
     const selectName = $("plan-name-select");
     const selectCustomer = $("filter-customer");
@@ -490,6 +554,7 @@ function initPlanTab() {
 
     if (!selectName || !container) return;
 
+    // 1. 生成姓名下拉選單
     selectName.innerHTML = '<option value="">-- 全區同仁 --</option>';
     Object.keys(monthlyData).forEach(name => {
         const opt = document.createElement("option");
@@ -498,6 +563,7 @@ function initPlanTab() {
         selectName.appendChild(opt);
     });
 
+    // 核心渲染函式
     const renderPlans = () => {
         const selectedName = selectName.value;
         const filterCust = selectCustomer.value;
@@ -505,6 +571,7 @@ function initPlanTab() {
 
         container.innerHTML = "";
 
+        // 2. 資料彙整策略
         let tasksToFilter = [];
         if (selectedName === "") {
             Object.entries(monthlyData).forEach(([name, tasks]) => {
@@ -519,6 +586,7 @@ function initPlanTab() {
             tasksToFilter = individualTasks.map(task => ({ ...task, staffName: selectedName }));
         }
 
+        // 3. 執行交叉篩選
         const filteredData = tasksToFilter.filter(plan => {
             const matchCust = (filterCust === "all" || plan.customerType === filterCust);
             const matchItem = (filterItem === "all" || plan.itemType === filterItem);
@@ -526,27 +594,33 @@ function initPlanTab() {
         });
 
         if (filteredData.length === 0) {
-            container.innerHTML = '<p style="text-align:center; color:#9CA3AF; font-size:14px; margin-top:20px;">目前無符合篩選條件的計畫內容</p>';
+            container.innerHTML = '<p style="text-align:center; color:#999; font-size:14px; margin-top:20px;">目前無符合篩選條件的計畫內容</p>';
             return;
         }
 
+        // 4. 生成任務卡片 (我們這一家配色版)
         filteredData.forEach((plan, index) => {
             const planEl = document.createElement("div");
-            planEl.style.cssText = "background: #fff; border: 2px solid var(--border); border-radius: 12px; padding: 18px; margin-bottom: 18px; border-left: 6px solid var(--primary); box-shadow: 0 4px 12px rgba(30, 58, 138, 0.08); position:relative;";
+            planEl.style.cssText = "background: #fff; border: 2px solid var(--border); border-radius: 12px; padding: 18px; margin-bottom: 18px; border-left: 6px solid var(--primary); box-shadow: 0 4px 10px rgba(141,75,54,0.08); position:relative;";
             
-            const custColor = plan.customerType === '潛客' ? '#EF4444' : (plan.customerType === '新客' ? '#0EA5E9' : '#8B5CF6'); 
-            const itemColor = plan.itemType === 'RS' ? '#10B981' : (plan.itemType === '保健' ? '#F59E0B' : '#6366F1');
+            // 標籤顏色定義 (我們這一家風格：粉紅、天藍、暖橘黃)
+            const custColor = plan.customerType === '潛客' ? '#FFB3B3' : (plan.customerType === '新客' ? '#B3D9FF' : '#FFE066'); 
+            
+            // 品項標籤顏色：RS (柚子綠)、保健 (活力橘)、其他/HA (溫暖黃)
+            const itemColor = plan.itemType === 'RS' ? '#B3FFB3' : (plan.itemType === '保健' ? '#FFCC99' : '#FFE57F');
 
+            // 標籤文字縮減邏輯
             const custAbbr = plan.customerType ? plan.customerType.substring(0, 1) : '?';
             const itemAbbr = plan.itemType ? plan.itemType.substring(0, 1) : '?';
 
-            const tagCircleStyle = "display:inline-flex; justify-content:center; align-items:center; width:26px; height:26px; border-radius:50%; color:#fff; font-size:12px; font-weight:bold; box-sizing:border-box; box-shadow: 1px 1px 3px rgba(0,0,0,0.15);";
+            // 定義圓形標籤的統一 CSS 樣式
+            const tagCircleStyle = "display:inline-flex; justify-content:center; align-items:center; width:26px; height:26px; border-radius:50%; color:var(--primary-dark); font-size:13px; font-weight:bold; box-sizing:border-box; box-shadow: 1px 1px 3px rgba(0,0,0,0.1);";
 
             planEl.innerHTML = `
-                <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom: 14px; border-bottom: 1px dashed var(--border); padding-bottom: 10px;">
+                <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom: 15px; border-bottom: 1px dashed var(--border); padding-bottom: 10px;">
                     <div>
                         <div style="font-weight: 800; color: var(--primary-dark); font-size: 18px;">${plan.staffName}</div>
-                        <div style="font-size: 12px; color: #9CA3AF; margin-top: 2px;">任務序號 #${index + 1}</div>
+                        <div style="font-size: 12px; color: #888; margin-top: 2px;">家庭任務 #${index + 1}</div>
                     </div>
                     <div style="display:flex; gap: 6px; align-items:center;">
                         <span style="${tagCircleStyle} background:${custColor};" title="${plan.customerType || '未分類'}">${custAbbr}</span>
@@ -554,21 +628,24 @@ function initPlanTab() {
                     </div>
                 </div>
                 
-                <div style="margin-bottom: 14px;">
+                <div style="margin-bottom: 16px;">
                     <div style="font-weight: bold; color: var(--primary); font-size: 13px; margin-bottom: 4px;">行動方案</div>
-                    <div style="font-size: 15px; line-height: 1.6; color: #1F2937; text-align: justify;">${plan.content}</div>
+                    <div style="font-size: 15px; line-height: 1.6; color: #444; text-align: justify;">${plan.content}</div>
                 </div>
 
                 <div>
-                    <div style="font-weight: bold; color: var(--accent-orange); font-size: 13px; margin-bottom: 4px;">預期目標</div>
-                    <div style="font-size: 15px; line-height: 1.6; color: #4B5563; text-align: justify;">${plan.target}</div>
+                    <div style="font-weight: bold; color: var(--primary); font-size: 13px; margin-bottom: 4px;">預期目標</div>
+                    <div style="font-size: 15px; line-height: 1.6; color: #777; text-align: justify;">${plan.target}</div>
                 </div>
             `;
             container.appendChild(planEl);
         });
     };
 
+    // 監聽變更
     [selectName, selectCustomer, selectItem].forEach(el => el.addEventListener("change", renderPlans));
+    
+    // 初始化執行一次渲染
     renderPlans();
 }
 
@@ -616,6 +693,7 @@ function renderHuddle() {
     }
 }
 
+// 一人一個圖卡，內部顯示多個進度條 (花家溫馨橘與花媽粉調整)
 async function fetchAndRenderProgress() {
     const container = $("progress-dashboard");
     if (!container) return;
@@ -628,10 +706,11 @@ async function fetchAndRenderProgress() {
         container.innerHTML = ""; 
 
         if (tasks.length === 0) {
-            container.innerHTML = "<p style='text-align:center; color:#9CA3AF;'>Task_Config 中尚無任務設定</p>";
+            container.innerHTML = "<p style='text-align:center; color:#999;'>Task_Config 中尚無任務設定</p>";
             return;
         }
 
+        // --- 1. 資料分組邏輯：將同仁姓名作為 Key，把任務塞進對應陣列 ---
         const groupedTasks = tasks.reduce((acc, task) => {
             if (!acc[task.staffName]) {
                 acc[task.staffName] = [];
@@ -640,28 +719,32 @@ async function fetchAndRenderProgress() {
             return acc;
         }, {});
 
+        // --- 2. 渲染邏輯：遍歷每個「同仁」生成一個大圖卡 ---
         Object.entries(groupedTasks).forEach(([staffName, staffTasks]) => {
+            
+            // 生成該同仁內部的所有進度條 HTML (溫馨家庭暖色調)
             const taskRowsHtml = staffTasks.map(task => {
                 const barColor = task.percent >= 80 ? "var(--primary)" : "var(--accent-orange)"; 
                 return `
-                    <div style="margin-bottom: 18px;">
-                        <div style="display:flex; justify-content:space-between; align-items:end; margin-bottom:6px;">
+                    <div style="margin-bottom: 20px;">
+                        <div style="display:flex; justify-content:space-between; align-items:end; margin-bottom:8px;">
                             <span style="font-size:14px; font-weight:bold; color:var(--primary-dark);">${task.taskName}</span>
                             <span style="font-weight:900; color:${barColor}; font-size:15px;">${task.completed} / ${task.target} 筆</span>
                         </div>
-                        <div style="background:#E2E8F0; height:12px; border-radius:10px; overflow:hidden;">
-                            <div style="background:${barColor}; width:${task.percent}%; height:100%; transition:width 1.2s ease;"></div>
+                        <div style="background:#FFF0EB; height:12px; border-radius:10px; overflow:hidden;">
+                            <div style="background:${barColor}; width:${task.percent}%; height:100%; transition:width 1.2s cubic-bezier(0.17, 0.67, 0.83, 0.67);"></div>
                         </div>
-                        <div style="text-align:right; font-size:11px; color:#64748B; margin-top:4px; font-weight:bold;">達成率 ${task.percent}%</div>
+                        <div style="text-align:right; font-size:11px; color:#A89F94; margin-top:5px; font-weight:bold;">達成率 ${task.percent}%</div>
                     </div>
                 `;
             }).join("");
 
+            // 生成外層的大圖卡容器
             const card = document.createElement("div");
-            card.style.cssText = "background:#fff; padding:18px; border-radius:14px; margin-bottom:16px; border:2px solid var(--border); box-shadow: 0 4px 12px rgba(30,58,138,0.06);";
+            card.style.cssText = "background:#fff; padding:18px; border-radius:14px; margin-bottom:16px; border:2px solid var(--border); box-shadow: 0 4px 12px rgba(141,75,54,0.08);";
             
             card.innerHTML = `
-                <div style="font-weight:800; font-size:18px; color:var(--primary-dark); margin-bottom:14px; border-bottom: 1px solid #E2E8F0; padding-bottom:8px; display:flex; align-items:center; gap:8px;">
+                <div style="font-weight:800; font-size:18px; color:var(--primary-dark); margin-bottom:15px; border-bottom: 1px solid #FFF0EB; padding-bottom:8px; display:flex; align-items:center; gap:8px;">
                      ${staffName}
                 </div>
                 ${taskRowsHtml}
@@ -672,7 +755,7 @@ async function fetchAndRenderProgress() {
 
     } catch (error) {
         console.error("進度抓取失敗:", error);
-        container.innerHTML = `<p style="text-align:center; color:#EF4444; font-size:13px;">無法連線至中控表系統</p>`;
+        container.innerHTML = `<p style="text-align:center; color:#FF6B81; font-size:13px;">⚠️ 無法連線至中控表系統</p>`;
     }
 }
 
@@ -680,7 +763,7 @@ async function renderStarryMap() {
     const container = $("starry-map-container");
     if (!container) return;
     
-    container.innerHTML = "<p style='text-align:center; color:#9CA3AF; font-size:14px;'>正在讀取月度成果資料...</p>";
+    container.innerHTML = "<p style='text-align:center; color:#999; font-size:14px;'>正在讀取回顧紀錄...</p>";
 
     try {
         const response = await fetch(`${PROGRESS_API_URL}?action=getHistory`);
@@ -691,28 +774,30 @@ async function renderStarryMap() {
 
         staffNames.forEach(name => {
             const card = document.createElement("div");
-            card.style.cssText = "background:#fff; padding:15px; border-radius:14px; margin-bottom:12px; border:2px solid var(--border); box-shadow: 2px 2px 8px rgba(30,58,138,0.05);";
+            card.style.cssText = "background:#fff; padding:15px; border-radius:15px; margin-bottom:12px; border:2px solid var(--border); box-shadow: 2px 2px 8px rgba(141,75,54,0.05);";
             
             let starsHtml = "";
             for (let i = 1; i <= 12; i++) {
                 const monthKey = `${i}月`;
-                const monthPlans = globalHistoryData[name]?.[monthKey]; 
+                const monthPlans = globalHistoryData[name]?.[monthKey]; // 取得該月計畫陣列
                 
-                let displayContent = ""; 
+                let displayContent = ""; // 預設：完全空白 (未來月份)
 
+                // 檢查該月是否有資料
                 if (monthPlans && monthPlans.length > 0) {
                     const isAllDone = monthPlans.every(p => p.status === "⭐" || p.status === "⭐️");
                     
+                    // 花媽精神：達成目標就有一頓豐盛的晚餐或美麗的花朵 🌸
                     if (isAllDone) {
-                        displayContent = `<div style="font-size:20px;">⭐</div>`;
+                        displayContent = `<div style="font-size:20px;">🌸</div>`;
                     } else {
-                        displayContent = `<div style="font-size:20px; filter:grayscale(1); opacity:0.35;">⭐</div>`;
+                        displayContent = `<div style="font-size:20px; filter:grayscale(1); opacity:0.3;">🌸</div>`;
                     }
                 }
 
                 starsHtml += `
                     <div onclick="openHistoryDetail('${name}', '${monthKey}')" style="text-align:center; cursor:pointer; min-height:40px;">
-                        <div style="font-size:10px; color:#6B7280; margin-bottom:2px; font-weight:bold;">${i}月</div>
+                        <div style="font-size:10px; color:#888; margin-bottom:2px;">${i}月</div>
                         ${displayContent}
                     </div>
                 `;
@@ -730,10 +815,11 @@ async function renderStarryMap() {
         });
     } catch (error) {
         console.error("讀取星圖失敗:", error);
-        container.innerHTML = "<p style='text-align:center; color:#EF4444;'>歷史紀錄載入失敗，請檢查網路</p>";
+        container.innerHTML = "<p style='text-align:center; color:red;'>紀錄載入失敗，請檢查網路</p>";
     }
 }
 
+// 點擊星星/花朵的詳細視窗邏輯
 window.openHistoryDetail = function(name, month) {
     const modal = $("history-modal");
     const content = $("modal-content");
@@ -742,56 +828,60 @@ window.openHistoryDetail = function(name, month) {
     if (modal) modal.classList.remove("hidden");
 
     if (monthPlans.length === 0) {
-        content.innerHTML = `<h3 style="text-align:center; color:#9CA3AF; margin-top:10px;">${month} 尚無計畫紀錄</h3>`;
+        content.innerHTML = `<h3 style="text-align:center; color:#999;">${month} 尚無計畫紀錄</h3>`;
         return;
     }
 
+    // 1. 產生帶有顏色與 Emoji 的計畫清單
     let plansListHtml = monthPlans.map((p, idx) => {
         const isAchieved = p.status === '⭐' || p.status === '⭐️';
+        const statusEmoji = isAchieved ? "🌸" : "❌";
         const statusLabel = isAchieved ? "達標" : "未達標";
-        const themeColor = isAchieved ? "var(--primary)" : "#EF4444"; 
-        const bgColor = isAchieved ? "#EFF6FF" : "#FEF2F2";    
+        const themeColor = isAchieved ? "var(--primary)" : "#FF6B81"; 
+        const bgColor = isAchieved ? "#FFF0EB" : "#FFF0F0";    
 
         return `
-            <div style="background:#F9FAFB; padding:14px; border-radius:12px; margin-bottom:12px; border-left:5px solid ${themeColor}; box-shadow: 2px 2px 5px rgba(0,0,0,0.03);">
+            <div style="background:#fcfcfc; padding:15px; border-radius:12px; margin-bottom:12px; border-left:5px solid ${themeColor}; box-shadow: 2px 2px 5px rgba(0,0,0,0.03);">
                 <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px;">
-                    <span style="font-size:12px; font-weight:bold; color:#6B7280;">方案 ${idx + 1}</span>
+                    <span style="font-size:12px; font-weight:bold; color:#999;">方案 ${idx + 1}</span>
                     <span style="background:${bgColor}; color:${themeColor}; padding:2px 10px; border-radius:20px; font-size:11px; font-weight:800; border: 1px solid ${themeColor}44;">
-                        ${statusLabel}
+                        ${statusEmoji} ${statusLabel}
                     </span>
                 </div>
-                <div style="font-size:15px; color:#1F2937; line-height:1.5;"><strong>計畫：</strong>${p.plan}</div>
-                <div style="font-size:13px; color:#4B5563; margin-top:6px; padding-top:6px; border-top:1px solid #E5E7EB;"><strong>目標：</strong>${p.target}</div>
+                <div style="font-size:15px; color:#444; line-height:1.5;"><strong>計畫：</strong>${p.plan}</div>
+                <div style="font-size:13px; color:#777; margin-top:6px; padding-top:6px; border-top:1px solid #eee;"><strong>目標：</strong>${p.target}</div>
             </div>
         `;
     }).join("");
 
+    // 2. 判斷是否顯示回饋選單 (只要有一個未達成，就顯示)
     const hasFailedTask = monthPlans.some(p => !(p.status === "⭐" || p.status === "⭐️"));
     let rcaHtml = "";
     
     if (hasFailedTask) {
         rcaHtml = `
-            <div style="border-top:2px dashed #E5E7EB; margin-top:20px; padding-top:15px;">
-                <h3 style="color:#D97706; text-align:center; font-size:16px; margin-bottom:10px;">未達標原因檢討</h3>
-                <select id="rca-reason" style="width:100%; padding:12px; border-radius:10px; border:2px solid #E5E7EB; font-size:15px; background:#fff;">
-                    <option value="多一點時間">多一點時間</option>
-                    <option value="同事支援">同事支援</option>
-                    <option value="外部資源協助">外部資源協助</option>
-                    <option value="更好的工具">更好的工具</option>
-                    <option value="其他">其他（面談討論）</option>
+            <div style="border-top:2px dashed #FFD8A8; margin-top:20px; padding-top:15px;">
+                <h3 style="color:#FF7E67; text-align:center; font-size:16px; margin-bottom:10px;">未達標原因回饋 💡</h3>
+                <select id="rca-reason" style="width:100%; padding:12px; border-radius:10px; border:2px solid #FFD8A8; font-size:16px; background:#fff; color:#555; font-weight:bold;">
+                    <option value="多一點時間">⏳ 多一點時間</option>
+                    <option value="同事的支援">👩‍👧‍👦 花家成員的支援 (同事支援)</option>
+                    <option value="外部資源協助">🛒 超市大搶購 (外部資源協助)</option>
+                    <option value="更好的工具">🍳 廚房法寶升級 (更好的工具)</option>
+                    <option value="其他">📝 其他（面談討論）</option>
                 </select>
-                <button onclick="submitRCA('${name}', '${month}')" style="width:100%; background:var(--accent-orange); color:white; padding:14px; border-radius:50px; margin-top:15px; border:none; font-weight:bold; cursor:pointer; box-shadow: 0 4px 0px rgba(0,0,0,0.1);">送出回饋</button>
+                <button onclick="submitRCA('${name}', '${month}')" style="width:100%; background:var(--primary); color:white; padding:14px; border-radius:50px; margin-top:15px; border:none; font-weight:bold; cursor:pointer; box-shadow: 0 4px 0px rgba(0,0,0,0.1);">送出回饋</button>
             </div>
         `;
     }
 
     content.innerHTML = `
-        <h3 style="color:var(--primary-dark); text-align:center; margin:0 0 15px 0; font-weight:900;">${month} 行動方案回饋</h3>
+        <h3 style="color:var(--primary-dark); text-align:center; margin:0 0 15px 0; font-weight:900;">${month} 行動方案溫馨回顧 🌸</h3>
         <div style="max-height:350px; overflow-y:auto; padding-right:5px;">${plansListHtml}</div>
         ${rcaHtml}
     `;
 };
 
+// 🚀 送出 RCA 根因分析到 Google Sheets
 window.submitRCA = async function(name, month) {
     const reasonEl = document.getElementById("rca-reason");
     if (!reasonEl) return;
@@ -799,6 +889,7 @@ window.submitRCA = async function(name, month) {
     const reason = reasonEl.value;
     const submitBtn = event.target; 
 
+    // 1. 防止重複點擊
     submitBtn.disabled = true;
     submitBtn.innerText = "傳送中...";
 
@@ -815,22 +906,24 @@ window.submitRCA = async function(name, month) {
             })
         });
 
-        alert(`紀錄成功！\n已將「${month} / ${name}」的分析原因送出：\n${reason}`);
+        alert(`✔️ 紀錄成功！\n已將「${month} / ${name}」的分析原因送出：\n${reason}`);
         closeModal(); 
         
     } catch (e) {
         console.error("RCA 送出失敗:", e);
-        alert("傳送失敗，請檢查網路連線或 GAS 部署狀態");
+        alert("❌ 傳送失敗，請檢查網路連線或 GAS 部署狀態");
     } finally {
         submitBtn.disabled = false;
         submitBtn.innerText = "送出回饋";
     }
 };
 
+// 關閉彈窗的功能
 window.closeModal = function() {
     if ($("history-modal")) $("history-modal").classList.add("hidden");
 };
 
+// ===== 初始化邏輯 =====
 function bindAutoSave() {
     [ "store","name","todayCallPotential","todayCallOld3Y","todayInviteReturn",
       "todayBookingTotal","todayVisitTotal","trialHA","trialAPAP","dealHA","dealAPAP",
@@ -861,11 +954,13 @@ function initDateLoad() {
 }
 
 document.addEventListener("DOMContentLoaded", () => {
+    // 綁定分頁按鈕監聽
     if($("tab-huddle")) $("tab-huddle").addEventListener("click", () => showView("huddle"));
     if($("tab-report")) $("tab-report").addEventListener("click", () => showView("report"));
     if($("tab-plan")) $("tab-plan").addEventListener("click", () => showView("plan"));
     if($("tab-history")) $("tab-history").addEventListener("click", () => showView("history"));
   
+    // 確保網頁開啟後，主動執行一次「今日檢視」的切換與渲染
     showView("huddle");
 
     bindAutoSave();

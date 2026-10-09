@@ -3,53 +3,39 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
-<title>台北一區・披薩星球登月計畫</title>
+<title>台北一區・秋日豐收祭</title>
 
 <link rel="manifest" href="manifest.json">
-
 <link rel="apple-touch-icon" sizes="192x192" href="icon-192.png">
 <link rel="apple-touch-icon" sizes="512x512" href="icon-512.png">
 
 <meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<meta name="apple-mobile-web-app-title" content="登月計畫">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="秋日豐收祭">
 
 <style>
 :root {
-  /* 👽 玩具總動員三眼怪 / 披薩星球 科技配色 */
-  --bg-space: #0A1128;       /* 深邃星空藍背景 */
-  --primary-dark: #0072CE;   /* 太空服亮藍 (邊框與主要文字) */
-  --primary: #76BC21;        /* 三眼怪螢光綠 (進度條與強調色) */
-  --accent-red: #ED1C24;     /* 披薩星球紅 (警告或次要強調) */
-  --star-yellow: #FCD116;    /* 星星/月亮黃 (達成徽章) */
-  --card-bg: #FFFFFF;        /* 卡片底色 (保持白色以利閱讀) */
-  --border: #4A90E2;         /* 柔和的科技藍邊框 */
-  
-  --btn-generate: #76BC21;   /* 按鈕主色 - 三眼怪綠 */
-  --btn-copy: #0072CE;       /* 按鈕次色 - 太空藍 */
+  /* 🐿️ 奇奇蒂蒂 秋日森林配色 */
+  --bg: #FDF3E7;             /* 暖柔的秋日米白色背景 */
+  --primary-dark: #5D4037;    /* 樹幹深棕色 (主輪廓與文字) */
+  --primary: #D35400;         /* 楓葉焦糖橘紅 (主強調色) */
+  --accent-orange: #E6B042;   /* 橡果芥末黃 */
+  --border: #D7CCC8;         /* 柔和木質淺棕邊框 */
+  --card-bg: #FFFFFF;
+  --secondary: #2E4F4F;       /* 森林墨綠 (高達成率等正向指標) */
 }
 
 *,*::before,*::after{ box-sizing:border-box; }
 
-body {
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-  margin: 0;
-  padding: 14px 14px 90px;
-  
-  /* 🌌 CSS 星空背景繪製 */
-  background-color: var(--bg-space);
-  background-image: 
-    radial-gradient(white, rgba(255,255,255,.2) 2px, transparent 40px),
-    radial-gradient(white, rgba(255,255,255,.15) 1px, transparent 30px),
-    radial-gradient(white, rgba(255,255,255,.1) 2px, transparent 40px),
-    radial-gradient(rgba(255,255,255,.4), rgba(255,255,255,.1) 2px, transparent 30px);
-  background-size: 550px 550px, 350px 350px, 250px 250px, 150px 150px;
-  background-position: 0 0, 40px 60px, 130px 270px, 70px 100px;
-  
-  display: flex;
-  justify-content: center;
-  color: #333;
-  overflow-x: hidden;
+body{
+  font-family:-apple-system,BlinkMacSystemFont,system-ui,sans-serif;
+  margin:0;
+  padding:14px 14px 90px;
+  background: var(--bg);
+  display:flex;
+  justify-content:center;
+  color:#333;
+  overflow-x:hidden;
 }
 
 .container{
@@ -58,46 +44,49 @@ body {
   margin-left:auto;
   margin-right:auto;
   position: relative;
-  z-index: 10;
+  z-index: 2;
 }
 
-/* 🖍️ 標題配置 (太空霓虹風格) */
+/* 🖍️ 標題配置 (木質森林風) */
 h1 { 
   text-align: center; 
   margin: 10px 0 30px; 
-  font-size: 24px; 
+  font-size: 25px; 
   font-weight: 900;
   display: flex;
   justify-content: center;
   align-items: center;
   gap: 12px; 
-  color: #FFFFFF;
-  text-shadow: 0 0 10px rgba(118, 188, 33, 0.8), 0 0 20px rgba(118, 188, 33, 0.4);
+  color: var(--primary-dark);
+  text-shadow: 2px 2px 0px rgba(211, 84, 0, 0.15);
+  letter-spacing: 1px;
 }
 
-/* 預留給自行上傳的左側圖示 (支援 png/gif) */
+/* 預留給自行上傳的左側圖示：建議放 奇奇 Chip (支援 png/gif) */
 h1::before {
-  content: ""; 
-  display: block; 
-  width: 60px; height: 60px;
-  background: url("rocket1.png") no-repeat center;
+  content: "";
+  display: block;
+  width: 65px; 
+  height: 65px;
+  background: url("nut.png") no-repeat center;
   background-size: contain;
   flex-shrink: 0;
 }
 
-/* 預留給自行上傳的右側圖示 (支援 png/gif) */
+/* 預留給自行上傳的右側圖示：建議放 蒂蒂 Dale (支援 png/gif) */
 h1::after {
-  content: ""; 
-  display: block; 
-  width: 60px; height: 60px;
-  background: url("rocket2.png") no-repeat center;
+  content: "";
+  display: block;
+  width: 65px;
+  height: 65px;
+  background: url("nut.png") no-repeat center;
   background-size: contain;
   flex-shrink: 0;
 }
 
-.subtitle{ text-align:center; font-size:14px; color: var(--star-yellow); margin-bottom:8px; font-weight: bold; letter-spacing: 1px; }
+.subtitle{ text-align:center; font-size:13px; color:#888; margin-bottom:8px; font-weight: bold; }
 
-/* 🔹 分頁標籤 (太空艙按鈕風) */
+/* 🔹 分頁標籤 (木牌風格) */
 .tab-header{
   display:flex;
   gap:8px;
@@ -109,168 +98,172 @@ h1::after {
 .tab-header button{
   flex:1;
   padding:12px 0;
-  border-radius:20px;
-  border:2px solid rgba(255,255,255,0.3);
-  background: rgba(10, 17, 40, 0.6);
-  backdrop-filter: blur(5px);
+  border-radius:12px;
+  border:2px solid var(--primary-dark);
+  background:#fff;
   font-size:14px;
-  font-weight: bold;
-  color: #FFFFFF;
+  font-weight: 900;
+  color: var(--primary-dark);
   cursor: pointer;
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-  box-shadow: 0 4px 6px rgba(0,0,0,0.3);
+  transition: all 0.3s;
+  box-shadow: 0 4px 0px var(--border);
+}
+
+.tab-header button:active {
+  transform: translateY(4px);
+  box-shadow: 0 0px 0px var(--border);
 }
 
 .tab-header button.active {
   background: var(--primary-dark) !important;
   color: #FFFFFF !important;
-  border-color: var(--border);
-  box-shadow: 0 0 15px rgba(0, 114, 206, 0.6);
+  border-color: var(--primary-dark);
+  box-shadow: 0 4px 0px rgba(0,0,0,0.2);
 }
 
 .section{
   background: var(--card-bg);
   border-radius:16px;
-  border:4px solid var(--primary-dark);
+  border:3px solid var(--primary-dark);
   padding:20px 16px;
   margin-bottom:12px;
   position:relative;
   overflow: visible !important; 
-  box-shadow: 0 8px 0px rgba(0, 114, 206, 0.3), 0 15px 25px rgba(0,0,0,0.5);
+  box-shadow: 4px 6px 0px rgba(93, 64, 55, 0.15);
 }
 
-/* 左側裝飾：預留給自行上傳的圖示 (如：飛碟.gif) */
+/* 左側裝飾：預留給自行上傳的圖示 (如：大橡果或花生 png/gif) */
 .section::before {
   content: "";
   position: absolute;
-  top: -70px; left: -10px;
-  transform: rotate(-15deg);
-  width: 95px; height: 95px;
-  background: url("alien1.gif") no-repeat center;
+  top: -119.6px; 
+  left: 45px;
+  transform: rotate(0deg);
+  width: 80px; 
+  height: 80px;
+  background: url("chip_left.gif") no-repeat center;
   background-size: contain;
-  z-index: 10; pointer-events: none;
-  filter: drop-shadow(2px 4px 6px rgba(0,0,0,0.3));
+  z-index: 10;            
+  pointer-events: none;
+  filter: drop-shadow(2px 4px 4px rgba(0,0,0,0.2));
 }
 
-/* 右側裝飾：預留給自行上傳的圖示 (如：月球.png) */
+/* 右側裝飾：預留給自行上傳的圖示 (如：秋天紅楓葉 png/gif) */
 .section::after {
-  content: "";
+  content: ""; 
   position: absolute; 
   z-index: 10;            
-  top: -70px; right: -5px;    
-  transform: rotate(15deg);
-  width: 90px; height: 90px; 
-  background: url("alien2.gif") no-repeat center;
+  top: -138px;    
+  right: 180px;    
+  transform: rotate(0deg);
+  width: 150px;   
+  height: 150px; 
+  background: url("dale_right1.gif") no-repeat center;
   background-size: contain;
   pointer-events: none;   
-  filter: drop-shadow(2px 4px 6px rgba(0,0,0,0.3));
+  filter: drop-shadow(2px 4px 4px rgba(0,0,0,0.2));
 }
 
-.section h2{ margin:0 0 15px; font-size:18px; font-weight:900; color: var(--primary-dark); border-left: 6px solid var(--primary); padding-left: 10px; letter-spacing: 0.5px;}
+.section h2{ margin:0 0 15px; font-size:18px; font-weight:900; color: var(--primary-dark); border-left: 6px solid var(--primary); padding-left: 10px; }
 
 label{ display:block;font-size:14px;margin-top:4px; color: #555; font-weight: bold; }
 
 input,select{
   width:100%;
-  padding:12px; font-size:16px;
+  padding:12px; font-size:15px; font-weight:bold; color:var(--primary-dark);
   margin-top:6px; margin-bottom:12px;
-  border-radius:12px; border:2px solid var(--border);
-  background:#F4F8FB;
-  color: #333;
-  font-weight: 500;
-  transition: all 0.2s;
+  border-radius:10px; border:2px solid var(--border);
+  background:#FAF5F0;
 }
 
 input:focus, select:focus{
   outline: none;
   border-color: var(--primary);
-  background: #FFF;
-  box-shadow: 0 0 0 4px rgba(118, 188, 33, 0.2);
+  box-shadow: 0 0 0 3px rgba(211, 84, 0, 0.2);
+  background: #fff;
 }
 
-/* =============== 🚀 Action Animation (無重力漂浮太空元素特效) =============== */
-.space-debris span {
-  position:fixed;
-  bottom: -50px; /* 從下方升起 */
+/* =============== 🍁 Action Animation (秋日落葉與橡果飄落特效) =============== */
+.autumn-leaves span {
+  position:fixed; 
+  top:-50px;
   display:block;
-  font-size: 28px;
-  animation: floatUp linear infinite;
+  font-size: 26px;
+  animation: leafFall 10s linear infinite;
   opacity: 0;
   z-index: 0;
   pointer-events: none;
-  filter: drop-shadow(0 0 5px rgba(255,255,255,0.5));
 }
 
-.space-debris span:nth-child(1) { left: 10%; animation-delay: 0s;   animation-duration: 18s; transform: scale(0.8); }
-.space-debris span:nth-child(2) { left: 25%; animation-delay: 4s;   animation-duration: 22s; transform: scale(1.2); }
-.space-debris span:nth-child(3) { left: 45%; animation-delay: 2s;   animation-duration: 15s; }
-.space-debris span:nth-child(4) { left: 65%; animation-delay: 7s;   animation-duration: 25s; transform: scale(0.9); }
-.space-debris span:nth-child(5) { left: 85%; animation-delay: 1s;   animation-duration: 20s; transform: scale(1.1); }
-.space-debris span:nth-child(6) { left: 90%; animation-delay: 9s;   animation-duration: 17s; }
+/* 讓 7 個元素分散在螢幕各處，速度與搖擺度不同 */
+.autumn-leaves span:nth-child(1) { left: 5%;  animation-delay: 0s;   animation-duration: 12s; }
+.autumn-leaves span:nth-child(2) { left: 15%; animation-delay: 3s;   animation-duration: 14s; font-size: 20px;}
+.autumn-leaves span:nth-child(3) { left: 35%; animation-delay: 1.5s; animation-duration: 11s; }
+.autumn-leaves span:nth-child(4) { left: 55%; animation-delay: 6s;   animation-duration: 15s; font-size: 30px;}
+.autumn-leaves span:nth-child(5) { left: 75%; animation-delay: 0.5s; animation-duration: 10s; }
+.autumn-leaves span:nth-child(6) { left: 88%; animation-delay: 4s;   animation-duration: 13s; }
+.autumn-leaves span:nth-child(7) { left: 95%; animation-delay: 2s;   animation-duration: 16s; font-size: 18px;}
 
-@keyframes floatUp {
-  0%   { transform: translateY(0) rotate(0deg); opacity: 0; }
-  10%  { opacity: 0.8; }
-  90%  { opacity: 0.8; }
-  100% { transform: translateY(-110vh) rotate(360deg); opacity: 0; }
+@keyframes leafFall {
+  0%   { transform: translate(0, 0) rotate(0deg); opacity: 0; }
+  10%  { opacity: 0.85; }
+  80%  { opacity: 0.85; }
+  100% { transform: translate(60px, 105vh) rotate(360deg); opacity: 0; }
 }
-
-.badge.green{ background:#E8F5E9; color:#2E7D32; border: 1px solid; }
-.badge.yellow{ background:#FFF8E1; color:#F57F17; border: 1px solid; }
-.badge.red{ background:#FFEBEE; color:#C62828; border: 1px solid; }
 
 .hidden { display: none !important; }
 </style>
 </head>
 
 <body>
-<!-- 🌌 補上無重力漂浮的太空元素特效 🌌 -->
-<div class="space-debris">
-  <span>🍕</span>
-  <span>⭐</span>
-  <span>🚀</span>
-  <span>🌕</span>
-  <span>🛸</span>
-  <span>⭐</span>
+<!-- 🍁 替換為秋日豐收的動態特效 🍁 -->
+<div class="autumn-leaves">
+  <span>🍂</span>
+  <span>🍁</span>
+  <span>🍂</span>
+  <span>🍁</span>
+  <span>🍂</span>
+  <span>🍁</span>
+  <span>🍂</span>
 </div>
 
 <div class="container">
-  <h1>台北一區・登月計畫</h1>
+  <h1>台北一區・秋日豐收祭</h1>
   
   <header class="tab-header">
-    <button id="tab-history" type="button">航行日誌</button>
-    <button id="tab-huddle" type="button" class="active">今日儀表板</button>
-    <button id="tab-plan" type="button">月度軌道</button>
+    <button id="tab-history" type="button">過冬日誌</button>
+    <button id="tab-huddle" type="button" class="active">今日採集</button>
+    <button id="tab-plan" type="button">儲糧計畫</button>
   </header>
 
   <section id="huddle-view" class="section">
-    <h2>當月行動方案推進率</h2>
+    <h2>當月採集進度率</h2>
     <div id="progress-dashboard">
-      <p style="text-align:center; color:var(--primary-dark); font-size:14px; font-weight:bold;">雷達掃描載入中...</p>
+      <p style="text-align:center; color:var(--primary-dark); font-size:14px; font-weight:bold;">森林雷達掃描中...</p>
     </div>
   </section>
 
   <section id="plan-view" class="section hidden">
-    <h2>個人月度航行計畫</h2>
-    <label for="plan-name-select">1. 選擇太空員：</label>
+    <h2>個人月度儲糧計畫</h2>
+    <label for="plan-name-select">1. 選擇花栗鼠夥伴：</label>
     <select id="plan-name-select">
-      <option value="">-- 披薩星球全隊 --</option>
+      <option value="">-- 全區同仁 --</option>
     </select>
 
     <div style="display: flex; gap: 10px; margin-top: 10px;">
       <div style="flex: 1;">
-        <label for="filter-customer">2. 客戶雷達：</label>
+        <label for="filter-customer">2. 客戶類別：</label>
         <select id="filter-customer">
-          <option value="all">全頻段</option>
+          <option value="all">全部</option>
           <option value="新客">新客</option>
           <option value="舊客">舊客</option>
           <option value="潛客">潛客</option>
         </select>
       </div>
       <div style="flex: 1;">
-        <label for="filter-item">3. 裝備類別：</label>
+        <label for="filter-item">3. 品項類別：</label>
         <select id="filter-item">
-          <option value="all">全裝備</option>
+          <option value="all">全部</option>
           <option value="HA">HA</option>
           <option value="RS">RS</option>
           <option value="保健">保健</option>
@@ -282,23 +275,24 @@ input:focus, select:focus{
   </section>
 
   <section id="history-view" class="section hidden">
-    <h2>每月登月回顧</h2>
-    <p class="subtitle" style="color:var(--primary-dark);">點擊披薩查看紀錄，點擊空白處回報總部</p>
+    <h2>每月儲糧回顧</h2>
+    <p class="subtitle">點擊大橡果查看紀錄，點擊空白處回報總部</p>
     <div id="starry-map-container" style="margin-top: 20px;">
-      <p style="text-align:center; color:var(--primary-dark); font-size:14px; font-weight:bold;">解碼歷史資料中...</p>
+      <p style="text-align:center; color:var(--primary-dark); font-size:14px; font-weight:bold;">正在翻閱過冬日誌...</p>
     </div>
   </section>
 
-  <div id="history-modal" class="hidden" style="position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(10, 17, 40, 0.85); backdrop-filter:blur(5px); z-index:1000; display:flex; justify-content:center; align-items:center; padding:20px;">
-    <div style="background:white; width:100%; max-width:400px; border-radius:24px; padding:25px; position:relative; border: 4px solid var(--primary-dark); box-shadow: 0 10px 40px rgba(118, 188, 33, 0.3);">
+  <!-- 彈窗 (歷史詳細資料) -->
+  <div id="history-modal" class="hidden" style="position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(46, 30, 24, 0.7); backdrop-filter:blur(3px); z-index:1000; display:flex; justify-content:center; align-items:center; padding:20px;">
+    <div style="background:#FFF9F2; width:100%; max-width:420px; border-radius:24px; padding:25px; position:relative; border: 4px solid var(--primary-dark); box-shadow: 0 15px 35px rgba(0,0,0,0.3);">
       <div id="modal-content"></div>
-      <button onclick="closeModal()" style="margin-top:20px; width:100%; background:#F4F8FB; color:var(--primary-dark); border:2px solid var(--border); padding:14px; border-radius:12px; font-weight:900; font-size:16px; cursor:pointer; transition:all 0.2s;">關閉艙門</button>
+      <button onclick="closeModal()" style="margin-top:24px; width:100%; background:var(--border); color:var(--primary-dark); border:none; padding:14px; border-radius:12px; font-size:16px; font-weight:900; cursor:pointer; box-shadow: 0 4px 0px rgba(0,0,0,0.1); transition:all 0.2s;">蓋上樹洞 (關閉)</button>
     </div>
   </div>
 </div>
 
 <script>
-console.log("🚀 Pizza Planet Moon Landing Edition app.js loaded!");
+console.log("🐿️ Chip 'n' Dale Autumn Harvest Edition app.js loaded!");
 
 const STORAGE_PREFIX = "daily-report-test-";
 const PROGRESS_API_URL = "https://script.google.com/macros/s/AKfycbyrm3inO0h3qQf3hpKGCuQrNk68clolrYTXo5ncwEblDghytWB29dMIKA1LenjyIAr0qw/exec";
@@ -333,7 +327,7 @@ const monthlyData = {
   ],
   "蕭純聿": [
     { content: "所有進店舊客，不論是否為 TA 都提供 Zeal 資訊", target: "每周 2 位舊客試聽 Zeal", customerType: "舊客", itemType: "HA" },
-    { content: "保健食品除棉片外，第二品項熟悉並分享, target: "每月都要有營收", customerType: "舊客", itemType: "保健" },
+    { content: "保健食品除棉片外，第二品項熟悉並分享", target: "每月都要有營收", customerType: "舊客", itemType: "保健" },
     { content: "Google Map 評論", target: "每月至少 1 篇", customerType: "舊客", itemType: "HA" }
   ],
   "陳宛妤": [
@@ -352,7 +346,8 @@ const monthlyData = {
     { content: "忠孝內部轉介名單，優先針對半年未進店舊客聯繫，其次是半年未進店潛客", target: "10 月完成 20 筆聯繫", customerType: "舊客", itemType: "HA" }
   ],
   "賴宜甄": [
-    { content: "金山南 2024 ~ 2026 年 RS 潛客聯繫", target: "10 月完成 15 筆聯繫，並至少邀約回店 2 位", customerType: "潛客", itemType: "RS" }
+    { content: "金山南周遭名單，2025年後未進店的HA舊客聯繫，邀約進店", target: "10 月完成 15 筆資料確認", customerType: "舊客", itemType: "HA" },
+    { content: "金山南周遭名單，2025年後未進店的HA潛客聯繫 ( 雙耳中度以上 )，邀約進店", target: "10 月完成 15 筆資料確認", customerType: "潛客", itemType: "HA" },
   ],
   "姚孟妍": [
     { content: "培養站前自己的舊客戶，台大舊客名單，針對固定回台大和空白標籤的優先聯繫，邀約進店清潔並重新 COSI 了解使用狀況", target: "10 月完成 42 筆聯繫", customerType: "舊客", itemType: "HA" },
@@ -392,7 +387,6 @@ function num(val) {
     const x = Number(s);
     return Number.isFinite(x) ? x : 0;
 }
-function okText(ok) { return ok ? "✔️ 達成" : "✖️ 未達成"; }
 
 function hasDataOnDate(dateStr) { return localStorage.getItem(storageKey(dateStr)) != null; }
 function loadByDate(dateStr) {
@@ -408,12 +402,6 @@ function findPrevDateWithData(fromDateStr, maxLookbackDays = 60) {
         cursor = addDaysToDateStr(cursor, -1);
     }
     return null;
-}
-
-function getPrevTwoDataDates(todayStr) {
-    const d1 = findPrevDateWithData(todayStr);
-    const d0 = d1 ? findPrevDateWithData(d1) : null;
-    return { d1, d0 };
 }
 
 function showView(view) {
@@ -440,12 +428,12 @@ function showView(view) {
 
     if (view === "huddle") {
         try { fetchAndRenderProgress(); } catch(e) { console.error(e); }
-        // renderHuddle mockup logic skipped if actual form isn't present, but preserved if it is.
     } else if (view === "history") {
         try { renderStarryMap(); } catch(e) { console.error(e); }
     }
 }
 
+// ===== 儲糧計畫渲染 (秋日森林風) =====
 function initPlanTab() {
     const selectName = $("plan-name-select");
     const selectCustomer = $("filter-customer");
@@ -454,7 +442,7 @@ function initPlanTab() {
 
     if (!selectName || !container) return;
 
-    selectName.innerHTML = '<option value="">-- 披薩星球全隊 --</option>';
+    selectName.innerHTML = '<option value="">-- 全區同仁 --</option>';
     Object.keys(monthlyData).forEach(name => {
         const opt = document.createElement("option");
         opt.value = name;
@@ -490,27 +478,28 @@ function initPlanTab() {
         });
 
         if (filteredData.length === 0) {
-            container.innerHTML = '<p style="text-align:center; color:#999; font-size:14px; margin-top:20px;">雷達未掃描到符合條件的任務</p>';
+            container.innerHTML = '<p style="text-align:center; color:#999; font-size:14px; margin-top:20px;">目前無符合條件的儲糧計畫</p>';
             return;
         }
 
         filteredData.forEach((plan, index) => {
             const planEl = document.createElement("div");
-            planEl.style.cssText = "background: #fff; border: 2px solid var(--border); border-radius: 14px; padding: 18px; margin-bottom: 18px; border-left: 6px solid var(--primary); box-shadow: 0 4px 10px rgba(0,114,206,0.1); position:relative;";
+            // 秋日森林卡片風格
+            planEl.style.cssText = "background: #fff; border: 2px solid var(--border); border-radius: 14px; padding: 18px; margin-bottom: 18px; border-left: 6px solid var(--primary); box-shadow: 0 4px 10px rgba(93,64,55,0.08); position:relative;";
             
-            // 太空配色標籤
-            const custColor = plan.customerType === '潛客' ? '#FFB3B3' : (plan.customerType === '新客' ? '#B3D9FF' : '#FFE066'); 
-            const itemColor = plan.itemType === 'RS' ? '#B3FFB3' : (plan.itemType === '保健' ? '#FFCC99' : '#FFE57F');
+            // 標籤顏色：森林系配色
+            const custColor = plan.customerType === '潛客' ? '#FAD7A1' : (plan.customerType === '新客' ? '#C1E1C1' : '#F4C2C2'); 
+            const itemColor = plan.itemType === 'RS' ? '#A2D5C6' : (plan.itemType === '保健' ? '#F7C59F' : '#EFE8B1');
 
             const custAbbr = plan.customerType ? plan.customerType.substring(0, 1) : '?';
             const itemAbbr = plan.itemType ? plan.itemType.substring(0, 1) : '?';
-            const tagCircleStyle = "display:inline-flex; justify-content:center; align-items:center; width:28px; height:28px; border-radius:50%; color:var(--bg-space); font-size:13px; font-weight:900; box-sizing:border-box; box-shadow: 1px 2px 4px rgba(0,0,0,0.15); border:1px solid rgba(0,0,0,0.05);";
+            const tagCircleStyle = "display:inline-flex; justify-content:center; align-items:center; width:28px; height:28px; border-radius:50%; color:var(--primary-dark); font-size:13px; font-weight:900; box-sizing:border-box; box-shadow: 1px 2px 4px rgba(0,0,0,0.1); border:1px solid rgba(0,0,0,0.05);";
 
             planEl.innerHTML = `
                 <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom: 15px; border-bottom: 1px dashed var(--border); padding-bottom: 10px;">
                     <div>
                         <div style="font-weight: 900; color: var(--primary-dark); font-size: 18px;">${plan.staffName}</div>
-                        <div style="font-size: 12px; color: #888; margin-top: 4px; font-weight:bold;">太空任務 #${index + 1}</div>
+                        <div style="font-size: 12px; color: #888; margin-top: 4px; font-weight:bold;">秋季任務 #${index + 1}</div>
                     </div>
                     <div style="display:flex; gap: 8px; align-items:center;">
                         <span style="${tagCircleStyle} background:${custColor};" title="${plan.customerType || '未分類'}">${custAbbr}</span>
@@ -519,12 +508,12 @@ function initPlanTab() {
                 </div>
                 
                 <div style="margin-bottom: 16px;">
-                    <div style="font-weight: 900; color: var(--primary); font-size: 13px; margin-bottom: 6px;">航行軌跡</div>
+                    <div style="font-weight: 900; color: var(--primary); font-size: 13px; margin-bottom: 6px;">採集路線</div>
                     <div style="font-size: 15px; line-height: 1.6; color: #444; text-align: justify; font-weight:500;">${plan.content}</div>
                 </div>
 
                 <div>
-                    <div style="font-weight: 900; color: var(--accent-red); font-size: 13px; margin-bottom: 6px;">登月目標</div>
+                    <div style="font-weight: 900; color: var(--accent-orange); font-size: 13px; margin-bottom: 6px;">儲糧目標</div>
                     <div style="font-size: 15px; line-height: 1.6; color: #666; text-align: justify; font-weight:500;">${plan.target}</div>
                 </div>
             `;
@@ -536,6 +525,7 @@ function initPlanTab() {
     renderPlans();
 }
 
+// ===== 進度條渲染 (樹幹與楓葉配色) =====
 async function fetchAndRenderProgress() {
     const container = $("progress-dashboard");
     if (!container) return;
@@ -548,7 +538,7 @@ async function fetchAndRenderProgress() {
         container.innerHTML = ""; 
 
         if (tasks.length === 0) {
-            container.innerHTML = "<p style='text-align:center; color:#999;'>總部尚無發布任務</p>";
+            container.innerHTML = "<p style='text-align:center; color:#999;'>尚無採集任務</p>";
             return;
         }
 
@@ -560,28 +550,28 @@ async function fetchAndRenderProgress() {
 
         Object.entries(groupedTasks).forEach(([staffName, staffTasks]) => {
             const taskRowsHtml = staffTasks.map(task => {
-                // 三眼怪綠色 (高達成) 與 披薩星球紅 (低達成)
-                const barColor = task.percent >= 80 ? "var(--primary)" : "var(--accent-red)"; 
+                // 森林綠 (高達成) 與 楓葉橘紅 (低達成)
+                const barColor = task.percent >= 80 ? "var(--secondary)" : "var(--primary)"; 
                 return `
                     <div style="margin-bottom: 22px;">
                         <div style="display:flex; justify-content:space-between; align-items:end; margin-bottom:8px;">
-                            <span style="font-size:14px; font-weight:bold; color:#444;">${task.taskName}</span>
-                            <span style="font-weight:900; color:${barColor}; font-size:15px; background:#F4F8FB; padding:2px 8px; border-radius:8px;">${task.completed} / ${task.target}</span>
+                            <span style="font-size:14px; font-weight:bold; color:var(--primary-dark);">${task.taskName}</span>
+                            <span style="font-weight:900; color:${barColor}; font-size:15px; background:#FAF5F0; padding:2px 8px; border-radius:8px;">${task.completed} / ${task.target}</span>
                         </div>
-                        <div style="background:#E0E6ED; height:14px; border-radius:10px; overflow:hidden; box-shadow:inset 0 1px 3px rgba(0,0,0,0.1);">
+                        <div style="background:#EFEBE9; height:14px; border-radius:10px; overflow:hidden; box-shadow:inset 0 1px 3px rgba(0,0,0,0.1);">
                             <div style="background:${barColor}; width:${task.percent}%; height:100%; transition:width 1.2s cubic-bezier(0.17, 0.67, 0.83, 0.67); border-radius:10px;"></div>
                         </div>
-                        <div style="text-align:right; font-size:11px; color:#888; margin-top:6px; font-weight:bold;">完成度 ${task.percent}%</div>
+                        <div style="text-align:right; font-size:11px; color:#888; margin-top:6px; font-weight:bold;">採集進度 ${task.percent}%</div>
                     </div>
                 `;
             }).join("");
 
             const card = document.createElement("div");
-            card.style.cssText = "background:#fff; padding:20px; border-radius:16px; margin-bottom:16px; border:2px solid var(--border); box-shadow: 0 4px 12px rgba(0,114,206,0.1);";
+            card.style.cssText = "background:#fff; padding:20px; border-radius:16px; margin-bottom:16px; border:2px solid var(--border); box-shadow: 0 4px 12px rgba(93,64,55,0.08);";
             
             card.innerHTML = `
-                <div style="font-weight:900; font-size:18px; color:var(--primary-dark); margin-bottom:18px; border-bottom: 2px dashed #E0E6ED; padding-bottom:10px;">
-                     ${staffName} 
+                <div style="font-weight:900; font-size:18px; color:var(--primary-dark); margin-bottom:18px; border-bottom: 2px dashed var(--border); padding-bottom:10px;">
+                     🐿️ ${staffName} 
                 </div>
                 ${taskRowsHtml}
             `;
@@ -590,15 +580,16 @@ async function fetchAndRenderProgress() {
 
     } catch (error) {
         console.error("進度抓取失敗:", error);
-        container.innerHTML = `<p style="text-align:center; color:var(--accent-red); font-size:14px; font-weight:bold;">⚠️ 無法連線至披薩星球總部</p>`;
+        container.innerHTML = `<p style="text-align:center; color:var(--primary); font-size:14px; font-weight:bold;">⚠️ 無法連線至總部樹洞</p>`;
     }
 }
 
+// ===== 歷史回顧與星圖 (大橡果) =====
 async function renderStarryMap() {
     const container = $("starry-map-container");
     if (!container) return;
     
-    container.innerHTML = "<p style='text-align:center; color:var(--primary-dark); font-size:14px; font-weight:bold;'>正在讀取太空日誌...</p>";
+    container.innerHTML = "<p style='text-align:center; color:var(--primary-dark); font-size:14px; font-weight:bold;'>正在翻閱過冬日誌...</p>";
 
     try {
         const response = await fetch(`${PROGRESS_API_URL}?action=getHistory`);
@@ -609,7 +600,7 @@ async function renderStarryMap() {
 
         staffNames.forEach(name => {
             const card = document.createElement("div");
-            card.style.cssText = "background:#fff; padding:16px; border-radius:16px; margin-bottom:12px; border:2px solid var(--border); box-shadow: 0 4px 8px rgba(0,114,206,0.08);";
+            card.style.cssText = "background:#fff; padding:16px; border-radius:16px; margin-bottom:12px; border:2px solid var(--border); box-shadow: 0 4px 8px rgba(93,64,55,0.05);";
             
             let starsHtml = "";
             for (let i = 1; i <= 12; i++) {
@@ -621,11 +612,10 @@ async function renderStarryMap() {
                 if (monthPlans && monthPlans.length > 0) {
                     const isAllDone = monthPlans.every(p => p.status === "⭐" || p.status === "⭐️");
                     
-                    // 三眼怪精神：達成目標就有一片美味的披薩 🍕
                     if (isAllDone) {
-                        displayContent = `<div style="font-size:24px; filter:drop-shadow(0 2px 3px rgba(0,0,0,0.2)); transform: scale(1.1);">🍕</div>`;
+                        displayContent = `<div style="font-size:24px; filter:drop-shadow(0 2px 3px rgba(0,0,0,0.2)); transform: scale(1.1);">🌰</div>`;
                     } else {
-                        displayContent = `<div style="font-size:24px; filter:grayscale(1); opacity:0.3;">🍕</div>`;
+                        displayContent = `<div style="font-size:24px; filter:grayscale(1); opacity:0.3;">🌰</div>`;
                     }
                 }
 
@@ -649,10 +639,11 @@ async function renderStarryMap() {
         });
     } catch (error) {
         console.error("讀取星圖失敗:", error);
-        container.innerHTML = "<p style='text-align:center; color:var(--accent-red); font-weight:bold;'>⚠️ 航行日誌載入失敗，請檢查通訊</p>";
+        container.innerHTML = "<p style='text-align:center; color:var(--primary); font-weight:bold;'>⚠️ 日誌載入失敗，請檢查網路</p>";
     }
 }
 
+// 詳細視窗與 RCA 邏輯
 window.openHistoryDetail = function(name, month) {
     const modal = $("history-modal");
     const content = $("modal-content");
@@ -661,21 +652,21 @@ window.openHistoryDetail = function(name, month) {
     if (modal) modal.classList.remove("hidden");
 
     if (monthPlans.length === 0) {
-        content.innerHTML = `<h3 style="text-align:center; color:#999; margin:20px 0;">${month} 尚無航行紀錄</h3>`;
+        content.innerHTML = `<h3 style="text-align:center; color:#999; margin:20px 0;">這棵樹目前沒有紀錄 🍂</h3>`;
         return;
     }
 
     let plansListHtml = monthPlans.map((p, idx) => {
         const isAchieved = p.status === '⭐' || p.status === '⭐️';
-        const statusEmoji = isAchieved ? "🍕" : "💥";
-        const statusLabel = isAchieved ? "成功登陸" : "任務失敗";
-        const themeColor = isAchieved ? "var(--primary)" : "var(--accent-red)"; 
-        const bgColor = isAchieved ? "#F1F8E9" : "#FFEBEE";    
+        const statusEmoji = isAchieved ? "🌰" : "🍂";
+        const statusLabel = isAchieved ? "滿載而歸" : "庫存告急";
+        const themeColor = isAchieved ? "var(--secondary)" : "var(--primary)"; 
+        const bgColor = isAchieved ? "#E8F5E9" : "#FBE9E7";    
 
         return `
             <div style="background:#fcfcfc; padding:16px; border-radius:14px; margin-bottom:14px; border-left:6px solid ${themeColor}; box-shadow: 0 2px 6px rgba(0,0,0,0.05);">
                 <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px;">
-                    <span style="font-size:13px; font-weight:bold; color:#888;">航線 ${idx + 1}</span>
+                    <span style="font-size:13px; font-weight:bold; color:#888;">路線 ${idx + 1}</span>
                     <span style="background:${bgColor}; color:${themeColor}; padding:4px 12px; border-radius:20px; font-size:12px; font-weight:900; border: 1px solid ${themeColor}44;">
                         ${statusEmoji} ${statusLabel}
                     </span>
@@ -692,21 +683,21 @@ window.openHistoryDetail = function(name, month) {
     if (hasFailedTask) {
         rcaHtml = `
             <div style="border-top:2px dashed var(--border); margin-top:20px; padding-top:15px;">
-                <h3 style="color:var(--accent-red); text-align:center; font-size:16px; margin-bottom:12px; font-weight:900;">⚠️ 軌道偏移分析回報</h3>
-                <select id="rca-reason" style="width:100%; padding:14px; border-radius:12px; border:2px solid var(--border); font-size:15px; background:#F4F8FB; color:#333; font-weight:bold;">
-                    <option value="多一點時間">⏳ 需要更多火箭燃料 (多一點時間)</option>
-                    <option value="同事的支援">👽 三眼怪夥伴呼叫 (同事支援)</option>
-                    <option value="外部資源協助">🍕 披薩星球總部補給 (外部資源協助)</option>
-                    <option value="更好的工具">🚀 升級太空船引擎 (更好的工具)</option>
-                    <option value="其他">📝 宇宙電波異常（面談討論）</option>
+                <h3 style="color:var(--primary); text-align:center; font-size:16px; margin-bottom:12px; font-weight:900;">儲糧未達標原因 📝</h3>
+                <select id="rca-reason" style="width:100%; padding:14px; border-radius:12px; border:2px solid var(--border); font-size:15px; background:#FAF5F0; color:#333; font-weight:bold;">
+                    <option value="外部突發">🦆 被唐老鴨搗亂了！ (外部突發狀況)</option>
+                    <option value="名單漏追">🙈 忘記橡果藏在哪裡了 (名單漏追蹤)</option>
+                    <option value="時間管理">🥧 跑去吃蘋果派了 (時間管理待加強)</option>
+                    <option value="尋求支援">🐿️ 需要花栗鼠夥伴支援 (尋求同事協助)</option>
+                    <option value="其他">📝 其他（面談討論）</option>
                 </select>
-                <button onclick="submitRCA('${name}', '${month}')" style="width:100%; background:var(--primary); color:white; padding:16px; border-radius:50px; margin-top:16px; border:none; font-weight:900; font-size:16px; cursor:pointer; box-shadow: 0 4px 10px rgba(118, 188, 33, 0.4); transition:transform 0.1s;">傳送回報至總部</button>
+                <button onclick="submitRCA('${name}', '${month}')" style="width:100%; background:var(--primary); color:white; padding:16px; border-radius:12px; margin-top:16px; border:none; font-weight:900; font-size:16px; cursor:pointer; box-shadow: 0 4px 0px rgba(160, 64, 0, 1); transition:transform 0.1s;">傳送給總部樹洞</button>
             </div>
         `;
     }
 
     content.innerHTML = `
-        <h3 style="color:var(--primary-dark); text-align:center; margin:0 0 20px 0; font-weight:900; font-size:20px;">${month} 登月任務回顧 🌕</h3>
+        <h3 style="color:var(--primary-dark); text-align:center; margin:0 0 20px 0; font-weight:900; font-size:20px;">${month} 儲糧回顧 🌰</h3>
         <div style="max-height:350px; overflow-y:auto; padding-right:5px;">${plansListHtml}</div>
         ${rcaHtml}
     `;
@@ -720,7 +711,9 @@ window.submitRCA = async function(name, month) {
     const submitBtn = event.target; 
 
     submitBtn.disabled = true;
-    submitBtn.innerText = "訊號傳輸中...";
+    submitBtn.innerText = "正在丟入樹洞...";
+    submitBtn.style.background = "#999";
+    submitBtn.style.boxShadow = "none";
 
     try {
         await fetch(PROGRESS_API_URL, {
@@ -730,15 +723,17 @@ window.submitRCA = async function(name, month) {
             body: JSON.stringify({ action: "submitRCA", name: name, month: month, reason: reason })
         });
 
-        alert(`✔️ 總部已收到！\n已將「${month} / ${name}」的偏移分析送出：\n${reason}`);
+        alert(`✔️ 紀錄成功！\n已將「${month} / ${name}」的狀況送出：\n${reason}`);
         closeModal(); 
         
     } catch (e) {
         console.error("RCA 送出失敗:", e);
-        alert("❌ 傳送失敗，請檢查與披薩星球的通訊狀況");
+        alert("❌ 傳送失敗，請檢查網路連線");
     } finally {
         submitBtn.disabled = false;
-        submitBtn.innerText = "傳送回報至總部";
+        submitBtn.innerText = "傳送給總部樹洞";
+        submitBtn.style.background = "var(--primary)";
+        submitBtn.style.boxShadow = "0 4px 0px rgba(160, 64, 0, 1)";
     }
 };
 

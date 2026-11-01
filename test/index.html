@@ -36,10 +36,12 @@ body{
   /* 🗡️ 炭治郎市松紋 (綠黑格子) 背景 */
   background-color: #1A1A1A;
   background-image: 
+    linear-gradient(rgba(26, 26, 26, 0.85), rgba(26, 26, 26, 0.85)), /* 💡 加上暗色遮罩，降低整體飽和度與亮度 */
     linear-gradient(45deg, #00855B 25%, transparent 25%, transparent 75%, #00855B 75%, #00855B), 
     linear-gradient(45deg, #00855B 25%, transparent 25%, transparent 75%, #00855B 75%, #00855B);
-  background-size: 80px 80px;
-  background-position: 0 0, 40px 40px;
+  background-size: auto, 80px 80px, 80px 80px;
+  background-position: 0 0, 0 0, 40px 40px;
+  background-attachment: fixed; /* 💡 讓背景固定，滾動時更具質感 */
   
   display:flex;
   justify-content:center;
@@ -128,10 +130,11 @@ h1::after {
 }
 
 .tab-header button.active {
-  background: var(--primary-dark) !important;
+  /* 💡 修改這裡：點擊後的按鈕改為「炭治郎綠」，並加上微光暈，在暗背景中更突出 */
+  background: var(--primary) !important;
   color: #FFFFFF !important;
-  border-color: var(--primary-dark);
-  box-shadow: 0 4px 0px rgba(0,0,0,0.8);
+  border-color: var(--primary);
+  box-shadow: 0 4px 0px rgba(0,0,0,0.6), 0 0 12px rgba(0, 133, 91, 0.5);
 }
 
 .section{

@@ -62,16 +62,17 @@ body{
 h1 { 
   text-align: center; 
   margin: 10px 0 30px; 
-  font-size: 24px; /* 💡 稍微縮小字體以適應較窄的手機 */
+  font-size: 21px; /* 💡 稍微縮小字體以確保任何手機都能單行顯示 */
   font-weight: 900;
   display: flex;
   justify-content: center;
   align-items: center;
-  gap: 10px; 
+  gap: 6px; /* 💡 稍微縮小圖片與文字的間距 */
   color: #FFFFFF;
   text-shadow: 0 0 10px rgba(0, 133, 91, 0.8), 0 2px 4px rgba(0,0,0,1);
   letter-spacing: 1px;
-  flex-wrap: wrap; /* 💡 允許在極小螢幕自動彈性換行，避免擠壓 */
+  flex-wrap: nowrap; /* 💡 強制不換行，維持在同一列 */
+  white-space: nowrap;
 }
 
 /* 預留給自行上傳的左側圖示：建議放 炭治郎/炎柱 (支援 png/gif) */
@@ -170,8 +171,9 @@ h1::after {
   position: absolute; 
   z-index: 10;            
   top: -204px;    
-  right: 85px;    
-  transform: rotate(0deg);
+  /* 💡 修改這裡：使用 left 50% 搭配 translateX(-50%) 讓圖片永遠保持在正中央 */
+  left: 50%;
+  transform: translateX(-50%);
   width: 330px;   
   height: 330px; 
   background: url("mask_deco.gif") no-repeat center;
@@ -770,6 +772,3 @@ document.addEventListener("DOMContentLoaded", () => {
     initPlanTab();
 });
 </script>
-
-</body>
-</html>

@@ -3,35 +3,46 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
-<title>台北一區・秋日豐收祭</title>
+<title>台北一區・無限追蹤篇</title>
 
 <link rel="manifest" href="manifest.json">
 <link rel="apple-touch-icon" sizes="192x192" href="icon-192.png">
 <link rel="apple-touch-icon" sizes="512x512" href="icon-512.png">
 
 <meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-status-bar-style" content="default">
-<meta name="apple-mobile-web-app-title" content="秋日豐收祭">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="無限追蹤篇">
 
 <style>
 :root {
-  /* 🐿️ 奇奇蒂蒂 秋日森林配色 */
-  --bg: #FDF3E7;             /* 暖柔的秋日米白色背景 */
-  --primary-dark: #5D4037;    /* 樹幹深棕色 (主輪廓與文字) */
-  --primary: #D35400;         /* 楓葉焦糖橘紅 (主強調色) */
-  --accent-orange: #E6B042;   /* 橡果芥末黃 */
-  --border: #D7CCC8;         /* 柔和木質淺棕邊框 */
-  --card-bg: #FFFFFF;
-  --secondary: #2E4F4F;       /* 森林墨綠 (高達成率等正向指標) */
+  /* 🗡️ 鬼滅之刃 大正和風配色 */
+  --bg-night: #1C1924;        /* 藤襲山暗紫夜色 */
+  --primary-dark: #1A1A1A;    /* 鬼殺隊服墨黑 (主輪廓與文字) */
+  --primary: #00855B;         /* 炭治郎市松紋綠 */
+  --accent-red: #C82A2A;      /* 炎之呼吸 / 血鬼術紅 (警告色) */
+  --border: #3A3A3A;         /* 暗灰邊框 */
+  --card-bg: #FAFAFA;        /* 和紙米白 */
+  --secondary: #0277BD;       /* 水之呼吸藍 (高達成率) */
+  --wisteria: #8B5FBF;       /* 紫藤花紫 */
 }
 
 *,*::before,*::after{ box-sizing:border-box; }
 
 body{
-  font-family:-apple-system,BlinkMacSystemFont,system-ui,sans-serif;
+  font-family:-apple-system,BlinkMacSystemFont,"Microsoft JhengHei",system-ui,sans-serif;
   margin:0;
-  padding:14px 14px 90px;
-  background: var(--bg);
+  /* 💡 修改這裡：將左右 padding 從 14px 加大到 28px，為凸出去的圖片留出「邊緣安全區」 */
+  padding:20px 28px 90px;
+  /* 🗡️ 炭治郎市松紋 (綠黑格子) 背景 */
+  background-color: #1A1A1A;
+  background-image: 
+    linear-gradient(rgba(26, 26, 26, 0.85), rgba(26, 26, 26, 0.85)), /* 💡 加上暗色遮罩，降低整體飽和度與亮度 */
+    linear-gradient(45deg, #00855B 25%, transparent 25%, transparent 75%, #00855B 75%, #00855B), 
+    linear-gradient(45deg, #00855B 25%, transparent 25%, transparent 75%, #00855B 75%, #00855B);
+  background-size: auto, 80px 80px, 80px 80px;
+  background-position: 0 0, 0 0, 40px 40px;
+  background-attachment: fixed; /* 💡 讓背景固定，滾動時更具質感 */
+  
   display:flex;
   justify-content:center;
   color:#333;
@@ -47,46 +58,50 @@ body{
   z-index: 2;
 }
 
-/* 🖍️ 標題配置 (木質森林風) */
+/* 🖍️ 標題配置 (大正熱血風) */
 h1 { 
   text-align: center; 
   margin: 10px 0 30px; 
-  font-size: 25px; 
+  font-size: 21px; /* 💡 稍微縮小字體以確保任何手機都能單行顯示 */
   font-weight: 900;
   display: flex;
   justify-content: center;
   align-items: center;
-  gap: 12px; 
-  color: var(--primary-dark);
-  text-shadow: 2px 2px 0px rgba(211, 84, 0, 0.15);
+  gap: 6px; /* 💡 稍微縮小圖片與文字的間距 */
+  color: #FFFFFF;
+  text-shadow: 0 0 10px rgba(0, 133, 91, 0.8), 0 2px 4px rgba(0,0,0,1);
   letter-spacing: 1px;
+  flex-wrap: nowrap; /* 💡 強制不換行，維持在同一列 */
+  white-space: nowrap;
 }
 
-/* 預留給自行上傳的左側圖示：建議放 奇奇 Chip (支援 png/gif) */
+/* 預留給自行上傳的左側圖示：建議放 炭治郎/炎柱 (支援 png/gif) */
 h1::before {
   content: "";
   display: block;
-  width: 65px; 
-  height: 65px;
-  background: url("nut.png") no-repeat center;
+  width: 60px; /* 💡 尺寸從 70px 微調為 60px，防擠壓 */
+  height: 60px;
+  background: url("tanjiro_left.png") no-repeat center;
   background-size: contain;
   flex-shrink: 0;
+  filter: drop-shadow(0 2px 5px rgba(0,0,0,0.5));
 }
 
-/* 預留給自行上傳的右側圖示：建議放 蒂蒂 Dale (支援 png/gif) */
+/* 預留給自行上傳的右側圖示：建議放 禰豆子/其他柱 (支援 png/gif) */
 h1::after {
   content: "";
   display: block;
-  width: 65px;
-  height: 65px;
-  background: url("nut.png") no-repeat center;
+  width: 60px; /* 💡 尺寸從 70px 微調為 60px，防擠壓 */
+  height: 60px;
+  background: url("nezuko_right.png") no-repeat center;
   background-size: contain;
   flex-shrink: 0;
+  filter: drop-shadow(0 2px 5px rgba(0,0,0,0.5));
 }
 
-.subtitle{ text-align:center; font-size:13px; color:#888; margin-bottom:8px; font-weight: bold; }
+.subtitle{ text-align:center; font-size:14px; color: var(--wisteria); margin-bottom:8px; font-weight: bold; letter-spacing: 1px;}
 
-/* 🔹 分頁標籤 (木牌風格) */
+/* 🔹 分頁標籤 (鬼殺隊名牌風) */
 .tab-header{
   display:flex;
   gap:8px;
@@ -98,73 +113,76 @@ h1::after {
 .tab-header button{
   flex:1;
   padding:12px 0;
-  border-radius:12px;
+  border-radius:8px;
   border:2px solid var(--primary-dark);
-  background:#fff;
-  font-size:14px;
+  background: rgba(250, 250, 250, 0.9);
+  font-size:15px;
   font-weight: 900;
   color: var(--primary-dark);
   cursor: pointer;
   transition: all 0.3s;
-  box-shadow: 0 4px 0px var(--border);
+  box-shadow: 0 4px 0px var(--primary-dark);
+  letter-spacing: 1px;
 }
 
 .tab-header button:active {
   transform: translateY(4px);
-  box-shadow: 0 0px 0px var(--border);
+  box-shadow: 0 0px 0px var(--primary-dark);
 }
 
 .tab-header button.active {
-  background: var(--primary-dark) !important;
+  /* 💡 修改這裡：點擊後的按鈕改為「炭治郎綠」，並加上微光暈，在暗背景中更突出 */
+  background: var(--primary) !important;
   color: #FFFFFF !important;
-  border-color: var(--primary-dark);
-  box-shadow: 0 4px 0px rgba(0,0,0,0.2);
+  border-color: var(--primary);
+  box-shadow: 0 4px 0px rgba(0,0,0,0.6), 0 0 12px rgba(0, 133, 91, 0.5);
 }
 
 .section{
   background: var(--card-bg);
-  border-radius:16px;
-  border:3px solid var(--primary-dark);
+  border-radius:12px;
+  border:4px solid var(--primary-dark);
   padding:20px 16px;
   margin-bottom:12px;
   position:relative;
   overflow: visible !important; 
-  box-shadow: 4px 6px 0px rgba(93, 64, 55, 0.15);
+  box-shadow: 0 10px 20px rgba(0,0,0,0.4);
 }
 
-/* 左側裝飾：預留給自行上傳的圖示 (如：大橡果或花生 png/gif) */
+/* 左側裝飾：預留給自行上傳的圖示 (如：日輪刀或刀鍔 png/gif) */
 .section::before {
   content: "";
   position: absolute;
-  top: -119.6px; 
-  left: 45px;
-  transform: rotate(0deg);
-  width: 80px; 
-  height: 80px;
-  background: url("chip_left.gif") no-repeat center;
+  top: -50px; 
+  left: -20px;
+  transform: rotate(-15deg);
+  width: 85px; 
+  height: 85px;
+  background: url("sword_deco.png") no-repeat center;
   background-size: contain;
   z-index: 10;            
   pointer-events: none;
-  filter: drop-shadow(2px 4px 4px rgba(0,0,0,0.2));
+  filter: drop-shadow(2px 4px 4px rgba(0,0,0,0.3));
 }
 
-/* 右側裝飾：預留給自行上傳的圖示 (如：秋天紅楓葉 png/gif) */
+/* 右側裝飾：預留給自行上傳的圖示 (如：狐狸面具或紫藤花 png/gif) */
 .section::after {
   content: ""; 
   position: absolute; 
   z-index: 10;            
-  top: -138px;    
-  right: 180px;    
-  transform: rotate(0deg);
-  width: 150px;   
-  height: 150px; 
-  background: url("dale_right1.gif") no-repeat center;
+  top: -203px;    
+  /* 💡 修改這裡：使用 left 50% 搭配 translateX(-50%) 讓圖片永遠保持在正中央 */
+  left: 50%;
+  transform: translateX(-50%);
+  width: 330px;   
+  height: 330px; 
+  background: url("mask_deco.gif") no-repeat center;
   background-size: contain;
   pointer-events: none;   
-  filter: drop-shadow(2px 4px 4px rgba(0,0,0,0.2));
+  filter: drop-shadow(2px 4px 4px rgba(0,0,0,0.3));
 }
 
-.section h2{ margin:0 0 15px; font-size:18px; font-weight:900; color: var(--primary-dark); border-left: 6px solid var(--primary); padding-left: 10px; }
+.section h2{ margin:0 0 15px; font-size:19px; font-weight:900; color: var(--primary-dark); border-left: 6px solid var(--primary); padding-left: 10px; letter-spacing: 1px;}
 
 label{ display:block;font-size:14px;margin-top:4px; color: #555; font-weight: bold; }
 
@@ -172,43 +190,43 @@ input,select{
   width:100%;
   padding:12px; font-size:15px; font-weight:bold; color:var(--primary-dark);
   margin-top:6px; margin-bottom:12px;
-  border-radius:10px; border:2px solid var(--border);
-  background:#FAF5F0;
+  border-radius:6px; border:2px solid var(--border);
+  background:#F5F5F5;
 }
 
 input:focus, select:focus{
   outline: none;
   border-color: var(--primary);
-  box-shadow: 0 0 0 3px rgba(211, 84, 0, 0.2);
+  box-shadow: 0 0 0 3px rgba(0, 133, 91, 0.3);
   background: #fff;
 }
 
-/* =============== 🍁 Action Animation (秋日落葉與橡果飄落特效) =============== */
-.autumn-leaves span {
+/* =============== 🌸 Action Animation (紫藤花與呼吸法特效) =============== */
+.breathing-effects span {
   position:fixed; 
   top:-50px;
   display:block;
-  font-size: 26px;
-  animation: leafFall 10s linear infinite;
+  font-size: 24px;
+  animation: fallDown linear infinite;
   opacity: 0;
   z-index: 0;
   pointer-events: none;
+  filter: drop-shadow(0 0 5px rgba(255,255,255,0.4));
 }
 
-/* 讓 7 個元素分散在螢幕各處，速度與搖擺度不同 */
-.autumn-leaves span:nth-child(1) { left: 5%;  animation-delay: 0s;   animation-duration: 12s; }
-.autumn-leaves span:nth-child(2) { left: 15%; animation-delay: 3s;   animation-duration: 14s; font-size: 20px;}
-.autumn-leaves span:nth-child(3) { left: 35%; animation-delay: 1.5s; animation-duration: 11s; }
-.autumn-leaves span:nth-child(4) { left: 55%; animation-delay: 6s;   animation-duration: 15s; font-size: 30px;}
-.autumn-leaves span:nth-child(5) { left: 75%; animation-delay: 0.5s; animation-duration: 10s; }
-.autumn-leaves span:nth-child(6) { left: 88%; animation-delay: 4s;   animation-duration: 13s; }
-.autumn-leaves span:nth-child(7) { left: 95%; animation-delay: 2s;   animation-duration: 16s; font-size: 18px;}
+.breathing-effects span:nth-child(1) { left: 8%;  animation-delay: 0s;   animation-duration: 12s; }
+.breathing-effects span:nth-child(2) { left: 20%; animation-delay: 4s;   animation-duration: 16s; font-size: 28px;}
+.breathing-effects span:nth-child(3) { left: 40%; animation-delay: 1.5s; animation-duration: 14s; }
+.breathing-effects span:nth-child(4) { left: 60%; animation-delay: 7s;   animation-duration: 18s; font-size: 20px;}
+.breathing-effects span:nth-child(5) { left: 75%; animation-delay: 0.5s; animation-duration: 11s; }
+.breathing-effects span:nth-child(6) { left: 90%; animation-delay: 5s;   animation-duration: 15s; font-size: 30px;}
+.breathing-effects span:nth-child(7) { left: 50%; animation-delay: 9s;   animation-duration: 13s; }
 
-@keyframes leafFall {
-  0%   { transform: translate(0, 0) rotate(0deg); opacity: 0; }
-  10%  { opacity: 0.85; }
-  80%  { opacity: 0.85; }
-  100% { transform: translate(60px, 105vh) rotate(360deg); opacity: 0; }
+@keyframes fallDown {
+  0%   { transform: translateY(0) rotate(0deg); opacity: 0; }
+  10%  { opacity: 0.8; }
+  80%  { opacity: 0.8; }
+  100% { transform: translateY(110vh) rotate(360deg); opacity: 0; }
 }
 
 .hidden { display: none !important; }
@@ -216,52 +234,52 @@ input:focus, select:focus{
 </head>
 
 <body>
-<!-- 🍁 替換為秋日豐收的動態特效 🍁 -->
-<div class="autumn-leaves">
-  <span>🍂</span>
-  <span>🍁</span>
-  <span>🍂</span>
-  <span>🍁</span>
-  <span>🍂</span>
-  <span>🍁</span>
-  <span>🍂</span>
+<!-- 🌸 替換為鬼滅和風的動態特效 🌸 -->
+<div class="breathing-effects">
+  <span>🏮</span>
+  <span>🌸</span>
+  <span>🏮</span>
+  <span>💨</span>
+  <span>🌸</span>
+  <span>🏮</span>
+  <span>💨</span>
 </div>
 
 <div class="container">
-  <h1>台北一區・秋日豐收祭</h1>
+  <h1>台北一區・無限追蹤篇</h1>
   
   <header class="tab-header">
-    <button id="tab-history" type="button">過冬日誌</button>
-    <button id="tab-huddle" type="button" class="active">今日採集</button>
-    <button id="tab-plan" type="button">儲糧計畫</button>
+    <button id="tab-history" type="button">任務日誌</button>
+    <button id="tab-huddle" type="button" class="active">今日巡邏</button>
+    <button id="tab-plan" type="button">討伐計畫</button>
   </header>
 
   <section id="huddle-view" class="section">
-    <h2>當月採集進度率</h2>
+    <h2>當月討伐完成度</h2>
     <div id="progress-dashboard">
-      <p style="text-align:center; color:var(--primary-dark); font-size:14px; font-weight:bold;">森林雷達掃描中...</p>
+      <p style="text-align:center; color:var(--primary-dark); font-size:14px; font-weight:bold;">鎹鴉回報讀取中...</p>
     </div>
   </section>
 
   <section id="plan-view" class="section hidden">
-    <h2>個人月度儲糧計畫</h2>
-    <label for="plan-name-select">1. 選擇花栗鼠夥伴：</label>
+    <h2>個人月度討伐計畫</h2>
+    <label for="plan-name-select">1. 選擇鬼殺隊士：</label>
     <select id="plan-name-select">
-      <option value="">-- 全區同仁 --</option>
+      <option value="">-- 全體柱與隊士 --</option>
     </select>
 
     <div style="display: flex; gap: 10px; margin-top: 10px;">
       <div style="flex: 1;">
-        <label for="filter-customer">2. 客戶類別：</label>
+        <label for="filter-customer">2. 任務級別：</label>
         <select id="filter-customer">
-          <option value="all">全部</option>
+          <option value="all">全級別</option>
           <option value="新客">新客</option>
           <option value="舊客">舊客</option>
           <option value="潛客">潛客</option>
         </select>
       </div>
       <div style="flex: 1;">
-        <label for="filter-item">3. 品項類別：</label>
+        <label for="filter-item">3. 裝備類別：</label>
         <select id="filter-item">
           <option value="all">全部</option>
           <option value="HA">HA</option>
@@ -275,24 +293,24 @@ input:focus, select:focus{
   </section>
 
   <section id="history-view" class="section hidden">
-    <h2>每月儲糧回顧</h2>
-    <p class="subtitle">點擊大橡果查看紀錄，點擊空白處回報總部</p>
+    <h2>每月任務回顧</h2>
+    <p class="subtitle">點擊鎹鴉查看紀錄，點擊空白處回報主公</p>
     <div id="starry-map-container" style="margin-top: 20px;">
-      <p style="text-align:center; color:var(--primary-dark); font-size:14px; font-weight:bold;">正在翻閱過冬日誌...</p>
+      <p style="text-align:center; color:var(--primary-dark); font-size:14px; font-weight:bold;">正在翻閱任務日誌...</p>
     </div>
   </section>
 
   <!-- 彈窗 (歷史詳細資料) -->
-  <div id="history-modal" class="hidden" style="position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(46, 30, 24, 0.7); backdrop-filter:blur(3px); z-index:1000; display:flex; justify-content:center; align-items:center; padding:20px;">
-    <div style="background:#FFF9F2; width:100%; max-width:420px; border-radius:24px; padding:25px; position:relative; border: 4px solid var(--primary-dark); box-shadow: 0 15px 35px rgba(0,0,0,0.3);">
+  <div id="history-modal" class="hidden" style="position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(28, 25, 36, 0.85); backdrop-filter:blur(4px); z-index:1000; display:flex; justify-content:center; align-items:center; padding:20px;">
+    <div style="background:#FAFAFA; width:100%; max-width:420px; border-radius:16px; padding:25px; position:relative; border: 4px solid var(--primary-dark); box-shadow: 0 0 30px rgba(139, 95, 191, 0.4);">
       <div id="modal-content"></div>
-      <button onclick="closeModal()" style="margin-top:24px; width:100%; background:var(--border); color:var(--primary-dark); border:none; padding:14px; border-radius:12px; font-size:16px; font-weight:900; cursor:pointer; box-shadow: 0 4px 0px rgba(0,0,0,0.1); transition:all 0.2s;">蓋上樹洞 (關閉)</button>
+      <button onclick="closeModal()" style="margin-top:24px; width:100%; background:var(--primary-dark); color:#FFF; border:none; padding:16px; border-radius:8px; font-size:16px; font-weight:900; cursor:pointer; box-shadow: 0 4px 0px rgba(0,0,0,1); transition:all 0.2s; letter-spacing: 2px;">收刀 (關閉)</button>
     </div>
   </div>
 </div>
 
 <script>
-console.log("🐿️ Chip 'n' Dale Autumn Harvest Edition app.js loaded!");
+console.log("🗡️ Demon Slayer Infinity Tracking Edition app.js loaded!");
 
 const STORAGE_PREFIX = "daily-report-test-";
 const PROGRESS_API_URL = "https://script.google.com/macros/s/AKfycbyrm3inO0h3qQf3hpKGCuQrNk68clolrYTXo5ncwEblDghytWB29dMIKA1LenjyIAr0qw/exec";
@@ -301,63 +319,62 @@ let globalHistoryData = {};
 // ===== ↓↓↓ 當月計畫資料庫 (後台輸入區) ↓↓↓ =====
 const monthlyData = {
   "郭孟鑫": [
-    { content: "內部轉介 2023 ~ 2025 名單聯繫，目標為邀約進店後分享 Zeal 資訊", target: "10 月完成 10 筆聯繫", customerType: "舊客", itemType: "HA" },
-    { content: "保健開發第二項產品的分享，熟悉魚油資訊", target: "10 月扣除員購仍達目標", customerType: "舊客", itemType: "保健" }
+    { content: "站前 Zeal 名單聯繫", target: "11 月完成 10 筆聯繫", customerType: "舊客", itemType: "HA" },
+    { content: "站前 Play SI 名單聯繫", target: "11 月完成 10 筆聯繫", customerType: "舊客", itemType: "HA" }
   ],
   "陳詩潔": [
-    { content: "內部轉介 2023 ~ 2025 名單聯繫，目標為邀約進店後分享 Zeal 資訊", target: "10 月完成 10 筆聯繫", customerType: "舊客", itemType: "HA" }
+    { content: "內部轉介剩餘名單聯繫，目標為邀約進店後分享 Zeal 資訊", target: "11 月完成 10 筆聯繫", customerType: "舊客", itemType: "HA" },
+    { content: "台大 2022 年交貨舊客合計 33 筆，沒有陸續回店的舊客優先", target: "11 月完成 15 筆聯繫", customerType: "舊客", itemType: "HA" },
+    { content: "台大 2022 年試聽潛客，重新追蹤，可評估是否優先聯繫退訂個案", target: "11 月完成 5 筆聯繫", customerType: "潛客", itemType: "HA" }
   ],
   "游瑟焄": [
-    { content: "桃長 HA 舊客繼續追蹤", target: "完成 10 位個案確認", customerType: "舊客", itemType: "HA" },
-    { content: "林長 10 月收到 Zeal 展示機起，先與聽力師溝通展示對象，盡可能每位舊客提供 Zeal 資訊", target: "10 月完成 2 位林長舊客試聽", customerType: "舊客", itemType: "HA" }
+    { content: "桃長 HA 舊客繼續追蹤", target: "完成 27位個案確認", customerType: "舊客", itemType: "HA" },
+    { content: "林長 10 月收到 Zeal 展示機起，先與聽力師溝通展示對象，盡可能每位舊客提供 Zeal 資訊", target: "11 月完成 4 位林長舊客試聽", customerType: "舊客", itemType: "HA" }
   ],
   "魏頎恩": [
-    { content: " 站前 2020 ~ 2022 內部轉介名單，不論潛客或舊客，皆嘗試聯繫邀約回店聽檢及諮詢", target: "10 月完成 15 筆結案", customerType: "舊客", itemType: "HA" }
+    { content: " 站前 2025 內部轉介名單，不論潛客或舊客，皆嘗試聯繫邀約回店聽檢及諮詢", target: "11 月完成 20 筆結案", customerType: "舊客", itemType: "HA" }
   ],
   "李孟馨": [
-    { content: "內部轉介 2020 ~ 2022 名單聯繫，目標為邀約進店後分享 Zeal 資訊，潛客也嘗試邀約進店", target: "10 月完成 14 筆聯繫", customerType: "潛客", itemType: "HA" },
-    { content: "站前 Zeal 試聽數持續維持，進店舊客不論類型，都要有介紹機會", target: "每周至少 2 位站前舊客試聽", customerType: "舊客", itemType: "HA" }
+    { content: "", target: "", customerType: "潛客", itemType: "HA" }
   ],
   "劉瑋婷": [
-    { content: "金山南周遭名單，近一年未進店的舊客聯繫，邀約進店", target: "10 月完成 15 筆資料確認", customerType: "舊客", itemType: "HA" },
+    { content: "金山南周遭名單，近一年未進店的舊客聯繫，邀約進店，可以告知本月進店送 1 排電池或點數 5 點", target: "11 月完成 20 筆資料確認", customerType: "舊客", itemType: "HA" },
+    { content: "旻諺協助規劃 12 月導店活動，屆時可透過活動邀約用戶進店", target: "待旻諺通知", customerType: "舊客", itemType: "HA" }
   ],
   "周曉玄": [
-    { content: "新人第二次考核進度確認，出國期間安排同仁交接學習進度", target: "新人通過第二次考核", customerType: "舊客", itemType: "HA" },
-    { content: "林長 10 月收到 Zeal 展示機起，先與聽力師溝通展示對象，盡可能每位舊客提供 Zeal 資訊", target: "10 月完成 8 位林長舊客試聽", customerType: "舊客", itemType: "HA" }
+    { content: "本年度目標差額大約 100 萬左右，11 月優先以長庚績效為主觀察，12 月以忠孝高潛力舊客為主", target: "11 月長庚舊客試聽 8 位", customerType: "舊客", itemType: "HA" },
+    { content: "忠孝內部轉介名單，秉忻整理 2023 年份，再開始確認 12 月可邀約對象", target: "可先將 12 月低潛力的舊客往後移一個月，11 月挑選出 4 位可在 12 月回店試聽的名單", customerType: "舊客", itemType: "HA" }
   ],
   "蕭純聿": [
-    { content: "所有進店舊客，不論是否為 TA 都提供 Zeal 資訊", target: "每周 2 位舊客試聽 Zeal", customerType: "舊客", itemType: "HA" },
-    { content: "保健食品除棉片外，第二品項熟悉並分享", target: "每月都要有營收", customerType: "舊客", itemType: "保健" },
-    { content: "Google Map 評論", target: "每月至少 1 篇", customerType: "舊客", itemType: "HA" }
+    { content: "", target: "", customerType: "舊客", itemType: "HA" }
   ],
   "陳宛妤": [
-    { content: "忠孝敦化 2026 年自己試聽過的潛客確認", target: "10 月完成 10 筆確認", customerType: "潛客", itemType: "HA" },
-    { content: "維持 Zeal 舊客試聽數量", target: "每周至少 2 位舊客試聽", customerType: "舊客", itemType: "HA" }
+    { content: "考量每月 HA 的客流量較保健穩定，針對 HA 交貨用戶，提供保健的加購資訊，如魚油與棉片", target: "11 月交貨的個案都提供", customerType: "新客", itemType: "保健" },
+    { content: "Google Map 評論 ( 留言 + 照片 )", target: "每月 4 則", customerType: "舊客", itemType: "HA" }
   ],
   "林寓葳": [
-    { content: "2025 年 HA 潛客確認完畢", target: "10 月完成 17 筆結案", customerType: "潛客", itemType: "HA" },
-    { content: "HA 舊客試聽數提高是最主要，天母舊客名單(半年未進店)持續聯繫", target: "10 月完成 30 筆預約新增", customerType: "舊客", itemType: "HA" },
-    { content: "先確認 10~12 月 Zeal 體驗日的日期", target: "進店舊客的 NS 優先安排體驗日時段", customerType: "舊客", itemType: "HA" }
+    { content: "2025 年 HA 潛客確認完畢", target: "11 月完成 15 筆結案", customerType: "潛客", itemType: "HA" },
+    { content: "先確認 11~12 月 Zeal 體驗日的日期", target: "進店舊客的 NS 優先安排體驗日時段", customerType: "舊客", itemType: "HA" }
   ],
   "呂桂梅": [
-    { content: "八德 2022~2023 年 RS 舊客聯繫，目標邀約進店壓力檢測加新機分享", target: "10 月完成 45 筆聯繫", customerType: "舊客", itemType: "RS" }
+    { content: "八德 2024 年 RS 舊客聯繫，目標邀約進店壓力檢測加新機分享", target: "11 月完成 34 筆聯繫", customerType: "舊客", itemType: "RS" }
   ],
   "林書廷": [
-    { content: "忠孝內部轉介名單，優先針對半年未進店舊客聯繫，其次是半年未進店潛客", target: "10 月完成 20 筆聯繫", customerType: "舊客", itemType: "HA" }
+    { content: "", target: "", customerType: "舊客", itemType: "HA" }
   ],
   "賴宜甄": [
-    { content: "金山南周遭名單，2025年後未進店的HA舊客聯繫，邀約進店", target: "10 月完成 15 筆資料確認", customerType: "舊客", itemType: "HA" },
-    { content: "金山南周遭名單，2025年後未進店的HA潛客聯繫 ( 雙耳中度以上 )，邀約進店", target: "10 月完成 15 筆資料確認", customerType: "潛客", itemType: "HA" },
+    { content: "金山南周遭名單，HA舊客聯繫，邀約進店", target: "11 月完成 20 筆資料確認", customerType: "舊客", itemType: "HA" },
+    { content: "金山南周遭名單，HA潛客聯繫 ( 雙耳中度以上 )，若 2025 打完可以往 2024 延伸，邀約進店", target: "11 月完成 10 筆資料確認", customerType: "潛客", itemType: "HA" }
   ],
   "姚孟妍": [
-    { content: "培養站前自己的舊客戶，台大舊客名單，針對固定回台大和空白標籤的優先聯繫，邀約進店清潔並重新 COSI 了解使用狀況", target: "10 月完成 42 筆聯繫", customerType: "舊客", itemType: "HA" },
-    { content: "培養站前自己的舊客戶，站前 2021 ~ 2025 舊客名單，針對半年未進店標籤的名單，邀約進店清潔並重新 COSI", target: "10 月完成 32 筆結案", customerType: "舊客", itemType: "HA" },
-    { content: "落實試聽前後的個案討論，若有在行事曆確認到未來的試聽預約，優先和旻諺事前討論，並確認當日是否可到場協助了解。試聽後主動通知旻諺或秉忻，討論試聽狀況是否有相關建議", target: "每月至少兩位試聽討論(新舊客不限)", customerType: "新客", itemType: "HA" }
+    { content: "電話聯繫過保用戶 / 近 3-12 個月有進店 / 無固定人員服務之用戶，待旻諺整理名單後提供", target: "11 月完成 50 通聯繫", customerType: "舊客", itemType: "HA" },
+    { content: "提升於站前接觸客戶機會，針對台大睡眠中心轉介出來的HST新客，統一由孟妍聯繫邀約導入站前，同時針對該類客戶分享PTA服務流程", target: "11 月起執行", customerType: "新客", itemType: "RS" },
+    { content: "落實試聽前後的個案討論", target: "每月至少兩位試聽討論(新舊客不限)", customerType: "新客", itemType: "HA" }
   ],
   "連岑綾": [
-    { content: "八德舊客邀約，針對梅子姐已經篩選「無下次預約」的舊客，優先聯繫邀約進店安排清潔追蹤及自我介紹", target: "10 月完成 10 位邀約", customerType: "舊客", itemType: "HA" },
-    { content: "每周安排一天暫借 Zeal 展示機，提供當日舊客體驗及試聽", target: "10 月有 5 位 Zeal 試聽", customerType: "舊客", itemType: "HA" },
-    { content: "落實試聽前後的個案討論，若有在行事曆確認到未來的試聽預約，優先和旻諺事前討論，並確認當日是否可到場協助了解。試聽後主動通知旻諺或秉忻，討論試聽狀況是否有相關建議", target: "每月至少兩位試聽討論(新舊客不限)", customerType: "新客", itemType: "HA" }
+    { content: "八德舊客邀約，針對梅子姐已經篩選「無下次預約」的舊客，優先聯繫邀約進店安排清潔追蹤及自我介紹", target: "11 月完成 15 位邀約", customerType: "舊客", itemType: "HA" },
+    { content: "每周安排一天暫借 Zeal 展示機，提供當日舊客體驗及試聽", target: "11 月有 5 位 Zeal 試聽", customerType: "舊客", itemType: "HA" },
+    { content: "試聽人數足夠，現階段提升成交率，落實試聽前後的討論", target: "每位試聽前聯繫旻諺，並完成事後討論(新舊客不限)", customerType: "新客", itemType: "HA" }
   ],
 };
 
@@ -438,7 +455,7 @@ function showView(view) {
     }
 }
 
-// ===== 儲糧計畫渲染 (秋日森林風) =====
+// ===== 討伐計畫渲染 (和風設計) =====
 function initPlanTab() {
     const selectName = $("plan-name-select");
     const selectCustomer = $("filter-customer");
@@ -447,7 +464,7 @@ function initPlanTab() {
 
     if (!selectName || !container) return;
 
-    selectName.innerHTML = '<option value="">-- 全區同仁 --</option>';
+    selectName.innerHTML = '<option value="">-- 全體柱與隊士 --</option>';
     Object.keys(monthlyData).forEach(name => {
         const opt = document.createElement("option");
         opt.value = name;
@@ -483,28 +500,28 @@ function initPlanTab() {
         });
 
         if (filteredData.length === 0) {
-            container.innerHTML = '<p style="text-align:center; color:#999; font-size:14px; margin-top:20px;">目前無符合條件的儲糧計畫</p>';
+            container.innerHTML = '<p style="text-align:center; color:#999; font-size:14px; margin-top:20px;">未接獲鎹鴉相關指令</p>';
             return;
         }
 
         filteredData.forEach((plan, index) => {
             const planEl = document.createElement("div");
-            // 秋日森林卡片風格
-            planEl.style.cssText = "background: #fff; border: 2px solid var(--border); border-radius: 14px; padding: 18px; margin-bottom: 18px; border-left: 6px solid var(--primary); box-shadow: 0 4px 10px rgba(93,64,55,0.08); position:relative;";
+            // 大正和風卡片
+            planEl.style.cssText = "background: #fff; border: 2px solid var(--border); border-radius: 8px; padding: 18px; margin-bottom: 18px; border-left: 8px solid var(--primary); box-shadow: 0 4px 10px rgba(0,0,0,0.15); position:relative;";
             
-            // 標籤顏色：森林系配色
-            const custColor = plan.customerType === '潛客' ? '#FAD7A1' : (plan.customerType === '新客' ? '#C1E1C1' : '#F4C2C2'); 
-            const itemColor = plan.itemType === 'RS' ? '#A2D5C6' : (plan.itemType === '保健' ? '#F7C59F' : '#EFE8B1');
+            // 標籤顏色：呼吸法配色
+            const custColor = plan.customerType === '潛客' ? '#FFCDD2' : (plan.customerType === '新客' ? '#B3E5FC' : '#FFF9C4'); 
+            const itemColor = plan.itemType === 'RS' ? '#C8E6C9' : (plan.itemType === '保健' ? '#FFE082' : '#E1BEE7');
 
             const custAbbr = plan.customerType ? plan.customerType.substring(0, 1) : '?';
             const itemAbbr = plan.itemType ? plan.itemType.substring(0, 1) : '?';
-            const tagCircleStyle = "display:inline-flex; justify-content:center; align-items:center; width:28px; height:28px; border-radius:50%; color:var(--primary-dark); font-size:13px; font-weight:900; box-sizing:border-box; box-shadow: 1px 2px 4px rgba(0,0,0,0.1); border:1px solid rgba(0,0,0,0.05);";
+            const tagCircleStyle = "display:inline-flex; justify-content:center; align-items:center; width:28px; height:28px; border-radius:4px; color:var(--primary-dark); font-size:14px; font-weight:900; box-sizing:border-box; box-shadow: 1px 2px 4px rgba(0,0,0,0.2); border:1px solid rgba(0,0,0,0.1);";
 
             planEl.innerHTML = `
-                <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom: 15px; border-bottom: 1px dashed var(--border); padding-bottom: 10px;">
+                <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom: 15px; border-bottom: 2px dashed #DDD; padding-bottom: 10px;">
                     <div>
-                        <div style="font-weight: 900; color: var(--primary-dark); font-size: 18px;">${plan.staffName}</div>
-                        <div style="font-size: 12px; color: #888; margin-top: 4px; font-weight:bold;">秋季任務 #${index + 1}</div>
+                        <div style="font-weight: 900; color: var(--primary-dark); font-size: 19px; letter-spacing:1px;">${plan.staffName}</div>
+                        <div style="font-size: 12px; color: #888; margin-top: 4px; font-weight:bold;">指派任務 肆之${index + 1}</div>
                     </div>
                     <div style="display:flex; gap: 8px; align-items:center;">
                         <span style="${tagCircleStyle} background:${custColor};" title="${plan.customerType || '未分類'}">${custAbbr}</span>
@@ -513,13 +530,13 @@ function initPlanTab() {
                 </div>
                 
                 <div style="margin-bottom: 16px;">
-                    <div style="font-weight: 900; color: var(--primary); font-size: 13px; margin-bottom: 6px;">採集路線</div>
-                    <div style="font-size: 15px; line-height: 1.6; color: #444; text-align: justify; font-weight:500;">${plan.content}</div>
+                    <div style="font-weight: 900; color: var(--primary); font-size: 13px; margin-bottom: 6px; letter-spacing:1px;">斬鬼路線</div>
+                    <div style="font-size: 15px; line-height: 1.6; color: #333; text-align: justify; font-weight:600;">${plan.content}</div>
                 </div>
 
                 <div>
-                    <div style="font-weight: 900; color: var(--accent-orange); font-size: 13px; margin-bottom: 6px;">儲糧目標</div>
-                    <div style="font-size: 15px; line-height: 1.6; color: #666; text-align: justify; font-weight:500;">${plan.target}</div>
+                    <div style="font-weight: 900; color: var(--accent-red); font-size: 13px; margin-bottom: 6px; letter-spacing:1px;">討伐目標</div>
+                    <div style="font-size: 15px; line-height: 1.6; color: #666; text-align: justify; font-weight:600;">${plan.target}</div>
                 </div>
             `;
             container.appendChild(planEl);
@@ -530,7 +547,7 @@ function initPlanTab() {
     renderPlans();
 }
 
-// ===== 進度條渲染 (樹幹與楓葉配色) =====
+// ===== 進度條渲染 (水之呼吸與血鬼術配色) =====
 async function fetchAndRenderProgress() {
     const container = $("progress-dashboard");
     if (!container) return;
@@ -543,7 +560,7 @@ async function fetchAndRenderProgress() {
         container.innerHTML = ""; 
 
         if (tasks.length === 0) {
-            container.innerHTML = "<p style='text-align:center; color:#999;'>尚無採集任務</p>";
+            container.innerHTML = "<p style='text-align:center; color:#999;'>本月尚無討伐令</p>";
             return;
         }
 
@@ -555,27 +572,27 @@ async function fetchAndRenderProgress() {
 
         Object.entries(groupedTasks).forEach(([staffName, staffTasks]) => {
             const taskRowsHtml = staffTasks.map(task => {
-                // 森林綠 (高達成) 與 楓葉橘紅 (低達成)
-                const barColor = task.percent >= 80 ? "var(--secondary)" : "var(--primary)"; 
+                // 水之呼吸藍 (高達成) 與 血鬼術紅 (低達成)
+                const barColor = task.percent >= 80 ? "var(--secondary)" : "var(--accent-red)"; 
                 return `
                     <div style="margin-bottom: 22px;">
                         <div style="display:flex; justify-content:space-between; align-items:end; margin-bottom:8px;">
-                            <span style="font-size:14px; font-weight:bold; color:var(--primary-dark);">${task.taskName}</span>
-                            <span style="font-weight:900; color:${barColor}; font-size:15px; background:#FAF5F0; padding:2px 8px; border-radius:8px;">${task.completed} / ${task.target}</span>
+                            <span style="font-size:15px; font-weight:bold; color:var(--primary-dark);">${task.taskName}</span>
+                            <span style="font-weight:900; color:${barColor}; font-size:15px; background:#F5F5F5; padding:2px 8px; border-radius:4px; border: 1px solid #CCC;">${task.completed} / ${task.target}</span>
                         </div>
-                        <div style="background:#EFEBE9; height:14px; border-radius:10px; overflow:hidden; box-shadow:inset 0 1px 3px rgba(0,0,0,0.1);">
-                            <div style="background:${barColor}; width:${task.percent}%; height:100%; transition:width 1.2s cubic-bezier(0.17, 0.67, 0.83, 0.67); border-radius:10px;"></div>
+                        <div style="background:#E0E0E0; height:14px; border-radius:4px; overflow:hidden; box-shadow:inset 0 1px 3px rgba(0,0,0,0.3);">
+                            <div style="background:${barColor}; width:${task.percent}%; height:100%; transition:width 1.2s cubic-bezier(0.17, 0.67, 0.83, 0.67); border-radius:4px;"></div>
                         </div>
-                        <div style="text-align:right; font-size:11px; color:#888; margin-top:6px; font-weight:bold;">採集進度 ${task.percent}%</div>
+                        <div style="text-align:right; font-size:12px; color:#666; margin-top:6px; font-weight:bold;">呼吸法熟練度 ${task.percent}%</div>
                     </div>
                 `;
             }).join("");
 
             const card = document.createElement("div");
-            card.style.cssText = "background:#fff; padding:20px; border-radius:16px; margin-bottom:16px; border:2px solid var(--border); box-shadow: 0 4px 12px rgba(93,64,55,0.08);";
+            card.style.cssText = "background:#fff; padding:20px; border-radius:8px; margin-bottom:16px; border:2px solid var(--border); box-shadow: 0 6px 15px rgba(0,0,0,0.15);";
             
             card.innerHTML = `
-                <div style="font-weight:900; font-size:18px; color:var(--primary-dark); margin-bottom:18px; border-bottom: 2px dashed var(--border); padding-bottom:10px;">
+                <div style="font-weight:900; font-size:19px; color:var(--primary-dark); margin-bottom:18px; border-bottom: 2px dashed #CCC; padding-bottom:10px; letter-spacing:2px;">
                      ${staffName} 
                 </div>
                 ${taskRowsHtml}
@@ -585,16 +602,16 @@ async function fetchAndRenderProgress() {
 
     } catch (error) {
         console.error("進度抓取失敗:", error);
-        container.innerHTML = `<p style="text-align:center; color:var(--primary); font-size:14px; font-weight:bold;">⚠️ 無法連線至總部樹洞</p>`;
+        container.innerHTML = `<p style="text-align:center; color:var(--accent-red); font-size:14px; font-weight:bold;">⚠️ 無法接收鎹鴉回報</p>`;
     }
 }
 
-// ===== 歷史回顧與星圖 (大橡果) =====
+// ===== 歷史回顧與星圖 (鎹鴉) =====
 async function renderStarryMap() {
     const container = $("starry-map-container");
     if (!container) return;
     
-    container.innerHTML = "<p style='text-align:center; color:var(--primary-dark); font-size:14px; font-weight:bold;'>正在翻閱過冬日誌...</p>";
+    container.innerHTML = "<p style='text-align:center; color:var(--primary-dark); font-size:14px; font-weight:bold;'>正在展開任務卷軸...</p>";
 
     try {
         const response = await fetch(`${PROGRESS_API_URL}?action=getHistory`);
@@ -605,7 +622,7 @@ async function renderStarryMap() {
 
         staffNames.forEach(name => {
             const card = document.createElement("div");
-            card.style.cssText = "background:#fff; padding:16px; border-radius:16px; margin-bottom:12px; border:2px solid var(--border); box-shadow: 0 4px 8px rgba(93,64,55,0.05);";
+            card.style.cssText = "background:#fff; padding:16px; border-radius:8px; margin-bottom:12px; border:2px solid var(--border); box-shadow: 0 4px 8px rgba(0,0,0,0.1);";
             
             let starsHtml = "";
             for (let i = 1; i <= 12; i++) {
@@ -618,22 +635,22 @@ async function renderStarryMap() {
                     const isAllDone = monthPlans.every(p => p.status === "⭐" || p.status === "⭐️");
                     
                     if (isAllDone) {
-                        displayContent = `<div style="font-size:24px; filter:drop-shadow(0 2px 3px rgba(0,0,0,0.2)); transform: scale(1.1);">🌰</div>`;
+                        displayContent = `<div style="font-size:26px; filter:drop-shadow(0 2px 3px rgba(0,0,0,0.4)); transform: scale(1.15);">🦅</div>`;
                     } else {
-                        displayContent = `<div style="font-size:24px; filter:grayscale(1); opacity:0.3;">🌰</div>`;
+                        displayContent = `<div style="font-size:26px; filter:grayscale(1); opacity:0.25;">🦅</div>`;
                     }
                 }
 
                 starsHtml += `
-                    <div onclick="openHistoryDetail('${name}', '${monthKey}')" style="text-align:center; cursor:pointer; min-height:45px; transition:transform 0.2s;" onmouseover="this.style.transform='scale(1.1)'" onmouseout="this.style.transform='scale(1)'">
-                        <div style="font-size:11px; color:#888; margin-bottom:4px; font-weight:bold;">${i}月</div>
+                    <div onclick="openHistoryDetail('${name}', '${monthKey}')" style="text-align:center; cursor:pointer; min-height:45px; transition:transform 0.2s;" onmouseover="this.style.transform='scale(1.2)'" onmouseout="this.style.transform='scale(1)'">
+                        <div style="font-size:12px; color:#555; margin-bottom:4px; font-weight:900;">${i}月</div>
                         ${displayContent}
                     </div>
                 `;
             }
 
             card.innerHTML = `
-                <div style="font-weight:900; color:var(--primary-dark); margin-bottom:12px; display:flex; justify-content:space-between; align-items:center;">
+                <div style="font-weight:900; font-size: 16px; color:var(--primary-dark); margin-bottom:12px; display:flex; justify-content:space-between; align-items:center; letter-spacing:1px;">
                     <span>${name}</span>
                 </div>
                 <div style="display:grid; grid-template-columns: repeat(6, 1fr); gap:10px;">
@@ -644,7 +661,7 @@ async function renderStarryMap() {
         });
     } catch (error) {
         console.error("讀取星圖失敗:", error);
-        container.innerHTML = "<p style='text-align:center; color:var(--primary); font-weight:bold;'>⚠️ 日誌載入失敗，請檢查網路</p>";
+        container.innerHTML = "<p style='text-align:center; color:var(--accent-red); font-weight:bold;'>⚠️ 卷軸展開失敗，請檢查通訊</p>";
     }
 }
 
@@ -657,27 +674,27 @@ window.openHistoryDetail = function(name, month) {
     if (modal) modal.classList.remove("hidden");
 
     if (monthPlans.length === 0) {
-        content.innerHTML = `<h3 style="text-align:center; color:#999; margin:20px 0;">這棵樹目前沒有紀錄 🍂</h3>`;
+        content.innerHTML = `<h3 style="text-align:center; color:#999; margin:20px 0;">該月無作戰任務 📜</h3>`;
         return;
     }
 
     let plansListHtml = monthPlans.map((p, idx) => {
         const isAchieved = p.status === '⭐' || p.status === '⭐️';
-        const statusEmoji = isAchieved ? "🌰" : "🍂";
-        const statusLabel = isAchieved ? "滿載而歸" : "庫存告急";
-        const themeColor = isAchieved ? "var(--secondary)" : "var(--primary)"; 
-        const bgColor = isAchieved ? "#E8F5E9" : "#FBE9E7";    
+        const statusEmoji = isAchieved ? "🦅" : "🩸";
+        const statusLabel = isAchieved ? "討伐成功" : "遭遇強敵";
+        const themeColor = isAchieved ? "var(--secondary)" : "var(--accent-red)"; 
+        const bgColor = isAchieved ? "#E1F5FE" : "#FFEBEE";    
 
         return `
-            <div style="background:#fcfcfc; padding:16px; border-radius:14px; margin-bottom:14px; border-left:6px solid ${themeColor}; box-shadow: 0 2px 6px rgba(0,0,0,0.05);">
+            <div style="background:#fff; padding:16px; border-radius:6px; margin-bottom:14px; border-left:8px solid ${themeColor}; box-shadow: 0 2px 6px rgba(0,0,0,0.1); border-right: 1px solid #EEE; border-top: 1px solid #EEE; border-bottom: 1px solid #EEE;">
                 <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px;">
-                    <span style="font-size:13px; font-weight:bold; color:#888;">路線 ${idx + 1}</span>
-                    <span style="background:${bgColor}; color:${themeColor}; padding:4px 12px; border-radius:20px; font-size:12px; font-weight:900; border: 1px solid ${themeColor}44;">
+                    <span style="font-size:13px; font-weight:900; color:#666;">路線 肆之${idx + 1}</span>
+                    <span style="background:${bgColor}; color:${themeColor}; padding:4px 12px; border-radius:4px; font-size:13px; font-weight:900; border: 1px solid ${themeColor}66;">
                         ${statusEmoji} ${statusLabel}
                     </span>
                 </div>
-                <div style="font-size:15px; color:#333; line-height:1.6; font-weight:500;"><strong>計畫：</strong>${p.plan}</div>
-                <div style="font-size:13.5px; color:#666; margin-top:8px; padding-top:8px; border-top:1px dashed #ddd; font-weight:500;"><strong>目標：</strong>${p.target}</div>
+                <div style="font-size:15px; color:#222; line-height:1.6; font-weight:600;"><strong>指令：</strong>${p.plan}</div>
+                <div style="font-size:13.5px; color:#555; margin-top:8px; padding-top:8px; border-top:1px dashed #CCC; font-weight:600;"><strong>目標：</strong>${p.target}</div>
             </div>
         `;
     }).join("");
@@ -687,22 +704,22 @@ window.openHistoryDetail = function(name, month) {
     
     if (hasFailedTask) {
         rcaHtml = `
-            <div style="border-top:2px dashed var(--border); margin-top:20px; padding-top:15px;">
-                <h3 style="color:var(--primary); text-align:center; font-size:16px; margin-bottom:12px; font-weight:900;">儲糧未達標原因 📝</h3>
-                <select id="rca-reason" style="width:100%; padding:14px; border-radius:12px; border:2px solid var(--border); font-size:15px; background:#FAF5F0; color:#333; font-weight:bold;">
-                    <option value="外部突發">🦆 被唐老鴨搗亂了！ (外部突發狀況)</option>
-                    <option value="名單漏追">🙈 忘記橡果藏在哪裡了 (名單漏追蹤)</option>
-                    <option value="時間管理">🥧 跑去吃蘋果派了 (時間管理待加強)</option>
-                    <option value="尋求支援">🐿️ 需要花栗鼠夥伴支援 (尋求同事協助)</option>
-                    <option value="其他">📝 其他（面談討論）</option>
+            <div style="border-top:3px double var(--border); margin-top:20px; padding-top:15px;">
+                <h3 style="color:var(--accent-red); text-align:center; font-size:17px; margin-bottom:12px; font-weight:900; letter-spacing:1px;">🩸 討伐失敗原因分析</h3>
+                <select id="rca-reason" style="width:100%; padding:14px; border-radius:6px; border:2px solid var(--border); font-size:15px; background:#F5F5F5; color:#222; font-weight:bold;">
+                    <option value="外部突發">🩸 遭遇下弦之鬼突襲 (外部突發狀況)</option>
+                    <option value="能力加強">💨 呼吸法訓練不足 (名單漏追/熟練度待加強)</option>
+                    <option value="時間管理">🗡️ 日輪刀需要重鑄 (時間管理/工具問題)</option>
+                    <option value="尋求支援">🦅 呼叫柱級隊員支援 (需要主管/同事協助)</option>
+                    <option value="其他">📝 鎹鴉回報異常（面談討論）</option>
                 </select>
-                <button onclick="submitRCA('${name}', '${month}')" style="width:100%; background:var(--primary); color:white; padding:16px; border-radius:12px; margin-top:16px; border:none; font-weight:900; font-size:16px; cursor:pointer; box-shadow: 0 4px 0px rgba(160, 64, 0, 1); transition:transform 0.1s;">傳送給總部樹洞</button>
+                <button onclick="submitRCA('${name}', '${month}')" style="width:100%; background:var(--accent-red); color:white; padding:16px; border-radius:6px; margin-top:16px; border:none; font-weight:900; font-size:16px; cursor:pointer; box-shadow: 0 4px 0px #8B0000; transition:transform 0.1s; letter-spacing: 2px;">呼叫鎹鴉傳令</button>
             </div>
         `;
     }
 
     content.innerHTML = `
-        <h3 style="color:var(--primary-dark); text-align:center; margin:0 0 20px 0; font-weight:900; font-size:20px;">${month} 儲糧回顧 🌰</h3>
+        <h3 style="color:var(--primary-dark); text-align:center; margin:0 0 20px 0; font-weight:900; font-size:22px; letter-spacing:2px;">${month} 討伐日誌 📜</h3>
         <div style="max-height:350px; overflow-y:auto; padding-right:5px;">${plansListHtml}</div>
         ${rcaHtml}
     `;
@@ -716,8 +733,8 @@ window.submitRCA = async function(name, month) {
     const submitBtn = event.target; 
 
     submitBtn.disabled = true;
-    submitBtn.innerText = "正在丟入樹洞...";
-    submitBtn.style.background = "#999";
+    submitBtn.innerText = "鎹鴉飛行中...";
+    submitBtn.style.background = "#555";
     submitBtn.style.boxShadow = "none";
 
     try {
@@ -728,17 +745,17 @@ window.submitRCA = async function(name, month) {
             body: JSON.stringify({ action: "submitRCA", name: name, month: month, reason: reason })
         });
 
-        alert(`✔️ 紀錄成功！\n已將「${month} / ${name}」的狀況送出：\n${reason}`);
+        alert(`✔️ 傳令成功！\n主公已收到「${month} / ${name}」的回報：\n${reason}`);
         closeModal(); 
         
     } catch (e) {
         console.error("RCA 送出失敗:", e);
-        alert("❌ 傳送失敗，請檢查網路連線");
+        alert("❌ 鎹鴉迷失方向，請檢查網路連線");
     } finally {
         submitBtn.disabled = false;
-        submitBtn.innerText = "傳送給總部樹洞";
-        submitBtn.style.background = "var(--primary)";
-        submitBtn.style.boxShadow = "0 4px 0px rgba(160, 64, 0, 1)";
+        submitBtn.innerText = "呼叫鎹鴉傳令";
+        submitBtn.style.background = "var(--accent-red)";
+        submitBtn.style.boxShadow = "0 4px 0px #8B0000";
     }
 };
 
@@ -755,6 +772,3 @@ document.addEventListener("DOMContentLoaded", () => {
     initPlanTab();
 });
 </script>
-
-</body>
-</html>

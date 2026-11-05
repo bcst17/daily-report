@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
-<title>台北一區・無限追蹤篇</title>
+<title>台北一區・小鎮村守護篇</title>
 
 <link rel="manifest" href="manifest.json">
 <link rel="apple-touch-icon" sizes="192x192" href="icon-192.png">
@@ -11,19 +11,19 @@
 
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<meta name="apple-mobile-web-app-title" content="無限追蹤篇">
+<meta name="apple-mobile-web-app-title" content="小女警出擊">
 
 <style>
 :root {
-  /* 🗡️ 鬼滅之刃 大正和風配色 */
-  --bg-night: #1C1924;        /* 藤襲山暗紫夜色 */
-  --primary-dark: #1A1A1A;    /* 鬼殺隊服墨黑 (主輪廓與文字) */
-  --primary: #00855B;         /* 炭治郎市松紋綠 */
-  --accent-red: #C82A2A;      /* 炎之呼吸 / 血鬼術紅 (警告色) */
-  --border: #3A3A3A;         /* 暗灰邊框 */
-  --card-bg: #FAFAFA;        /* 和紙米白 */
-  --secondary: #0277BD;       /* 水之呼吸藍 (高達成率) */
-  --wisteria: #8B5FBF;       /* 紫藤花紫 */
+  /* 💖 飛天小女警 Pop-Art 美式漫畫配色 */
+  --bg-pink: #FF4081;         /* 小鎮村熱血粉紅 */
+  --primary-dark: #000000;    /* 漫畫粗黑邊線 */
+  --primary: #E91E63;         /* 花花粉紅 */
+  --bubbles-blue: #03A9F4;    /* 泡泡水藍 */
+  --buttercup-green: #4CAF50; /* 毛毛亮綠 */
+  --accent-yellow: #FFEB3B;   /* 星星亮黃 */
+  --accent-red: #F44336;      /* 爆炸紅/警告色 */
+  --card-bg: #FFFFFF;         /* 純白底色突顯漫畫感 */
 }
 
 *,*::before,*::after{ box-sizing:border-box; }
@@ -31,18 +31,10 @@
 body{
   font-family:-apple-system,BlinkMacSystemFont,"Microsoft JhengHei",system-ui,sans-serif;
   margin:0;
-  /* 💡 修改這裡：將左右 padding 從 14px 加大到 28px，為凸出去的圖片留出「邊緣安全區」 */
   padding:20px 28px 90px;
-  /* 🗡️ 炭治郎市松紋 (綠黑格子) 背景 */
-  background-color: #1A1A1A;
-  background-image: 
-    linear-gradient(rgba(26, 26, 26, 0.85), rgba(26, 26, 26, 0.85)), /* 💡 加上暗色遮罩，降低整體飽和度與亮度 */
-    linear-gradient(45deg, #00855B 25%, transparent 25%, transparent 75%, #00855B 75%, #00855B), 
-    linear-gradient(45deg, #00855B 25%, transparent 25%, transparent 75%, #00855B 75%, #00855B);
-  background-size: auto, 80px 80px, 80px 80px;
-  background-position: 0 0, 0 0, 40px 40px;
-  background-attachment: fixed; /* 💡 讓背景固定，滾動時更具質感 */
-  
+  /* 💖 經典的小女警愛心擴散漸層背景 */
+  background: radial-gradient(circle at center, #FF80AB 0%, #F50057 60%, #C51162 100%);
+  background-attachment: fixed;
   display:flex;
   justify-content:center;
   color:#333;
@@ -58,53 +50,54 @@ body{
   z-index: 2;
 }
 
-/* 🖍️ 標題配置 (大正熱血風) */
+/* 🖍️ 標題配置 (美式漫畫字體感) */
 h1 { 
   text-align: center; 
   margin: 10px 0 30px; 
-  font-size: 21px; /* 💡 稍微縮小字體以確保任何手機都能單行顯示 */
+  font-size: 21px; 
   font-weight: 900;
   display: flex;
   justify-content: center;
   align-items: center;
-  gap: 6px; /* 💡 稍微縮小圖片與文字的間距 */
+  gap: 6px; 
   color: #FFFFFF;
-  text-shadow: 0 0 10px rgba(0, 133, 91, 0.8), 0 2px 4px rgba(0,0,0,1);
+  /* 漫畫風厚重黑色文字陰影 */
+  text-shadow: 2px 2px 0 var(--primary-dark), -2px -2px 0 var(--primary-dark), 2px -2px 0 var(--primary-dark), -2px 2px 0 var(--primary-dark), 4px 4px 0 rgba(0,0,0,0.5);
   letter-spacing: 1px;
-  flex-wrap: nowrap; /* 💡 強制不換行，維持在同一列 */
+  flex-wrap: nowrap; 
   white-space: nowrap;
 }
 
-/* 預留給自行上傳的左側圖示：建議放 炭治郎/炎柱 (支援 png/gif) */
+/* 左側裝飾：花花或泡泡 (支援 png/gif) */
 h1::before {
   content: "";
   display: block;
-  width: 60px; /* 💡 尺寸從 70px 微調為 60px，防擠壓 */
+  width: 60px; 
   height: 60px;
-  background: url("tanjiro_left.png") no-repeat center;
+  background: url("ppg_left.gif") no-repeat center;
   background-size: contain;
   flex-shrink: 0;
-  filter: drop-shadow(0 2px 5px rgba(0,0,0,0.5));
+  filter: drop-shadow(2px 2px 0px #000) drop-shadow(0 4px 6px rgba(0,0,0,0.5));
 }
 
-/* 預留給自行上傳的右側圖示：建議放 禰豆子/其他柱 (支援 png/gif) */
+/* 右側裝飾：毛毛或尤教授 (支援 png/gif) */
 h1::after {
   content: "";
   display: block;
-  width: 60px; /* 💡 尺寸從 70px 微調為 60px，防擠壓 */
+  width: 60px; 
   height: 60px;
-  background: url("nezuko_right.png") no-repeat center;
+  background: url("ppg_right.gif") no-repeat center;
   background-size: contain;
   flex-shrink: 0;
-  filter: drop-shadow(0 2px 5px rgba(0,0,0,0.5));
+  filter: drop-shadow(2px 2px 0px #000) drop-shadow(0 4px 6px rgba(0,0,0,0.5));
 }
 
-.subtitle{ text-align:center; font-size:14px; color: var(--wisteria); margin-bottom:8px; font-weight: bold; letter-spacing: 1px;}
+.subtitle{ text-align:center; font-size:14px; color: #FFFFFF; margin-bottom:8px; font-weight: 900; letter-spacing: 1px; text-shadow: 1px 1px 0 #000;}
 
-/* 🔹 分頁標籤 (鬼殺隊名牌風) */
+/* 🔹 分頁標籤 (對話框風格) */
 .tab-header{
   display:flex;
-  gap:8px;
+  gap:10px;
   margin-bottom:60px;    
   position: relative;     
   z-index: 1;             
@@ -113,96 +106,93 @@ h1::after {
 .tab-header button{
   flex:1;
   padding:12px 0;
-  border-radius:8px;
-  border:2px solid var(--primary-dark);
-  background: rgba(250, 250, 250, 0.9);
+  border-radius:12px;
+  border:3px solid var(--primary-dark);
+  background: #FFFFFF;
   font-size:15px;
   font-weight: 900;
   color: var(--primary-dark);
   cursor: pointer;
-  transition: all 0.3s;
-  box-shadow: 0 4px 0px var(--primary-dark);
+  transition: all 0.2s cubic-bezier(0.17, 0.67, 0.83, 0.67);
+  box-shadow: 4px 4px 0px var(--primary-dark);
   letter-spacing: 1px;
 }
 
 .tab-header button:active {
-  transform: translateY(4px);
-  box-shadow: 0 0px 0px var(--primary-dark);
+  transform: translate(4px, 4px);
+  box-shadow: 0px 0px 0px var(--primary-dark);
 }
 
 .tab-header button.active {
-  /* 💡 修改這裡：點擊後的按鈕改為「炭治郎綠」，並加上微光暈，在暗背景中更突出 */
-  background: var(--primary) !important;
-  color: #FFFFFF !important;
-  border-color: var(--primary);
-  box-shadow: 0 4px 0px rgba(0,0,0,0.6), 0 0 12px rgba(0, 133, 91, 0.5);
+  background: var(--accent-yellow) !important; /* 點擊後變亮黃色 */
+  color: var(--primary-dark) !important;
 }
 
 .section{
   background: var(--card-bg);
-  border-radius:12px;
+  border-radius:16px;
   border:4px solid var(--primary-dark);
   padding:20px 16px;
-  margin-bottom:12px;
+  margin-bottom:15px;
   position:relative;
   overflow: visible !important; 
-  box-shadow: 0 10px 20px rgba(0,0,0,0.4);
+  /* 漫畫風厚實陰影 */
+  box-shadow: 6px 6px 0px var(--primary-dark);
 }
 
-/* 左側裝飾：預留給自行上傳的圖示 (如：日輪刀或刀鍔 png/gif) */
+/* 左側裝飾：化學物 X 或是其他小物件 (png/gif) */
 .section::before {
   content: "";
   position: absolute;
-  top: -50px; 
+  top: -45px; 
   left: -20px;
-  transform: rotate(-15deg);
-  width: 85px; 
-  height: 85px;
-  background: url("sword_deco.png") no-repeat center;
+  transform: rotate(-10deg);
+  width: 80px; 
+  height: 80px;
+  background: url("chem_x_deco.gif") no-repeat center;
   background-size: contain;
   z-index: 10;            
   pointer-events: none;
-  filter: drop-shadow(2px 4px 4px rgba(0,0,0,0.3));
+  filter: drop-shadow(2px 2px 0px #000);
 }
 
-/* 右側裝飾：預留給自行上傳的圖示 (如：狐狸面具或紫藤花 png/gif) */
+/* 右上方大裝飾：魔人啾啾或是愛心大背板 (png/gif) */
 .section::after {
   content: ""; 
   position: absolute; 
   z-index: 10;            
-  top: -203px;    
-  /* 💡 修改這裡：使用 left 50% 搭配 translateX(-50%) 讓圖片永遠保持在正中央 */
+  top: -210px;    
   left: 50%;
   transform: translateX(-50%);
   width: 330px;   
   height: 330px; 
-  background: url("mask_deco.gif") no-repeat center;
+  background: url("mojo_deco.gif") no-repeat center;
   background-size: contain;
   pointer-events: none;   
-  filter: drop-shadow(2px 4px 4px rgba(0,0,0,0.3));
+  filter: drop-shadow(3px 3px 0px rgba(0,0,0,0.8));
 }
 
 .section h2{ margin:0 0 15px; font-size:19px; font-weight:900; color: var(--primary-dark); border-left: 6px solid var(--primary); padding-left: 10px; letter-spacing: 1px;}
 
-label{ display:block;font-size:14px;margin-top:4px; color: #555; font-weight: bold; }
+label{ display:block;font-size:14px;margin-top:4px; color: #000; font-weight: 900; }
 
 input,select{
   width:100%;
-  padding:12px; font-size:15px; font-weight:bold; color:var(--primary-dark);
+  padding:12px; font-size:15px; font-weight:900; color:var(--primary-dark);
   margin-top:6px; margin-bottom:12px;
-  border-radius:6px; border:2px solid var(--border);
+  border-radius:8px; border:3px solid var(--primary-dark);
   background:#F5F5F5;
+  box-shadow: inset 2px 2px 0px rgba(0,0,0,0.05);
 }
 
 input:focus, select:focus{
   outline: none;
-  border-color: var(--primary);
-  box-shadow: 0 0 0 3px rgba(0, 133, 91, 0.3);
   background: #fff;
+  box-shadow: 0 0 0 4px rgba(233, 30, 99, 0.4);
 }
 
-/* =============== 🌸 Action Animation (紫藤花與呼吸法特效) =============== */
-.breathing-effects span {
+/* =============== 💖 飛天小女警動態特效 =============== */
+.powerpuff-effects span {
   position:fixed; 
   top:-50px;
   display:block;
@@ -211,21 +201,21 @@ input:focus, select:focus{
   opacity: 0;
   z-index: 0;
   pointer-events: none;
-  filter: drop-shadow(0 0 5px rgba(255,255,255,0.4));
+  filter: drop-shadow(2px 2px 0px #000); /* 給飄落物加上漫畫黑邊 */
 }
 
-.breathing-effects span:nth-child(1) { left: 8%;  animation-delay: 0s;   animation-duration: 12s; }
-.breathing-effects span:nth-child(2) { left: 20%; animation-delay: 4s;   animation-duration: 16s; font-size: 28px;}
-.breathing-effects span:nth-child(3) { left: 40%; animation-delay: 1.5s; animation-duration: 14s; }
-.breathing-effects span:nth-child(4) { left: 60%; animation-delay: 7s;   animation-duration: 18s; font-size: 20px;}
-.breathing-effects span:nth-child(5) { left: 75%; animation-delay: 0.5s; animation-duration: 11s; }
-.breathing-effects span:nth-child(6) { left: 90%; animation-delay: 5s;   animation-duration: 15s; font-size: 30px;}
-.breathing-effects span:nth-child(7) { left: 50%; animation-delay: 9s;   animation-duration: 13s; }
+.powerpuff-effects span:nth-child(1) { left: 8%;  animation-delay: 0s;   animation-duration: 12s; }
+.powerpuff-effects span:nth-child(2) { left: 20%; animation-delay: 4s;   animation-duration: 16s; font-size: 28px;}
+.powerpuff-effects span:nth-child(3) { left: 40%; animation-delay: 1.5s; animation-duration: 14s; }
+.powerpuff-effects span:nth-child(4) { left: 60%; animation-delay: 7s;   animation-duration: 18s; font-size: 20px;}
+.powerpuff-effects span:nth-child(5) { left: 75%; animation-delay: 0.5s; animation-duration: 11s; }
+.powerpuff-effects span:nth-child(6) { left: 90%; animation-delay: 5s;   animation-duration: 15s; font-size: 30px;}
+.powerpuff-effects span:nth-child(7) { left: 50%; animation-delay: 9s;   animation-duration: 13s; }
 
 @keyframes fallDown {
   0%   { transform: translateY(0) rotate(0deg); opacity: 0; }
-  10%  { opacity: 0.8; }
-  80%  { opacity: 0.8; }
+  10%  { opacity: 0.9; }
+  80%  { opacity: 0.9; }
   100% { transform: translateY(110vh) rotate(360deg); opacity: 0; }
 }
 
@@ -234,38 +224,38 @@ input:focus, select:focus{
 </head>
 
 <body>
-<!-- 🌸 替換為鬼滅和風的動態特效 🌸 -->
-<div class="breathing-effects">
-  <span>🏮</span>
-  <span>🌸</span>
-  <span>🏮</span>
-  <span>💨</span>
-  <span>🌸</span>
-  <span>🏮</span>
-  <span>💨</span>
+<!-- 💖 替換為飛天小女警的動態特效 💖 -->
+<div class="powerpuff-effects">
+  <span>💖</span>
+  <span>⭐</span>
+  <span>🫧</span>
+  <span>🧪</span>
+  <span>💖</span>
+  <span>⭐</span>
+  <span>🫧</span>
 </div>
 
 <div class="container">
-  <h1>台北一區・無限追蹤篇</h1>
+  <h1>台北一區・小鎮村守護篇</h1>
   
   <header class="tab-header">
-    <button id="tab-history" type="button">任務日誌</button>
-    <button id="tab-huddle" type="button" class="active">今日巡邏</button>
-    <button id="tab-plan" type="button">討伐計畫</button>
+    <button id="tab-history" type="button">拯救日誌</button>
+    <button id="tab-huddle" type="button" class="active">小鎮村巡邏</button>
+    <button id="tab-plan" type="button">打擊犯罪計畫</button>
   </header>
 
   <section id="huddle-view" class="section">
-    <h2>當月討伐完成度</h2>
+    <h2>當月正義能量完成度</h2>
     <div id="progress-dashboard">
-      <p style="text-align:center; color:var(--primary-dark); font-size:14px; font-weight:bold;">鎹鴉回報讀取中...</p>
+      <p style="text-align:center; color:var(--primary-dark); font-size:14px; font-weight:900;">連線至尤教授實驗室中...</p>
     </div>
   </section>
 
   <section id="plan-view" class="section hidden">
-    <h2>個人月度討伐計畫</h2>
-    <label for="plan-name-select">1. 選擇鬼殺隊士：</label>
+    <h2>個人月度打擊計畫</h2>
+    <label for="plan-name-select">1. 選擇小女警隊員：</label>
     <select id="plan-name-select">
-      <option value="">-- 全體柱與隊士 --</option>
+      <option value="">-- 小鎮村全體守護者 --</option>
     </select>
 
     <div style="display: flex; gap: 10px; margin-top: 10px;">
@@ -293,24 +283,24 @@ input:focus, select:focus{
   </section>
 
   <section id="history-view" class="section hidden">
-    <h2>每月任務回顧</h2>
-    <p class="subtitle">點擊鎹鴉查看紀錄，點擊空白處回報主公</p>
+    <h2>每月拯救回顧</h2>
+    <p class="subtitle" style="color:#000;">點擊愛心查看紀錄，點擊空白處聯絡市長</p>
     <div id="starry-map-container" style="margin-top: 20px;">
-      <p style="text-align:center; color:var(--primary-dark); font-size:14px; font-weight:bold;">正在翻閱任務日誌...</p>
+      <p style="text-align:center; color:var(--primary-dark); font-size:14px; font-weight:900;">正在翻閱小鎮村日誌...</p>
     </div>
   </section>
 
   <!-- 彈窗 (歷史詳細資料) -->
-  <div id="history-modal" class="hidden" style="position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(28, 25, 36, 0.85); backdrop-filter:blur(4px); z-index:1000; display:flex; justify-content:center; align-items:center; padding:20px;">
-    <div style="background:#FAFAFA; width:100%; max-width:420px; border-radius:16px; padding:25px; position:relative; border: 4px solid var(--primary-dark); box-shadow: 0 0 30px rgba(139, 95, 191, 0.4);">
+  <div id="history-modal" class="hidden" style="position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0, 0, 0, 0.7); backdrop-filter:blur(4px); z-index:1000; display:flex; justify-content:center; align-items:center; padding:20px;">
+    <div style="background:#FFFFFF; width:100%; max-width:420px; border-radius:16px; padding:25px; position:relative; border: 5px solid var(--primary-dark); box-shadow: 8px 8px 0px rgba(255, 64, 129, 0.8);">
       <div id="modal-content"></div>
-      <button onclick="closeModal()" style="margin-top:24px; width:100%; background:var(--primary-dark); color:#FFF; border:none; padding:16px; border-radius:8px; font-size:16px; font-weight:900; cursor:pointer; box-shadow: 0 4px 0px rgba(0,0,0,1); transition:all 0.2s; letter-spacing: 2px;">收刀 (關閉)</button>
+      <button onclick="closeModal()" style="margin-top:24px; width:100%; background:var(--accent-yellow); color:var(--primary-dark); border:3px solid var(--primary-dark); padding:16px; border-radius:12px; font-size:17px; font-weight:900; cursor:pointer; box-shadow: 4px 4px 0px var(--primary-dark); transition:all 0.1s; letter-spacing: 2px;">返回小鎮村 (關閉)</button>
     </div>
   </div>
 </div>
 
 <script>
-console.log("🗡️ Demon Slayer Infinity Tracking Edition app.js loaded!");
+console.log("💖 Powerpuff Girls Edition app.js loaded!");
 
 const STORAGE_PREFIX = "daily-report-test-";
 const PROGRESS_API_URL = "https://script.google.com/macros/s/AKfycbyrm3inO0h3qQf3hpKGCuQrNk68clolrYTXo5ncwEblDghytWB29dMIKA1LenjyIAr0qw/exec";
@@ -346,7 +336,9 @@ const monthlyData = {
     { content: "忠孝內部轉介名單，秉忻整理 2023 年份，再開始確認 12 月可邀約對象", target: "可先將 12 月低潛力的舊客往後移一個月，11 月挑選出 4 位可在 12 月回店試聽的名單", customerType: "舊客", itemType: "HA" }
   ],
   "蕭純聿": [
-    { content: "", target: "", customerType: "舊客", itemType: "HA" }
+    { content: "所有進店舊客，不論是否為 TA 都提供 Zeal 資訊", target: "每周 2 位舊客試聽 Zeal", customerType: "舊客", itemType: "HA" },
+    { content: "針對有購買過保健的用戶名單，先簡訊提供年終優惠資訊，再針對非棉片個案優先聯繫", target: "11 月完成 21 筆聯繫", customerType: "舊客", itemType: "保健" },
+    { content: "Google Map 評論", target: "每月至少 1 篇", customerType: "舊客", itemType: "HA" }
   ],
   "陳宛妤": [
     { content: "考量每月 HA 的客流量較保健穩定，針對 HA 交貨用戶，提供保健的加購資訊，如魚油與棉片", target: "11 月交貨的個案都提供", customerType: "新客", itemType: "保健" },
@@ -360,7 +352,9 @@ const monthlyData = {
     { content: "八德 2024 年 RS 舊客聯繫，目標邀約進店壓力檢測加新機分享", target: "11 月完成 34 筆聯繫", customerType: "舊客", itemType: "RS" }
   ],
   "林書廷": [
-    { content: "", target: "", customerType: "舊客", itemType: "HA" }
+    { content: "忠孝內部轉介名單，繼續往前面月份追蹤", target: "11 月完成 20 筆結案", customerType: "舊客", itemType: "HA" },
+    { content: "忠孝今年自己的潛客追蹤", target: "11 月完成 20 筆結案", customerType: "潛客", itemType: "HA" },
+    { content: "提升試聽環節中，效益驗證的應用", target: "11 月份有客戶試聽完成後，與旻諺討論", customerType: "新客", itemType: "HA" }
   ],
   "賴宜甄": [
     { content: "金山南周遭名單，HA舊客聯繫，邀約進店", target: "11 月完成 20 筆資料確認", customerType: "舊客", itemType: "HA" },
@@ -455,7 +449,7 @@ function showView(view) {
     }
 }
 
-// ===== 討伐計畫渲染 (和風設計) =====
+// ===== 討伐計畫渲染 (漫畫風設計) =====
 function initPlanTab() {
     const selectName = $("plan-name-select");
     const selectCustomer = $("filter-customer");
@@ -464,7 +458,7 @@ function initPlanTab() {
 
     if (!selectName || !container) return;
 
-    selectName.innerHTML = '<option value="">-- 全體柱與隊士 --</option>';
+    selectName.innerHTML = '<option value="">-- 小鎮村全體守護者 --</option>';
     Object.keys(monthlyData).forEach(name => {
         const opt = document.createElement("option");
         opt.value = name;
@@ -500,28 +494,28 @@ function initPlanTab() {
         });
 
         if (filteredData.length === 0) {
-            container.innerHTML = '<p style="text-align:center; color:#999; font-size:14px; margin-top:20px;">未接獲鎹鴉相關指令</p>';
+            container.innerHTML = '<p style="text-align:center; color:#FFF; text-shadow: 1px 1px 0 #000; font-size:15px; margin-top:20px; font-weight:900;">目前小鎮村非常和平！</p>';
             return;
         }
 
         filteredData.forEach((plan, index) => {
             const planEl = document.createElement("div");
-            // 大正和風卡片
-            planEl.style.cssText = "background: #fff; border: 2px solid var(--border); border-radius: 8px; padding: 18px; margin-bottom: 18px; border-left: 8px solid var(--primary); box-shadow: 0 4px 10px rgba(0,0,0,0.15); position:relative;";
+            // 漫畫框卡片
+            planEl.style.cssText = "background: #fff; border: 3px solid var(--primary-dark); border-radius: 12px; padding: 18px; margin-bottom: 20px; box-shadow: 4px 4px 0px var(--primary-dark); position:relative;";
             
-            // 標籤顏色：呼吸法配色
-            const custColor = plan.customerType === '潛客' ? '#FFCDD2' : (plan.customerType === '新客' ? '#B3E5FC' : '#FFF9C4'); 
-            const itemColor = plan.itemType === 'RS' ? '#C8E6C9' : (plan.itemType === '保健' ? '#FFE082' : '#E1BEE7');
+            // 標籤顏色：花花(粉)、泡泡(藍)、毛毛(綠)
+            const custColor = plan.customerType === '潛客' ? 'var(--buttercup-green)' : (plan.customerType === '新客' ? 'var(--bubbles-blue)' : 'var(--primary)'); 
+            const itemColor = plan.itemType === 'RS' ? 'var(--buttercup-green)' : (plan.itemType === '保健' ? 'var(--accent-yellow)' : 'var(--bubbles-blue)');
 
             const custAbbr = plan.customerType ? plan.customerType.substring(0, 1) : '?';
             const itemAbbr = plan.itemType ? plan.itemType.substring(0, 1) : '?';
-            const tagCircleStyle = "display:inline-flex; justify-content:center; align-items:center; width:28px; height:28px; border-radius:4px; color:var(--primary-dark); font-size:14px; font-weight:900; box-sizing:border-box; box-shadow: 1px 2px 4px rgba(0,0,0,0.2); border:1px solid rgba(0,0,0,0.1);";
+            const tagCircleStyle = "display:inline-flex; justify-content:center; align-items:center; width:28px; height:28px; border-radius:50%; color:#FFF; font-size:14px; font-weight:900; box-sizing:border-box; border:2px solid var(--primary-dark); text-shadow: 1px 1px 0 #000;";
 
             planEl.innerHTML = `
-                <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom: 15px; border-bottom: 2px dashed #DDD; padding-bottom: 10px;">
+                <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom: 15px; border-bottom: 3px solid var(--primary-dark); padding-bottom: 10px;">
                     <div>
                         <div style="font-weight: 900; color: var(--primary-dark); font-size: 19px; letter-spacing:1px;">${plan.staffName}</div>
-                        <div style="font-size: 12px; color: #888; margin-top: 4px; font-weight:bold;">指派任務 肆之${index + 1}</div>
+                        <div style="font-size: 12px; color: #555; margin-top: 4px; font-weight:900;">緊急任務 #${index + 1}</div>
                     </div>
                     <div style="display:flex; gap: 8px; align-items:center;">
                         <span style="${tagCircleStyle} background:${custColor};" title="${plan.customerType || '未分類'}">${custAbbr}</span>
@@ -530,13 +524,13 @@ function initPlanTab() {
                 </div>
                 
                 <div style="margin-bottom: 16px;">
-                    <div style="font-weight: 900; color: var(--primary); font-size: 13px; margin-bottom: 6px; letter-spacing:1px;">斬鬼路線</div>
-                    <div style="font-size: 15px; line-height: 1.6; color: #333; text-align: justify; font-weight:600;">${plan.content}</div>
+                    <div style="font-weight: 900; color: var(--primary); font-size: 14px; margin-bottom: 6px; letter-spacing:1px; text-shadow:1px 1px 0 rgba(0,0,0,0.1);">巡邏路線</div>
+                    <div style="font-size: 15px; line-height: 1.6; color: #222; text-align: justify; font-weight:700;">${plan.content}</div>
                 </div>
 
                 <div>
-                    <div style="font-weight: 900; color: var(--accent-red); font-size: 13px; margin-bottom: 6px; letter-spacing:1px;">討伐目標</div>
-                    <div style="font-size: 15px; line-height: 1.6; color: #666; text-align: justify; font-weight:600;">${plan.target}</div>
+                    <div style="font-weight: 900; color: var(--bubbles-blue); font-size: 14px; margin-bottom: 6px; letter-spacing:1px; text-shadow:1px 1px 0 rgba(0,0,0,0.1);">打擊目標</div>
+                    <div style="font-size: 15px; line-height: 1.6; color: #555; text-align: justify; font-weight:700;">${plan.target}</div>
                 </div>
             `;
             container.appendChild(planEl);
@@ -547,7 +541,7 @@ function initPlanTab() {
     renderPlans();
 }
 
-// ===== 進度條渲染 (水之呼吸與血鬼術配色) =====
+// ===== 進度條渲染 (化學物 X 能量條) =====
 async function fetchAndRenderProgress() {
     const container = $("progress-dashboard");
     if (!container) return;
@@ -560,7 +554,7 @@ async function fetchAndRenderProgress() {
         container.innerHTML = ""; 
 
         if (tasks.length === 0) {
-            container.innerHTML = "<p style='text-align:center; color:#999;'>本月尚無討伐令</p>";
+            container.innerHTML = "<p style='text-align:center; color:var(--primary-dark); font-weight:900;'>目前沒有犯罪事件發生！</p>";
             return;
         }
 
@@ -572,27 +566,27 @@ async function fetchAndRenderProgress() {
 
         Object.entries(groupedTasks).forEach(([staffName, staffTasks]) => {
             const taskRowsHtml = staffTasks.map(task => {
-                // 水之呼吸藍 (高達成) 與 血鬼術紅 (低達成)
-                const barColor = task.percent >= 80 ? "var(--secondary)" : "var(--accent-red)"; 
+                // 滿能量 (泡泡藍) 與 警告能量 (爆炸紅)
+                const barColor = task.percent >= 80 ? "var(--bubbles-blue)" : "var(--accent-red)"; 
                 return `
                     <div style="margin-bottom: 22px;">
                         <div style="display:flex; justify-content:space-between; align-items:end; margin-bottom:8px;">
-                            <span style="font-size:15px; font-weight:bold; color:var(--primary-dark);">${task.taskName}</span>
-                            <span style="font-weight:900; color:${barColor}; font-size:15px; background:#F5F5F5; padding:2px 8px; border-radius:4px; border: 1px solid #CCC;">${task.completed} / ${task.target}</span>
+                            <span style="font-size:15px; font-weight:900; color:var(--primary-dark);">${task.taskName}</span>
+                            <span style="font-weight:900; color:${barColor}; font-size:15px; background:#F5F5F5; padding:2px 8px; border-radius:6px; border: 2px solid var(--primary-dark); text-shadow: 1px 1px 0px rgba(0,0,0,0.1);">${task.completed} / ${task.target}</span>
                         </div>
-                        <div style="background:#E0E0E0; height:14px; border-radius:4px; overflow:hidden; box-shadow:inset 0 1px 3px rgba(0,0,0,0.3);">
-                            <div style="background:${barColor}; width:${task.percent}%; height:100%; transition:width 1.2s cubic-bezier(0.17, 0.67, 0.83, 0.67); border-radius:4px;"></div>
+                        <div style="background:#FFF; height:18px; border-radius:10px; overflow:hidden; border: 3px solid var(--primary-dark); box-shadow: 2px 2px 0px var(--primary-dark);">
+                            <div style="background:${barColor}; width:${task.percent}%; height:100%; transition:width 1.2s cubic-bezier(0.17, 0.67, 0.83, 0.67); border-right: 3px solid var(--primary-dark);"></div>
                         </div>
-                        <div style="text-align:right; font-size:12px; color:#666; margin-top:6px; font-weight:bold;">呼吸法熟練度 ${task.percent}%</div>
+                        <div style="text-align:right; font-size:12px; color:#333; margin-top:6px; font-weight:900;">化學物 X 能量 ${task.percent}%</div>
                     </div>
                 `;
             }).join("");
 
             const card = document.createElement("div");
-            card.style.cssText = "background:#fff; padding:20px; border-radius:8px; margin-bottom:16px; border:2px solid var(--border); box-shadow: 0 6px 15px rgba(0,0,0,0.15);";
+            card.style.cssText = "background:#fff; padding:20px; border-radius:12px; margin-bottom:20px; border:3px solid var(--primary-dark); box-shadow: 4px 4px 0px var(--primary-dark);";
             
             card.innerHTML = `
-                <div style="font-weight:900; font-size:19px; color:var(--primary-dark); margin-bottom:18px; border-bottom: 2px dashed #CCC; padding-bottom:10px; letter-spacing:2px;">
+                <div style="font-weight:900; font-size:19px; color:var(--primary-dark); margin-bottom:18px; border-bottom: 3px solid var(--primary-dark); padding-bottom:10px;">
                      ${staffName} 
                 </div>
                 ${taskRowsHtml}
@@ -602,16 +596,16 @@ async function fetchAndRenderProgress() {
 
     } catch (error) {
         console.error("進度抓取失敗:", error);
-        container.innerHTML = `<p style="text-align:center; color:var(--accent-red); font-size:14px; font-weight:bold;">⚠️ 無法接收鎹鴉回報</p>`;
+        container.innerHTML = `<p style="text-align:center; color:var(--primary-dark); font-size:15px; font-weight:900; background:#FFF; padding:10px; border:3px solid #000; box-shadow: 4px 4px 0 #000;">⚠️ 無法連線至尤教授實驗室</p>`;
     }
 }
 
-// ===== 歷史回顧與星圖 (鎹鴉) =====
+// ===== 歷史回顧與星圖 (愛心) =====
 async function renderStarryMap() {
     const container = $("starry-map-container");
     if (!container) return;
     
-    container.innerHTML = "<p style='text-align:center; color:var(--primary-dark); font-size:14px; font-weight:bold;'>正在展開任務卷軸...</p>";
+    container.innerHTML = "<p style='text-align:center; color:var(--primary-dark); font-size:14px; font-weight:900; background:#FFF; padding:10px; border:3px solid #000; box-shadow: 4px 4px 0 #000; border-radius:8px;'>正在展開熱線紀錄...</p>";
 
     try {
         const response = await fetch(`${PROGRESS_API_URL}?action=getHistory`);
@@ -622,7 +616,7 @@ async function renderStarryMap() {
 
         staffNames.forEach(name => {
             const card = document.createElement("div");
-            card.style.cssText = "background:#fff; padding:16px; border-radius:8px; margin-bottom:12px; border:2px solid var(--border); box-shadow: 0 4px 8px rgba(0,0,0,0.1);";
+            card.style.cssText = "background:#fff; padding:16px; border-radius:12px; margin-bottom:15px; border:3px solid var(--primary-dark); box-shadow: 4px 4px 0px var(--primary-dark);";
             
             let starsHtml = "";
             for (let i = 1; i <= 12; i++) {
@@ -635,15 +629,15 @@ async function renderStarryMap() {
                     const isAllDone = monthPlans.every(p => p.status === "⭐" || p.status === "⭐️");
                     
                     if (isAllDone) {
-                        displayContent = `<div style="font-size:26px; filter:drop-shadow(0 2px 3px rgba(0,0,0,0.4)); transform: scale(1.15);">🦅</div>`;
+                        displayContent = `<div style="font-size:26px; filter:drop-shadow(2px 2px 0px rgba(0,0,0,1)); transform: scale(1.15);">💖</div>`;
                     } else {
-                        displayContent = `<div style="font-size:26px; filter:grayscale(1); opacity:0.25;">🦅</div>`;
+                        displayContent = `<div style="font-size:26px; filter:drop-shadow(2px 2px 0px rgba(0,0,0,0.5)); opacity:0.6;">💥</div>`;
                     }
                 }
 
                 starsHtml += `
                     <div onclick="openHistoryDetail('${name}', '${monthKey}')" style="text-align:center; cursor:pointer; min-height:45px; transition:transform 0.2s;" onmouseover="this.style.transform='scale(1.2)'" onmouseout="this.style.transform='scale(1)'">
-                        <div style="font-size:12px; color:#555; margin-bottom:4px; font-weight:900;">${i}月</div>
+                        <div style="font-size:13px; color:var(--primary-dark); margin-bottom:4px; font-weight:900;">${i}月</div>
                         ${displayContent}
                     </div>
                 `;
@@ -661,7 +655,7 @@ async function renderStarryMap() {
         });
     } catch (error) {
         console.error("讀取星圖失敗:", error);
-        container.innerHTML = "<p style='text-align:center; color:var(--accent-red); font-weight:bold;'>⚠️ 卷軸展開失敗，請檢查通訊</p>";
+        container.innerHTML = "<p style='text-align:center; color:var(--accent-red); font-weight:bold; background:#FFF; padding:10px; border:3px solid #000; box-shadow: 4px 4px 0 #000;'>⚠️ 小鎮村熱線故障，請檢查通訊</p>";
     }
 }
 
@@ -674,27 +668,27 @@ window.openHistoryDetail = function(name, month) {
     if (modal) modal.classList.remove("hidden");
 
     if (monthPlans.length === 0) {
-        content.innerHTML = `<h3 style="text-align:center; color:#999; margin:20px 0;">該月無作戰任務 📜</h3>`;
+        content.innerHTML = `<h3 style="text-align:center; color:var(--primary-dark); margin:20px 0; font-weight:900;">該月沒有犯罪紀錄 🕊️</h3>`;
         return;
     }
 
     let plansListHtml = monthPlans.map((p, idx) => {
         const isAchieved = p.status === '⭐' || p.status === '⭐️';
-        const statusEmoji = isAchieved ? "🦅" : "🩸";
-        const statusLabel = isAchieved ? "討伐成功" : "遭遇強敵";
-        const themeColor = isAchieved ? "var(--secondary)" : "var(--accent-red)"; 
+        const statusEmoji = isAchieved ? "💖" : "💥";
+        const statusLabel = isAchieved ? "小鎮村平安" : "犯罪發生";
+        const themeColor = isAchieved ? "var(--bubbles-blue)" : "var(--accent-red)"; 
         const bgColor = isAchieved ? "#E1F5FE" : "#FFEBEE";    
 
         return `
-            <div style="background:#fff; padding:16px; border-radius:6px; margin-bottom:14px; border-left:8px solid ${themeColor}; box-shadow: 0 2px 6px rgba(0,0,0,0.1); border-right: 1px solid #EEE; border-top: 1px solid #EEE; border-bottom: 1px solid #EEE;">
+            <div style="background:#fff; padding:16px; border-radius:10px; margin-bottom:15px; border:3px solid var(--primary-dark); box-shadow: 4px 4px 0px ${themeColor};">
                 <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px;">
-                    <span style="font-size:13px; font-weight:900; color:#666;">路線 肆之${idx + 1}</span>
-                    <span style="background:${bgColor}; color:${themeColor}; padding:4px 12px; border-radius:4px; font-size:13px; font-weight:900; border: 1px solid ${themeColor}66;">
+                    <span style="font-size:13px; font-weight:900; color:var(--primary-dark);">檔案 #${idx + 1}</span>
+                    <span style="background:${bgColor}; color:var(--primary-dark); padding:4px 12px; border-radius:8px; font-size:13px; font-weight:900; border: 2px solid var(--primary-dark);">
                         ${statusEmoji} ${statusLabel}
                     </span>
                 </div>
-                <div style="font-size:15px; color:#222; line-height:1.6; font-weight:600;"><strong>指令：</strong>${p.plan}</div>
-                <div style="font-size:13.5px; color:#555; margin-top:8px; padding-top:8px; border-top:1px dashed #CCC; font-weight:600;"><strong>目標：</strong>${p.target}</div>
+                <div style="font-size:15px; color:#000; line-height:1.6; font-weight:900;"><strong>指令：</strong>${p.plan}</div>
+                <div style="font-size:13.5px; color:#333; margin-top:8px; padding-top:8px; border-top:3px dashed var(--primary-dark); font-weight:700;"><strong>目標：</strong>${p.target}</div>
             </div>
         `;
     }).join("");
@@ -704,22 +698,22 @@ window.openHistoryDetail = function(name, month) {
     
     if (hasFailedTask) {
         rcaHtml = `
-            <div style="border-top:3px double var(--border); margin-top:20px; padding-top:15px;">
-                <h3 style="color:var(--accent-red); text-align:center; font-size:17px; margin-bottom:12px; font-weight:900; letter-spacing:1px;">🩸 討伐失敗原因分析</h3>
-                <select id="rca-reason" style="width:100%; padding:14px; border-radius:6px; border:2px solid var(--border); font-size:15px; background:#F5F5F5; color:#222; font-weight:bold;">
-                    <option value="外部突發">🩸 遭遇下弦之鬼突襲 (外部突發狀況)</option>
-                    <option value="能力加強">💨 呼吸法訓練不足 (名單漏追/熟練度待加強)</option>
-                    <option value="時間管理">🗡️ 日輪刀需要重鑄 (時間管理/工具問題)</option>
-                    <option value="尋求支援">🦅 呼叫柱級隊員支援 (需要主管/同事協助)</option>
-                    <option value="其他">📝 鎹鴉回報異常（面談討論）</option>
+            <div style="border-top:4px solid var(--primary-dark); margin-top:20px; padding-top:15px;">
+                <h3 style="color:var(--accent-red); text-align:center; font-size:17px; margin-bottom:12px; font-weight:900; letter-spacing:1px; text-shadow:1px 1px 0 #000;">💥 任務失敗原因分析</h3>
+                <select id="rca-reason" style="width:100%; padding:14px; border-radius:8px; border:3px solid var(--primary-dark); font-size:15px; background:#FFF; color:#000; font-weight:900; box-shadow: inset 2px 2px 0 rgba(0,0,0,0.1);">
+                    <option value="外部突發">🐒 遇到魔人啾啾搗亂 (外部突發狀況)</option>
+                    <option value="能力加強">🧪 化學物 X 不足 (名單漏追/能力待加強)</option>
+                    <option value="時間管理">📞 市長一直打電話 (時間管理/頻繁被打斷)</option>
+                    <option value="尋求支援">👨‍🔬 呼叫尤教授支援 (需要主管/同事協助)</option>
+                    <option value="其他">📝 小鎮村熱線異常（面談討論）</option>
                 </select>
-                <button onclick="submitRCA('${name}', '${month}')" style="width:100%; background:var(--accent-red); color:white; padding:16px; border-radius:6px; margin-top:16px; border:none; font-weight:900; font-size:16px; cursor:pointer; box-shadow: 0 4px 0px #8B0000; transition:transform 0.1s; letter-spacing: 2px;">呼叫鎹鴉傳令</button>
+                <button onclick="submitRCA('${name}', '${month}')" style="width:100%; background:var(--accent-red); color:white; padding:16px; border-radius:12px; margin-top:16px; border:3px solid var(--primary-dark); font-weight:900; font-size:16px; cursor:pointer; box-shadow: 4px 4px 0px var(--primary-dark); transition:transform 0.1s; letter-spacing: 1px; text-shadow: 1px 1px 0 #000;">聯絡市長回報</button>
             </div>
         `;
     }
 
     content.innerHTML = `
-        <h3 style="color:var(--primary-dark); text-align:center; margin:0 0 20px 0; font-weight:900; font-size:22px; letter-spacing:2px;">${month} 討伐日誌 📜</h3>
+        <h3 style="color:var(--primary-dark); text-align:center; margin:0 0 20px 0; font-weight:900; font-size:22px; letter-spacing:2px; text-shadow:1px 1px 0 rgba(0,0,0,0.2);">✨ ${month} 拯救日誌 </h3>
         <div style="max-height:350px; overflow-y:auto; padding-right:5px;">${plansListHtml}</div>
         ${rcaHtml}
     `;
@@ -733,9 +727,10 @@ window.submitRCA = async function(name, month) {
     const submitBtn = event.target; 
 
     submitBtn.disabled = true;
-    submitBtn.innerText = "鎹鴉飛行中...";
+    submitBtn.innerText = "熱線傳輸中...";
     submitBtn.style.background = "#555";
-    submitBtn.style.boxShadow = "none";
+    submitBtn.style.boxShadow = "0px 0px 0px var(--primary-dark)";
+    submitBtn.style.transform = "translate(4px, 4px)";
 
     try {
         await fetch(PROGRESS_API_URL, {
@@ -745,17 +740,18 @@ window.submitRCA = async function(name, month) {
             body: JSON.stringify({ action: "submitRCA", name: name, month: month, reason: reason })
         });
 
-        alert(`✔️ 傳令成功！\n主公已收到「${month} / ${name}」的回報：\n${reason}`);
+        alert(`✔️ 回報成功！\n市長已收到「${month} / ${name}」的熱線：\n${reason}`);
         closeModal(); 
         
     } catch (e) {
         console.error("RCA 送出失敗:", e);
-        alert("❌ 鎹鴉迷失方向，請檢查網路連線");
+        alert("❌ 遭魔人啾啾攔截，請檢查網路連線");
     } finally {
         submitBtn.disabled = false;
-        submitBtn.innerText = "呼叫鎹鴉傳令";
+        submitBtn.innerText = "聯絡市長回報";
         submitBtn.style.background = "var(--accent-red)";
-        submitBtn.style.boxShadow = "0 4px 0px #8B0000";
+        submitBtn.style.boxShadow = "4px 4px 0px var(--primary-dark)";
+        submitBtn.style.transform = "none";
     }
 };
 
@@ -772,3 +768,6 @@ document.addEventListener("DOMContentLoaded", () => {
     initPlanTab();
 });
 </script>
+
+</body>
+</html>
